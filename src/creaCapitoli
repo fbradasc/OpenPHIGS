@@ -1,0 +1,33 @@
+#!/bin/sh
+
+for dir in \
+	include \
+	archive \
+	c_binding \
+	cp \
+	css \
+	error \
+	input \
+	pex \
+	phigsmon \
+	swap \
+	util \
+	ws \
+	ws_type
+do
+	
+	echo ""
+	echo "MODULO: ${dir}"
+	echo "------------------------------------------------------------------------------"
+	echo ""
+	echo 
+	for file in ${dir}/*.[ch]
+	do
+		echo "=============================================================================="
+		echo ""
+		echo "FILE: ${file}"
+		echo "------------------------------------------------------------------------------"
+		echo ""
+		cat ${file}
+	done
+done

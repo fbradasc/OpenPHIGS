@@ -1,0 +1,705 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/javascript" HREF="OpenPHIGS.js">
+<TITLE>PHIGS TRAVERSAL STATE LIST </TITLE>
+</HEAD>
+<BODY>
+<H1>PHIGS TRAVERSAL STATE LIST </H1>
+<HR>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+<B>NAME</B>
+     PHIGS TRAVERSAL STATE LIST - contains all transient informa-
+     tion PEX-SI uses during traversal
+
+<B>DESCRIPTION</B>
+     The PHIGS Traversal State List is created whenever a traver-
+     sal  is  initiated,  and  only  exists during the traversal.
+     Hence, its values cannot be inquired.  Traversal is the exe-
+     cution  of  a  structure  network.   Traversal begins with a
+     structure posted to a workstation.  Structure  elements  are
+     traversed  sequentially.   The traversal state list is modi-
+     fied by executing attribute elements.
+
+     The initial values in the traversal state  list  are  either
+     defined  by the PHIGS standard, or are implementation depen-
+     dent.  These values are inherited  by  a  posted  structure.
+     Whenever an EXECUTE STRUCTURE element is traversed, the exe-
+     cuted structure, or <I>child</I> structure, <I>inherits</I> the attributes
+     of  the  <I>parent</I>  structure;  that is, the structure invoking
+     (executing or referencing) it.  Different parent  structures
+     can assign different attribute values.
+
+     The  <I>child</I>  structure's  attributes  are  then  modified  by
+     attribute elements as they are sequentially  executed.   The
+     child  structure may also execute subordinate structures, at
+     which point the calling structure is considered  the  parent
+     of  this  generation.   At  the  end  of the child structure
+     (i.e., after its last element),  traversal  returns  to  the
+     parent  structure,  restoring  the saved state of the parent
+     structure, and continues until the end of the parent  struc-
+     ture.   This continues until the entire structure network is
+     traversed (i.e., until traversal of the posted structure  is
+     complete).   The  modifications  to the child's structure do
+     not affect the  parent  structure's  attributes.   Traversal
+     state  list  values  may be said to <I>expire</I> at the end of the
+     structure in which they are set, as traversal of the  parent
+     structure resumes.
+
+     The  values  in the traversal state list are <I>bound</I> to primi-
+     tives as the primitive elements are sequentially executed.
+
+  <B>Data</B> <B>Type</B> <B>Abbreviations</B>
+     I        Integer
+     GCOLR    General Colour
+     R        Real
+     V2/V3    2D/3D Vector
+     E        Enumeration Type
+     P3       3D Point
+     L(type)  List of values of a given type
+     SET(NM)  Set of Eligible Names
+     MCV      Modelling Clipping Volume
+     (nys)    Not Yet Supported
+
+  <B>PHIGS-SI</B> <B>Traversal</B> <B>State</B> <B>List</B></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> <B>Traversal State<BR>List Entry</B> </TD>
+    <TD><PRE CLASS="mini"> <B>Data<BR>Type</B> </TD>
+    <TD><PRE CLASS="mini"> <B>Default or<BR>Initial Value</B> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> linetype </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> linewidth scale factor </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline colour index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> linetype ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> linewidth scale factor ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline colour index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline shading method </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (NONE) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> curve approximation criteria type </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (Workstation Dependent) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> curve approximation criteria value </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polyline shading method ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> curve approximation criteria ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polymarker index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> marker type </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 3 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> marker size scale factor </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polymarker colour index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polymarker colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> marker type ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> marker scale factor ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> polymarker colour index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text font </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (Monospaced Roman Simplex) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text precision </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> STRING </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character expansion factor </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character spacing </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text colour index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text font ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text precision ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character expansion factor ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character spacing ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text colour index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character height </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.01 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character up vector </TD>
+    <TD><PRE CLASS="mini"> V2 </TD>
+    <TD><PRE CLASS="mini"> (0.0,1.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character width </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.01 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> character base vector </TD>
+    <TD><PRE CLASS="mini"> V2 </TD>
+    <TD><PRE CLASS="mini"> (1.0,0.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text path </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> RIGHT </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> text alignment (horz &amp; vert) </TD>
+    <TD><PRE CLASS="mini"> 2xE </TD>
+    <TD><PRE CLASS="mini"> (NORMAL,NORMAL) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text character height </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.01 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text character up vector </TD>
+    <TD><PRE CLASS="mini"> V2 </TD>
+    <TD><PRE CLASS="mini"> (0.0,1.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text character width </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.01 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text character base vector </TD>
+    <TD><PRE CLASS="mini"> V2 </TD>
+    <TD><PRE CLASS="mini"> (1.0,0.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text path </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> RIGHT </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation text alignment (horz &amp; vert) </TD>
+    <TD><PRE CLASS="mini"> 2xE </TD>
+    <TD><PRE CLASS="mini"> (NORMAL,NORMAL) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> annotation style </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (unconnected) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior style </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> HOLLOW </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior style </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> HOLLOW </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior style index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior style index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior colour index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior style ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior style ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior style index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior style index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior colour index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior colour ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> ambient reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back ambient reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> diffuse reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back diffuse reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> specular reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back specular reflection coefficient </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> specular colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back specular colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> specular exponent </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back specular exponent </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior shading method </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (NONE) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior shading method </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (NONE) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior reflectance equation </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (NONE) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior reflectance equation </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (NONE) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> area properties ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back area properties ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior shading method ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior shading method ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> interior reflectance equation ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> back interior reflectance equation ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> surface approximation criteria type </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 (Workstation Dependent) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> surface approximation criteria value </TD>
+    <TD><PRE CLASS="mini"> 2xR </TD>
+    <TD><PRE CLASS="mini"> (1.0,1.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> surface approximation criteria ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> face distinguishing mode </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> NO </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> face culling mode </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> NONE </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> depth cue index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> colour mapping index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> rendering colour model </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> light source state </TD>
+    <TD><PRE CLASS="mini"> L(I) </TD>
+    <TD><PRE CLASS="mini"> empty </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge flag </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> OFF </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edgetype </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edgewidth scale factor </TD>
+    <TD><PRE CLASS="mini"> R </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge colour index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 1 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge colour </TD>
+    <TD><PRE CLASS="mini"> GCOLR </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge flag ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edgetype ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edgewidth scale factor ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> edge colour index ASF </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> INDIVIDUAL </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> pattern size </TD>
+    <TD><PRE CLASS="mini"> 2xR </TD>
+    <TD><PRE CLASS="mini"> (1.0,1.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> pattern reference point </TD>
+    <TD><PRE CLASS="mini"> P3 </TD>
+    <TD><PRE CLASS="mini"> (0.0,0.0,0.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> pattern reference vectors </TD>
+    <TD><PRE CLASS="mini"> 2xV3 </TD>
+    <TD><PRE CLASS="mini"> (1.0,0.0,0.0) (0.0,1.0,0.0) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+    <TD><PRE CLASS="mini"> </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> pick identifier </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> view index </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> HLHSR identifier </TD>
+    <TD><PRE CLASS="mini"> I </TD>
+    <TD><PRE CLASS="mini"> 0 </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> name set </TD>
+    <TD><PRE CLASS="mini"> SET(NM) </TD>
+    <TD><PRE CLASS="mini"> no classes (empty set) </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> global modelling transformation </TD>
+    <TD><PRE CLASS="mini"> 4x4xR </TD>
+    <TD><PRE CLASS="mini"> Identity </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> local modelling transformation </TD>
+    <TD><PRE CLASS="mini"> 4x4xR </TD>
+    <TD><PRE CLASS="mini"> Identity </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> modelling clipping volume </TD>
+    <TD><PRE CLASS="mini"> MCV </TD>
+    <TD><PRE CLASS="mini"> all of WC </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> modelling clipping indicator </TD>
+    <TD><PRE CLASS="mini"> E </TD>
+    <TD><PRE CLASS="mini"> NOCLIP </TD>
+  </TR>
+</TABLE><PRE>
+      This is a <I>PHIGS</I> <I>Extension</I> based on PHIGS PLUS
+      and is not a part of the PHIGS standard.
+
+      This is a <I>PHIGS-specific</I> item of traversal state.
+      See the appropriate GSE man page.
+
+      * Zero is workstation dependent.
+
+<B>SEE</B> <B>ALSO</B>
+          <B><A HREF="p408.html">PHIGS DESCRIPTION TABLE</A></B>
+          <B><A HREF="p055.html">EXECUTE STRUCTURE</A></B>
+<!--          <B><A HREF="NOT_FOUND.html">INQUIRE ANCESTORS OF STRUCTURE</A></B>-->
+<!--          <B><A HREF="NOT_FOUND.html">INQUIRE DESCENDANTS OF STRUCTURE</A></B>-->
+          <B><A HREF="p038.html">ELEMENT SEARCH</A></B>
+
+</PRE>
+</BODY>
+</HTML>

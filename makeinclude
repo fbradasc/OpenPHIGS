@@ -1,0 +1,218 @@
+#
+# Make include file for OpenPHIGS.
+#
+# Copyright (c) 1989, 1990, 1991  X Consortium
+# 
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+# 
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+# X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+# AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+# 
+# Except as contained in this notice, the name of the X Consortium shall not be
+# used in advertising or otherwise to promote the sale, use or other dealings
+# in this Software without prior written authorization from the X Consortium.
+# 
+# Copyright 1989, 1990, 1991 by Sun Microsystems, Inc. 
+# 
+#                         All Rights Reserved
+# 
+# Permission to use, copy, modify, and distribute this software and its 
+# documentation for any purpose and without fee is hereby granted, 
+# provided that the above copyright notice appear in all copies and that
+# both that copyright notice and this permission notice appear in 
+# supporting documentation, and that the name of Sun Microsystems,
+# not be used in advertising or publicity pertaining to distribution of 
+# the software without specific, written prior permission.  
+# 
+# SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
+# INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT 
+# SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL 
+# DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+# WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION,
+# ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
+# SOFTWARE.
+#
+# Please report all bugs and problems to "fbradasc@ciaoweb.it".
+#
+SHELL	=/bin/sh
+
+PHIGSNAME	=phigs
+DISTDIR		=$(TOP_SRCDIR)/distrib
+PHIGSLIBDIR	=$(DISTDIR)/lib
+PHIGSAPIDIR	=$(DISTDIR)/lib/X11/PEX
+PHIGSINCDIR	=$(DISTDIR)/include/$(PHIGSNAME)
+PHIGSDOCDIR =$(DISTDIR)/doc
+PHIGS_DOCS  =$(PHIGSDOCDIR)/OpenPHIGS
+
+# useful commands:
+CP		=cp
+ECHO	=echo -e
+RM		=rm
+GREP	=grep
+SED		=sed
+AWK		=awk
+RECODE  =recode
+INDEXER =indexer
+PSROFF  =groff
+TBL     =tbl
+EQN     =eqn
+LN		=ln -s
+CAT		=cat
+TROFF	=$(PSROFF)
+ARCH    =$( shell getconf LONG_BIT )
+
+# compiler names:
+CXX		=c++
+CC		=gcc
+
+X_INCLUDES	= -I/usr/X11R6/include
+
+INCLUDE		= \
+	-I. \
+	-I$(TOP_SRCDIR)/src/include \
+	-I$(TOP_SRCDIR)/src/include/PEX5 \
+	$(X_INCLUDES) \
+	
+#DEFINES		= \
+#	-DNARROWPROTO \
+#	-DFUNCPROTO=15 \
+#	-D_SVID_SOURCE \
+#	-D_BSD_SOURCE \
+#	-D_XOPEN_SOURCE=500L \
+#	-D_POSIX_SOURCE \
+#	-D_POSIX_C_SOURCE=199309L
+DEFINES		= \
+    -DNON_PORTABLE \
+	-DNARROWPROTO \
+	-DFUNCPROTO=15 \
+	-D_DEFAULT_SOURCE \
+	-D_XOPEN_SOURCE=500L \
+	-D_POSIX_SOURCE \
+	-D_POSIX_C_SOURCE=199309L
+
+CPPFLAGS	= $(INCLUDE) $(DEFINES) $(UCPPFLAGS)
+
+DEBUGFLAGS	= -g
+
+# -Wall
+CFLAGS		= \
+	$(DEBUGFLAGS) \
+    -std=c99 \
+    -Wno-int-to-pointer-cast \
+    -Wno-pointer-to-int-cast \
+	-fomit-frame-pointer \
+	-pedantic \
+	-ansi \
+	-fno-strength-reduce \
+	$(UCFLAGS)
+
+# -Wall
+CXXFLAGS	= \
+	$(DEBUGFLAGS) \
+	-fomit-frame-pointer \
+	-fno-exceptions \
+	-Wno-return-type \
+	-pedantic \
+	-ansi \
+	-fno-strength-reduce \
+	-I/usr/X11R6/include \
+	$(UCXXFLAGS)
+
+# program to make the archive:
+LIBNAME		=lib$(PHIGSNAME)
+LIBCOMMAND	=ar cr
+RANLIB		=ranlib
+
+# libraries to link with:
+
+PHIGSLIBS	= \
+	-L$(PHIGSLIBDIR) -l$(PHIGSNAME)
+
+X_LIBS		= \
+	-L/usr/X11R6/lib64 -lXaw3d -lXmu -lXt -lSM -lICE -lXext -lX11
+
+MOTIF_LIBS	= \
+	-L/usr/X11R6/lib64 -lXm
+
+LDLIBS		= \
+	$(PHIGSLIBS) \
+	$(X_LIBS) \
+	-lm $(ULDLIBS)
+
+LIBFILE		=$(PHIGSLIBDIR)/$(LIBNAME).a
+
+.PHONY: depend
+.PRECIOUS: .deps
+
+LIBOBJS = $(SRCS:.c=.o)
+
+lib: $(LIBFILE)
+
+.deps depend: $(SRCS)
+	@$(ECHO) "\rCreating .deps : \c\r" >&2
+	@( \
+		$(ECHO) \#' DO NOT EDIT -- generated automagically by make depend' ; \
+		$(ECHO) ; \
+		if [ "x$(SRCS)" != "x" ]; then \
+			if [ "x$(LIBFILE)" != "x" ]; then \
+				for obj in /tmp/make.depend_$$$$ $(LIBOBJS) ; do \
+					if [ "$$obj" != /tmp/make.depend_$$$$  ]; then \
+						$(ECHO) '$$(LIBFILE): $$(LIBFILE)('$$obj')' ; \
+					fi ; \
+				done ; \
+				$(ECHO) ; \
+			fi ; \
+			for src in /tmp/make.depend_$$$$ $(SRCS) ; do \
+				if [ -f $$src ]; then \
+					$(ECHO) "\rCreating .deps : $$src             \c\r" >&2 ; \
+					$(CC) -M $(CPPFLAGS) $$src \
+					| $(SED) -e 's% /[^ ]*%%g' -e 's% \./% %g' \
+					| $(GREP) -v '^ *\\$$' \
+					| $(SED) 's%\(.*\):\(.*\)%$$(LIBFILE)(\1):\2%g' ; \
+				fi ; \
+			done ; \
+		fi ; \
+		if [ "x$(MODULES)" != "x" ]; then \
+			for src in /tmp/make.depend_$$$$ $(MODULES) ; do \
+				if [ -f $$src ]; then \
+					$(ECHO) "\rCreating .deps : $$src             \c\r" >&2 ; \
+					$(CC) -M $(CPPFLAGS) $$src \
+					| $(SED) -e 's% /[^ ]*%%g' -e 's% \./% %g' \
+					| $(GREP) -v '^ *\\$$' ; \
+				fi ; \
+			done ; \
+		fi ; \
+		if [ "x$(MANPAGE_NAMES)" != "x" ]; then \
+			for src in /tmp/make.depend_$$$$ $(MANPAGE_NAMES) ; do \
+                if [ -f $$src ]; then \
+				    $(ECHO) "\rCreating .deps : $$src             \c\r" >&2 ; \
+				    $(ECHO) "$(PHIGS_DOCS)/html/`basename $$src`.html: $$src ; \$$(MAN_TO_HTML)" ; \
+                fi ; \
+			done ; \
+		fi ; \
+	) > .deps
+	@$(ECHO) "Creating .deps : done                                   " >&2
+
+include .deps
+
+.o.a:
+	$(LIBCOMMAND) $(LIBFILE) $<
+	$(RM) $<
+
+$(LIBFILE):
+	$(RANLIB) $(LIBFILE)
+
+clean:
+	-@$(RM) -rf .deps *.o core *.bck $(CLEAN) $(PHIGS_DOCS)/*

@@ -1,0 +1,1713 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/javascript" HREF="OpenPHIGS.js">
+<TITLE>PHIGS WORKSTATION DESCRIPTION TABLE </TITLE>
+</HEAD>
+<BODY>
+<H1>PHIGS WORKSTATION DESCRIPTION TABLE </H1>
+<HR>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+<B>NAME</B>
+     PHIGS  WORKSTATION  DESCRIPTION TABLE - contains information
+     describing the capabilities of a PEX-SI PHIGS workstation
+
+  <B>Key</B> <B>to</B> <B>Data</B> <B>Type</B> <B>Abbreviations</B>
+     I       Integer
+     P3      3D Point
+     R       Real
+     FP      Font/Precision Pair
+     E       Enumeration Type
+     CC      Chromaticity Coefficient
+     B       Bounding Range
+     D       Data Record
+     L(type) List of values of a given type (nys)
+             Not Yet Supported
+
+     <I>Key</I> <I>Denoting</I> <I>the</I> <I>Source</I> <I>of</I> <I>Information:</I>
+     API     determined by API, hardcoded
+     API+    determined by API, using X or other information
+     ETI     determined by server, API queries the PEX extension
+             with Get Enumerated Type Information
+     IDC     determined by server, API queries the PEX extension
+             with Get Implementation-Dependent Constants
+     GTI     determined by server, API queries the PEX extension
+             with Get Table Information
+     GPE     determined by server, API queries the PEX extension
+             with Get Predefined Entries
+     GDY     determined by server, API queries the PEX extension
+             with Get Dynamics
+     GWI     determined by server, API queries the PEX extension
+             with Get PHIGS Workstation Information
+     LFI     List Fonts with Information
+      *      Partially-controlled by application
+
+  <B>PHIGS Workstation Description Table</B></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Workstation Description<BR>Table Entry</B></TD>
+    <TD><PRE CLASS="mini"><B>Data<BR>Type</B></TD>
+    <TD><PRE CLASS="mini"><B>Initial<BR>Value</B></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> workstation type</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API*</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> workstation category</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API*(PCAT_OUTIN)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> device coordinate units</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API(PDC_OTHER)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum display space size:</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   in device coordinates</TD>
+    <TD><PRE CLASS="mini"> 3xR</TD>
+    <TD><PRE CLASS="mini"> API+*</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available HLHSR identifiers</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (2)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available HLHSR identifiers</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> API (OFF, ON)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available HLHSR modes</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available HLHSR modes</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined view representations</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 6</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined view representations</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table1">Table 1</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> workstation classification</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API (RASTER)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> dynamic modification flags:</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   view representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   polyline bundle representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   polymarker bundle representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   text bundle representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   interior bundle representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   edge bundle representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   pattern representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   colour representation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   workstation transformation</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   highlighting filter</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   invisibility filter</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   HLHSR mode</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   structure content modifications</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   post structure</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   unpost structure</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   delete structure</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   reference modifications</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> GDY</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> default value for deferral state:</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   deferral mode</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API (ASAP)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   modification mode</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API (UQUM)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available linetypes</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available linetypes</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available linewidths</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> nominal linewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> minimum linewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum linewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined polyline bundles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 5</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined polyline bundles</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table2">Table 2</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of polyline shading methods supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of polyline shading methods supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of curve approximation criteria types<BR> supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of curve approximation criteria supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available marker types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available marker types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available marker sizes</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> nominal marker size</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> minimum marker size</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum marker size</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined polymarker bundles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 5</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined polymarker bundles</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table3">Table 3</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of text font and precision pairs</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> LFI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of text font and precision pairs</TD>
+    <TD><PRE CLASS="mini"> L(FP)</TD>
+    <TD><PRE CLASS="mini"> LFI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available character expansion factors</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (0: continuous range)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> minimum character expansion factor</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> API (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum character expansion factor</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> API (MAXFLOAT)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available character heights</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (0: continuous range)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> minimum character height</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> API (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum character height</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> API (MAXFLOAT)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined text bundles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 6</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined text bundles</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table4">Table 4</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available annotation styles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available annotation styles</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available interior styles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available interior styles</TD>
+    <TD><PRE CLASS="mini"> L(E)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available hatch styles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available hatch styles</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined interior bundles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 5</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined interior bundles</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table5">Table 5</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of interior shading methods</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of interior shading methods</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of reflectance equations supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of reflectance equations supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of surface approximation criteria<BR> supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of surface approximation criteria<BR> supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of trimming curve approximation<BR> criteria types supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of trimming curve approximation<BR> criteria supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum trimming curve order supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of parametric surface characteristics<BR> supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of parametric surface characteristics</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined pattern representations</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined pattern representations</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> GPE</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available colour models</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available colour models</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available edgetypes</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available edgetypes</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available edgewidths</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> nominal edgewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> minimum edgewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum edgewidth</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined edge bundles</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 5</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined edge bundles</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table6">Table 6</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> default colour model</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (RGB)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> chromaticity coefficients of display primaries</TD>
+    <TD><PRE CLASS="mini"> 3xCC</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available colours or intensities</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> colour available</TD>
+    <TD><PRE CLASS="mini"> E</TD>
+    <TD><PRE CLASS="mini"> API+</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined colour representations</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined colour representations</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available generalized drawing<BR> primitives 3</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available generalized drawing<BR> primitives 3</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available generalized drawing<BR> primitives</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available generalized drawing<BR> primitives</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available generalized structure<BR> elements</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of available generalized structure<BR> elements</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of display priorities supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GWI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of polyline bundle table<BR> entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of polymarker bundle table<BR> entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of text bundle table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of interior bundle table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of edge bundle table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of pattern table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of colour indices</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of view indices</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined depth cue indices</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 2</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined depth cue operations</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table7">Table 7</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of depth cue bundle table<BR> entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined colour mapping table<BR> entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 1</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined colour mappings</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table8">Table 8</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of colour mapping table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of colour mapping methods supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of colour mapping methods supported</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available true colours</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API+</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of available pseudo colours</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API+</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of directly specifiable colour models<BR> supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of rendering colour models supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of light source types supported</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> list of light source types supported</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of predefined light source table<BR> indices</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> 2</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> table of predefined light sources</TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini"> See <A HREF="#Table9">Table 9</A></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of light source table entries</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> GTI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> maximum number of simultaneously active<BR> non-ambient light sources</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> IDC</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical devices of class LOCATOR</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (3)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   locator device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1,2,3)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default initial locator position</TD>
+    <TD><PRE CLASS="mini"> P3</TD>
+    <TD><PRE CLASS="mini"> (0,0,0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default locator data record</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini"> (empty)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical input devices of class<BR> STROKE</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   stroke device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   maximum input buffer size</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (200)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default stroke data record containing<BR>   at least:</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     input buffer size</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (100)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     editing position</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     x, y, z interval</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     time interval</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical input devices of class<BR> VALUATOR</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   valuator device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default initial value</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (2)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> (1, -1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default valuator data record containing<BR>   at least:</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     low value</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> (0)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     high value</TD>
+    <TD><PRE CLASS="mini"> R</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical input devices of class<BR> CHOICE</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   choice device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   maximum number of choice alternatives</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (100)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (2)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> (1, 3)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default choice data record</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini"> (empty)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical input devices of class<BR> PICK</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   pick device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> ETI</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default pick data record</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini"> (empty)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> number of logical input devices of class<BR> STRING</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> API (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   string device number</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   maximum input buffer size</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1024)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   number of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   list of available prompt and echo types</TD>
+    <TD><PRE CLASS="mini"> L(I)</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default echo volume</TD>
+    <TD><PRE CLASS="mini"> 3xB</TD>
+    <TD><PRE CLASS="mini"> (full window)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">   default string data record containing<BR>   at least:</TD>
+    <TD><PRE CLASS="mini"> D</TD>
+    <TD><PRE CLASS="mini">  </TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     input buffer size (characters)</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1024)</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini">     initial cursor position</TD>
+    <TD><PRE CLASS="mini"> I</TD>
+    <TD><PRE CLASS="mini"> (1)</TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table1"><B>Table 1 -- Predefined View Representations</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>View</B></TD>
+    <TD><PRE CLASS="mini"><B>Orientation<BR>Matrix</B></TD>
+    <TD><PRE CLASS="mini"><B>Mapping<BR>Matrix</B></TD>
+    <TD><PRE CLASS="mini"><B>Clip<BR>Limits</B></TD>
+  </TR>
+  <TR>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0<BR> full view</TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 1.0    0.0     0.0    0.0 <BR> 0.0    1.0     0.0    0.0 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 1.0    0.0     0.0    0.0 <BR> 0.0    1.0     0.0    0.0 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>
+    <TD ALIGN="center"><PRE CLASS="mini"> 1<BR> parallel front<BR> view in lower<BR> left corner</TD>  
+    <TD ALIGN="center"><PRE CLASS="mini"> 1.0    0.0     0.0    0.0 <BR> 0.0    1.0     0.0    0.0 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.3    0.0     0.0    0.1 <BR> 0.0    0.3     0.0    0.1 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>
+  <TR>
+    <TD ALIGN="center"><PRE CLASS="mini"> 2<BR> top view<BR> in upper<BR> left corner</TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 1.0    0.0     0.0    0.0 <BR> 0.0    0.0    -1.0    0.0 <BR> 0.0    1.0     0.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.3    0.0     0.0    0.1 <BR> 0.0    0.3     0.0    0.9 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>                                                                 
+  <TR>                                                                  
+    <TD ALIGN="center"><PRE CLASS="mini"> 3<BR> right side<BR> view in lower<BR> right corner</TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0    0.0    -1.0    0.0 <BR> 0.0    1.0     0.0    0.0 <BR> 1.0    0.0     0.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.3    0.0     0.0    0.9 <BR> 0.0    0.3     0.0    0.1 <BR> 0.0    0.0     1.0    0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>                                                                 
+  <TR>                                                                  
+    <TD ALIGN="center"><PRE CLASS="mini"> 4<BR> off-axis<BR> view<BR> in upper<BR> right corner</TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.7071 0.0    -0.7071 0.0 <BR> 0.4082 1.0    -0.4082 0.0 <BR> 0.5774 0.5774  0.5774 0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.2121 0.0     0.0    0.75<BR> 0.0    0.2121  0.0    0.75<BR> 0.0    0.0     0.5774 0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>                                                                 
+  <TR>                                                                  
+    <TD ALIGN="center"><PRE CLASS="mini"> 5<BR> off-axis<BR> perspective<BR> view in whole<BR> window</TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 1.7071 0.0    -0.7071 0.0 <BR> 0.4082 1.0    -0.4082 0.0 <BR> 0.5774 0.5774  0.5774 0.0 <BR> 0.0    0.0     0.0    1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.3536 0.0    -0.025  0.5 <BR> 0.0    0.3536 -0.025  0.5 <BR> 0.0    0.0     0.5274 0.0 <BR> 0.0    0.0    -0.05   1.0 </TD>
+    <TD ALIGN="center"><PRE CLASS="mini"> 0.0, 1.0 <BR> 0.0, 1.0 <BR> 0.0, 1.0 </TD>
+  </TR>
+</TABLE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>View</B></TD>
+    <TD><PRE CLASS="mini"><B>View<BR>Reference<BR>Point</B></TD>
+    <TD><PRE CLASS="mini"><B>View Up<BR>Vector</B></TD>
+    <TD><PRE CLASS="mini"><B>View<BR>Plane<BR>Normal</B></TD>
+    <TD><PRE CLASS="mini"><B>Projection<BR>Reference<BR>Point</B></TD>
+    <TD><PRE CLASS="mini"><B>View Mapping<BR>Window X Limits</B></TD>
+    <TD><PRE CLASS="mini"><B>View Mapping<BR>Window Y Limits</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini">(0,0,0)</TD>
+    <TD><PRE CLASS="mini">&lt;0,1,0&gt;</TD>
+    <TD><PRE CLASS="mini">&lt;0,0,1&gt;</TD>
+    <TD><PRE CLASS="mini">(0.5,0.5,5.0)</TD>
+    <TD><PRE CLASS="mini">[0,1]</TD>
+    <TD><PRE CLASS="mini">[0,1]</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">2</TD>
+    <TD><PRE CLASS="mini">(0,0,0)</TD>
+    <TD><PRE CLASS="mini">&lt;0,0,-1&gt;</TD>
+    <TD><PRE CLASS="mini">&lt;0,1,0&gt;</TD>
+    <TD><PRE CLASS="mini">(0.5,-0.5,5.0)</TD>
+    <TD><PRE CLASS="mini">[0,1]</TD>
+    <TD><PRE CLASS="mini">[-1,0]</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">3</TD>
+    <TD><PRE CLASS="mini">(0,0,0)</TD>
+    <TD><PRE CLASS="mini">&lt;0,1,0&gt;</TD>
+    <TD><PRE CLASS="mini">&lt;1,0,0&gt;</TD>
+    <TD><PRE CLASS="mini">(-0.5,0.5,5.0)</TD>
+    <TD><PRE CLASS="mini">[-1,0]</TD>
+    <TD><PRE CLASS="mini">[0,1]</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">4</TD>
+    <TD><PRE CLASS="mini">(0,0,0)</TD>
+    <TD><PRE CLASS="mini">&lt;0,1,0&gt;</TD>
+    <TD><PRE CLASS="mini">&lt;1,1,1&gt;</TD>
+    <TD><PRE CLASS="mini">(0,0,5)</TD>
+    <TD><PRE CLASS="mini"> [-0.7071,0.7071]</TD>
+    <TD><PRE CLASS="mini"> [-0.7071,0.7071]</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">5</TD>
+    <TD><PRE CLASS="mini">(0,0,0)</TD>
+    <TD><PRE CLASS="mini">&lt;0,1,0&gt;</TD>
+    <TD><PRE CLASS="mini">&lt;1,1,1&gt;</TD>
+    <TD><PRE CLASS="mini">(0,0,20)</TD>
+    <TD><PRE CLASS="mini"> [-0.7071,0.7071]</TD>
+    <TD><PRE CLASS="mini"> [-0.7071,0.7071]</TD>
+  </TR>
+</TABLE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>View</B></TD>
+    <TD><PRE CLASS="mini"><B>View<BR>Plane</B></TD>
+    <TD><PRE CLASS="mini"><B>Front<BR>Plane</B></TD>
+    <TD><PRE CLASS="mini"><B>Back<BR>Plane</B></TD>
+    <TD><PRE CLASS="mini"><B> View Mapping <BR> Viewport X Limits </B></TD>
+    <TD><PRE CLASS="mini"><B> View Mapping <BR> Viewport Y Limits </B></TD>
+    <TD><PRE CLASS="mini"><B> View Mapping <BR> Viewport Z Limits</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini"> 0.0</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> [0.1,0.4] </TD>
+    <TD><PRE CLASS="mini"> [0.1,0.4] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">2</TD>
+    <TD><PRE CLASS="mini"> 0.0</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> [0.1,0.4] </TD>
+    <TD><PRE CLASS="mini"> [0.6,0.9] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">3</TD>
+    <TD><PRE CLASS="mini"> 0.0</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> [0.6,0.9] </TD>
+    <TD><PRE CLASS="mini"> [0.1,0.4] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">4</TD>
+    <TD><PRE CLASS="mini"> 0.0</TD>
+    <TD><PRE CLASS="mini">1.7321</TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> [0.6,0.9] </TD>
+    <TD><PRE CLASS="mini"> [0.6,0.9] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">5</TD>
+    <TD><PRE CLASS="mini">10.0</TD>
+    <TD><PRE CLASS="mini">1.7321</TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+    <TD><PRE CLASS="mini"> [0,1] </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table2"><B>Table 2 -- Predefined Polyline Bundle Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Bundle <BR> Index </BR></TD>
+    <TD><PRE CLASS="mini"><B>Linetype</BR></TD>
+    <TD><PRE CLASS="mini"><B>Line Width<BR>Scale Factor</TD>
+    <TD><PRE CLASS="mini"><B>Colour</TD>
+    <TD><PRE CLASS="mini"><B>Shading<BR>Method</TD>
+    <TD><PRE CLASS="mini"><B> Approximation <BR> Type </TD>
+    <TD><PRE CLASS="mini"><B>Approx.<BR>Value</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini">PLINE_SOLID</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">PCURV_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">2</TD>
+    <TD><PRE CLASS="mini">PLINE_DASH</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">PCURV_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">3</TD>
+    <TD><PRE CLASS="mini">PLINE_DOT</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">PCURV_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">4</TD>
+    <TD><PRE CLASS="mini">PLINE_DOT_DASH</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">PCURV_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">5</TD>
+    <TD><PRE CLASS="mini">PLINE_SOLID</TD>
+    <TD><PRE CLASS="mini">2.0</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">PCURV_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table3"><B>Table 3 -- Predefined Polymarker Bundle Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Bundle <BR> Index </B></TD>
+    <TD><PRE CLASS="mini"><B> Marker Type </B></TD>
+    <TD><PRE CLASS="mini"><B> Marker Size <BR> Scale Factor </B></TD>
+    <TD><PRE CLASS="mini"><B> Colour </B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 1 </TD>
+    <TD><PRE CLASS="mini"> PMARKER_DOT </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT, 1) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 2 </TD>
+    <TD><PRE CLASS="mini"> PMARKER_PLUS </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT, 1) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 3 </TD>
+    <TD><PRE CLASS="mini"> PMARKER_ASTERISK </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT, 1) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 4 </TD>
+    <TD><PRE CLASS="mini"> PMARKER_CIRCLE </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT, 1) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 5 </TD>
+    <TD><PRE CLASS="mini"> PMARKER_CROSS </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT, 1) </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table4"><B>Table 4 -- Predefined Text Bundle Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Bundle <BR> Index </B></TD>
+    <TD><PRE CLASS="mini"><B> Font </B></TD>
+    <TD><PRE CLASS="mini"><B> Text <BR> Precision </B></TD>
+    <TD><PRE CLASS="mini"><B> Expansion <BR> Factor </B></TD>
+    <TD><PRE CLASS="mini"><B> Character <BR> Spacing </B></TD>
+    <TD><PRE CLASS="mini"><B> Colour </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 1 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 2 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 1.5 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 3 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 2.0 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 4 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 2.5 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 5 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 3.0 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 2 </TD>
+    <TD><PRE CLASS="mini"> PFONT_MONO </TD>
+    <TD><PRE CLASS="mini"> PPREC_STROKE </TD>
+    <TD><PRE CLASS="mini"> 3.5 </TD>
+    <TD><PRE CLASS="mini"> 0.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table5"><B>Table 5 -- Predefined Interior Bundle Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Bundle <BR> Index </B></TD>
+    <TD><PRE CLASS="mini"><B> Interior <BR> Style </B></TD>
+    <TD><PRE CLASS="mini"><B> Back Interior <BR> Style </B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 1 </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_SOLID </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_SOLID </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 2 </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_HOLLOW </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_HOLLOW </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 3 </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_EMPTY </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_EMPTY </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 4 </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_SOLID </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_HOLLOW </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 5 </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_SOLID </TD>
+    <TD><PRE CLASS="mini"> PSTYLE_EMPTY </TD>
+  </TR>
+</TABLE>
+<PRE>
+     All other attributes have the same  pre-defined  values  for
+     all of the Bundle Indices, as shown in the following tables:
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Interior<BR>Style Index</B></TD>
+    <TD><PRE CLASS="mini"><B>Colour</B></TD>
+    <TD><PRE CLASS="mini"><B>Reflectance<BR>Equation</B></TD>
+    <TD><PRE CLASS="mini"><B>Shading<BR>Method</B></TD>
+    <TD><PRE CLASS="mini"><B>Ambient<BR>Coefficient</B></TD>
+    <TD><PRE CLASS="mini"><B>Diffuse<BR>Coefficient</B></TD>
+    <TD><PRE CLASS="mini"><B>Specular<BR>Coefficient</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini">PINDIRECT, 1</TD>
+    <TD><PRE CLASS="mini">PREFL_NONE</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">0.0</TD>
+  </TR>
+</TABLE>
+<PRE>
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Specular<BR>Colour</B></TD>
+    <TD><PRE CLASS="mini"><B> Specular <BR> Exponent </B></TD>
+    <TD><PRE CLASS="mini"><B> Back Facing <BR> Interior <BR> Style Index </B></TD>
+    <TD><PRE CLASS="mini"><B>Back Facing<BR>Specular<BR>Colour</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+    <TD><PRE CLASS="mini">0.0</TD>
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+</TABLE>
+<PRE>
+</PRE>
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Back Facing <BR>Reflectance<BR>Equation</B></TD>
+    <TD><PRE CLASS="mini"><B> Back Facing <BR>Shading<BR>Method</B></TD>
+    <TD><PRE CLASS="mini"><B> Back Facing <BR>Ambient<BR>Coefficient</B></TD>
+    <TD><PRE CLASS="mini"><B> Back Facing <BR>Diffuse<BR>Coefficient</B></TD>
+    <TD><PRE CLASS="mini"><B> Back Facing <BR>Specular<BR>Coefficient</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">PREFL_NONE</TD>
+    <TD><PRE CLASS="mini">PSD_NONE</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+    <TD><PRE CLASS="mini">0.0</TD>
+  </TR>
+</TABLE>
+<PRE>
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Back<BR> Specular <BR>Exponent</B></TD>
+    <TD><PRE CLASS="mini"><B>Surface<BR> Approximation <BR>Type</B></TD>
+    <TD><PRE CLASS="mini"><B>Surface<BR> Approximation <BR>Values</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">0.0</TD>
+    <TD><PRE CLASS="mini">PSURF_WS_DEP</TD>
+    <TD><PRE CLASS="mini">1.0</TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table6"><B>Table 6 -- Predefined Edge Bundle Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Bundle<BR>Index</B></TD>
+    <TD><PRE CLASS="mini"><B>Edge<BR>Flag</B></TD>
+    <TD><PRE CLASS="mini"><B>Edgetype</B></TD>
+    <TD><PRE CLASS="mini"><B>Edge Width<BR>Scale Factor</B></TD>
+    <TD><PRE CLASS="mini"><B>Colour</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 1 </TD>
+    <TD><PRE CLASS="mini"> PEDGE_ON </TD>
+    <TD><PRE CLASS="mini"> PLINE_SOLID </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 2 </TD>
+    <TD><PRE CLASS="mini"> PEDGE_ON </TD>
+    <TD><PRE CLASS="mini"> PLINE_DASH </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 3 </TD>
+    <TD><PRE CLASS="mini"> PEDGE_ON </TD>
+    <TD><PRE CLASS="mini"> PLINE_DOT </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 4 </TD>
+    <TD><PRE CLASS="mini"> PEDGE_ON </TD>
+    <TD><PRE CLASS="mini"> PLINE_DOT_DASH </TD>
+    <TD><PRE CLASS="mini"> 1.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"> 5 </TD>
+    <TD><PRE CLASS="mini"> PEDGE_ON </TD>
+    <TD><PRE CLASS="mini"> PLINE_SOLID </TD>
+    <TD><PRE CLASS="mini"> 2.0 </TD>
+    <TD><PRE CLASS="mini"> PINDIRECT, 1 </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table7"><B>Table 7 -- Predefined Depth Cue Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Depth Cue<BR>Index</B></TD>
+    <TD><PRE CLASS="mini"><B>Depth Cue<BR>Mode</B></TD>
+    <TD><PRE CLASS="mini"><B>Depth Cue<BR>Reference Planes</B></TD>
+    <TD><PRE CLASS="mini"><B>Depth Cue<BR>Scale Factors</B></TD>
+    <TD><PRE CLASS="mini"><B>Depth Cue<BR>Colour</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">0</TD>
+    <TD><PRE CLASS="mini"> SUPPRESSED </TD>
+    <TD><PRE CLASS="mini">(0.0,1.0)</TD>
+    <TD><PRE CLASS="mini">(0.0,1.0)</TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT,0) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini">ALLOWED</TD>
+    <TD><PRE CLASS="mini">(0.0,1.0)</TD>
+    <TD><PRE CLASS="mini">(0.0,1.0)</TD>
+    <TD><PRE CLASS="mini"> (PINDIRECT,0) </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table8"><B>Table 8 -- Predefined Colour Mapping Table</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Index</B></TD>
+    <TD><PRE CLASS="mini"><B>Method</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">0</TD>
+    <TD><PRE CLASS="mini"> PCOLR_MAP_TRUE </TD>
+  </TR>
+</TABLE>
+<PRE>
+  <A NAME="Table9"><B>Table 9 -- Predefined Light Sources</B></A></PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Index</B></TD>
+    <TD><PRE CLASS="mini"><B>Type</B></TD>
+    <TD><PRE CLASS="mini"><B>Data Record</B></TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">1</TD>
+    <TD><PRE CLASS="mini"> PLIGHT_AMBIENT </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini">2</TD>
+    <TD><PRE CLASS="mini"> PLIGHT_AMBIENT </TD>
+    <TD><PRE CLASS="mini"> (INDIRECT,1) </TD>
+  </TR>
+</TABLE>
+<PRE>
+
+<B>SEE</B> <B>ALSO</B>
+          <B><A HREF="p226.html">INQUIRE WORKSTATION CONNECTION AND TYPE</A></B>
+          <B><A HREF="p403.html">WORKSTATION TYPE CREATE</A></B>
+          <B><A HREF="p405.html">WORKSTATION TYPE GET</A></B>
+          <B><A HREF="p406.html">WORKSTATION TYPE SET</A></B>
+
+</PRE>
+</BODY>
+</HTML>

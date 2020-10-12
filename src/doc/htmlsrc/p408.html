@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/javascript" HREF="OpenPHIGS.js">
+<TITLE>PHIGS DESCRIPTION TABLE </TITLE>
+</HEAD>
+<BODY>
+<H1>PHIGS DESCRIPTION TABLE </H1>
+<HR>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+<B>NAME</B>
+     PHIGS  DESCRIPTION  TABLE  - contains information describing
+     the static capabilities of PEX-SI
+
+<B>DESCRIPTION</B>
+     The PHIGS Description Table is created when PHIGS is  opened
+     and  exists  until  PHIGS  is  closed.   The  PHIGS standard
+     includes the default values for the pipeline context in  the
+     logical PHIGS Description Table.
+
+     The  remaining values are limits and capabilities. These may
+     be inquired.
+
+     <I>Key</I> <I>to</I> <I>Data</I> <I>Type</I> <I>Abbreviations</I>
+     I        Integer
+     W        Workstation Type
+     E        Enumeration Type
+     L(type)  List of Values of a Given Type
+
+     <I>Key</I> <I>Denoting</I> <I>the</I> <I>Source</I> <I>of</I> <I>Information</I>
+
+     API  determined by API, hardcoded
+
+     ETI  determined by server, API queries with  Get  Enumerated
+          Type Information
+
+     IDC  determined  by  server,API queries with Get Implementa-
+          tion-Dependent Constants
+
+  <B>PHIGS</B> <B>Description</B> <B>Table</B></PRE>
+  <TABLE ALIGN="center"
+   BORDER="1"
+   BORDERCOLOR="#ffffff"
+   CELLSPACING="0"
+   CELLPADDING="2"
+  >
+    <TR ALIGN="center">
+      <TD><PRE CLASS="mini"><B>Description Table Entry</B></TD>
+      <TD><PRE CLASS="mini"><B>Data Type</B></TD>
+      <TD><PRE CLASS="mini"><B>Initial Value</B></TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> number of available workstation types</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> 2</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> list of available workstation types</TD>
+      <TD><PRE CLASS="mini"> L(W)</TD>
+      <TD><PRE CLASS="mini"> see <A HREF="#Table1">Table 1</A></TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> max number of simultaneously open workstations</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> API(20)</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> max number of simultaneously open archive files</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> API(25)</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> number of available names for name sets</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> IDC</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> available character sets </TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> API(1,ASCII)</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> max length of normal filter list for ISS</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> IDC</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> max length of inverted filter list for ISS</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> IDC</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> </TD>
+      <TD><PRE CLASS="mini"> </TD>
+      <TD><PRE CLASS="mini"> </TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> available generalized structure elements</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> ETI</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> </TD>
+      <TD><PRE CLASS="mini"> </TD>
+      <TD><PRE CLASS="mini"> </TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> max number of distinct planes in modelling clip volumes</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> IDC</TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> number of available modelling clip operators</TD>
+      <TD><PRE CLASS="mini"> I</TD>
+      <TD><PRE CLASS="mini"> ETI</TD>
+    </TR>
+  </TABLE>
+  <PRE>
+
+  <A NAME="Table1"><B>Table</B> <B>1</B> <B>--</B>  <B>Workstation</B> <B>Type</B> <B>and</B> <B>Category</B></PRE></A>
+  <TABLE ALIGN="center"
+   BORDER="1"
+   BORDERCOLOR="#ffffff"
+   CELLSPACING="0"
+   CELLPADDING="2"
+  >
+    <TR ALIGN="center">
+      <TD><PRE CLASS="mini"><B> Type </B></TD>
+      <TD><PRE CLASS="mini"><B> Category </B></TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> x_tool </TD>
+      <TD><PRE CLASS="mini"> OUTIN </TD>
+    </TR>
+    <TR>
+      <TD><PRE CLASS="mini"> x_drawable </TD>
+      <TD><PRE CLASS="mini"> OUTIN </TD>
+    </TR>
+  </TABLE>
+<PRE>
+<B>SEE</B> <B>ALSO</B>
+          <B><A HREF="p410.html">PHIGS WORKSTATION DESCRIPTION TABLE </A></B>
+
+</PRE>
+</BODY>
+</HTML>

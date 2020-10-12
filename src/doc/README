@@ -1,0 +1,77 @@
+/* $XConsortium: README,v 5.3 91/08/16 17:14:20 hersh Exp $ */
+
+		PEX-SI Graphics Library Manual Pages
+
+The PEX-SI Graphics Library Manual Pages is a document made up of the 
+Application Programmer's Interface functions.  Most of the functions are
+PHIGS functions.  The new ISO IS C bindings have been incorporated.  
+
+NOTE:  In order to make the PHIGS documentation portable to the majority 
+of users we have shortened the names of the files containing the PHIGS 
+function troff source.  To allow you to access the manual pages on-line 
+via the function names, we have provided a shell script that will link 
+the shortened file names to the longer function names.
+
+This directory contains the following files and directories:
+
+    Makefile
+        A make(1) description file
+
+    htmlsrc/
+        A directory that contains the html files that make the
+        framework of the html based documentation.
+
+    manpages/
+        The bulk of the troff source for the Graphics Library Manual
+		Pages plus the miscellaneous PHIGS Reference Manual Pages are
+        kept here.  The file names have been shortened to the format
+        <pnnn>, where nnn is the sequence number of the function; the
+        files have been numbered in the order in which they appear in
+        the printed document.
+		You must link the files before you can access the man pages
+        on-line via the function names.
+
+    phigs.macros
+		A version of the distributed man(7) macro package  
+		that has been modified to include indexing and, thus,
+		pagination.  This macro package should not be used
+		for on-line display of man pages; it should only used
+		to create the printed document.
+
+    index.macros
+		A set of macros that automate indexing of the bindings
+		and functions
+
+    names.make
+        A list of the man3/ and man7/ files used by the Makefile 
+		to generate the document. 
+
+   link_phigs_man.sh
+		A shell program that links the man3/ and man7/ files to the long 
+		function names.
+
+   man2html
+        This is a modified version of the Earl Hood's perl program to convert
+        formatted nroff output (man2html).
+        I've added the capability to read the file phigs.names in order to
+        make the See Also links automagically and to set the html page title.
+
+   phigs.names
+		A list of the PHIGS' names and <pnnn> file names that describe them,
+	    used by man2html to make the 'See Also' links and set the page title.
+
+The Makefile has the following targets:
+
+	task
+        executes the mantohtml and the install tasks
+
+    mantohtml
+        converts the manpages/<pnnn> files into html/<pnnn>.html files
+
+    install
+        executes the linkman tasks and then move man3 man7 and html and copies
+        manpages under the OpenPHIGS docs dir (../../distrib/doc/OpenPHIGS).
+
+    linkman
+        links the manpages/<pnnn> files to man3/* and to man7/* by calling
+        link_phigs_man.sh

@@ -1,0 +1,410 @@
+<HTML>
+<HEAD>
+<LINK REL=STYLESHEET TYPE="text/javascript" HREF="OpenPHIGS.js">
+<TITLE>INTRO PHIGS </TITLE>
+</HEAD>
+<BODY>
+<H1>INTRO PHIGS </H1>
+<HR>
+<PRE>
+<!-- Manpage converted by man2html 3.0.1 -->
+
+<B>NAME</B>
+     intro_phigs - introduction to the PEX-SI graphics library
+
+<B>DESCRIPTION</B>
+     The  PEX-SI  graphics  library  implements  the <I>Programmer's</I>
+     <I>Hierarchical</I> <I>Interactive</I> <I>Graphics</I> <I>System</I>  (PHIGS)  and  por-
+     tions  of  the  proposed PHIGS extension (PHIGS PLUS).  This
+     PHIGS implementation is  designed  specifically  and  exclu-
+     sively  for use with X servers that implement the PEX exten-
+     sion.
+
+     These manual pages describe the syntax of each  function  in
+     the  PEX-SI  graphics  library.  There is one entry for each
+     function.
+
+  <B>Reserved</B> <B>Names</B>
+     PEX-SI applications should avoid using variable and function
+     names  that conflict with names that PEX-SI uses internally.
+     Since PEX-SI programs are linked to the Xlib library, do not
+     use  symbols  that  start with the prefixes reserved by that
+     package, symbols in the Math library, or system calls.   The
+     public symbol names provided by PEX-SI all start with <I>p</I>.  To
+     avoid conflicts with the PEX-SI name space,  do  not  define
+     any of the following symbols:
+          <B>o</B>  PHIGS or PHIGS PLUS C function names
+          <B>o</B>  Names with the prefixes <B>phigs</B>, <B>phg</B>,  <B>P</B>, or <B>p</B>.
+          <B>o</B>  System library symbols, such as <B>time</B>.
+
+  <B>Abbreviations</B>
+     The  following list describes the abbreviations used in this
+     manual.
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B>Abbreviation</B></TD>
+    <TD><PRE CLASS="mini"><B>Name</B></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> ANSI</TD>
+    <TD><PRE CLASS="mini"> American National Standards Institute</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> ASF</TD>
+    <TD><PRE CLASS="mini"> aspect source flag</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> CSS</TD>
+    <TD><PRE CLASS="mini"> Central Structure Store</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> DC</TD>
+    <TD><PRE CLASS="mini"> device coordinates</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> GDP</TD>
+    <TD><PRE CLASS="mini"> generalized drawing primitive</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> GSE</TD>
+    <TD><PRE CLASS="mini"> generalized structure element</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> HLHSR</TD>
+    <TD><PRE CLASS="mini"> hidden line/hidden surface removal</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> ISO</TD>
+    <TD><PRE CLASS="mini"> International Organisation for Standards</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> MC</TD>
+    <TD><PRE CLASS="mini"> modelling coordinates</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> NPC</TD>
+    <TD><PRE CLASS="mini"> normalized projection coordinates</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> NURB</TD>
+    <TD><PRE CLASS="mini"> non-uniform rational B-spline</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> PDT</TD>
+    <TD><PRE CLASS="mini"> PHIGS description table</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> PET</TD>
+    <TD><PRE CLASS="mini"> prompt/echo type</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> RGB</TD>
+    <TD><PRE CLASS="mini"> red/green/blue colour model</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> TLC</TD>
+    <TD><PRE CLASS="mini"> text local coordinates</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> WC</TD>
+    <TD><PRE CLASS="mini"> world coordinates</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> WS</TD>
+    <TD><PRE CLASS="mini"> workstation</TD>
+  </TR>
+</TABLE>
+<PRE>
+     PHIGS has four operating state variables, each with two pos-
+     sible values:
+</PRE>
+<TABLE ALIGN="center"
+ BORDER="1"
+ BORDERCOLOR="#ffffff"
+ CELLSPACING="0"
+ CELLPADDING="2"
+>
+  <TR ALIGN="center">
+    <TD><PRE CLASS="mini"><B> Variable Name </B></TD>
+    <TD><PRE CLASS="mini"><B> Open State <BR> Enumeraion <BR> Constant </B></TD>
+    <TD><PRE CLASS="mini"><B> Closed State <BR> Enumeration <BR> Constant </B></TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> System State</TD>
+    <TD><PRE CLASS="mini"> PHOP</TD>
+    <TD><PRE CLASS="mini"> PHCL</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> Workstation State</TD>
+    <TD><PRE CLASS="mini"> WSOP</TD>
+    <TD><PRE CLASS="mini"> WSCL</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> Structure State</TD>
+    <TD><PRE CLASS="mini"> STOP</TD>
+    <TD><PRE CLASS="mini"> STCL</TD>
+  </TR>
+  <TR>
+    <TD><PRE CLASS="mini"> Archive State</TD>
+    <TD><PRE CLASS="mini"> AROP</TD>
+    <TD><PRE CLASS="mini"> ARCL</TD>
+  </TR>
+</TABLE>
+<PRE>
+     Each  PHIGS  function  requires  that  PHIGS be in a certain
+     operating state before the function can be called.  The <I>SYN-</I>
+     <I>OPSIS</I>  section of each function specifies the required value
+     that each of the four operating state variables must have to
+     call that function.  An asterisk (*) is used when an operat-
+     ing state variable may be in either state (that is, does not
+     matter).  All of the operating state variables are initially
+     set to the closed value.
+
+  <B>Extensions</B> <B>to</B> <B>the</B> <B>PHIGS</B> <B>Standard</B>
+     The PEX-SI library contains the following optional functions
+     that  are  not in the PHIGS specification, but are extremely
+     useful.
+          WORKSTATION TYPE CREATE
+          WORKSTATION TYPE DESTROY
+          WORKSTATION TYPE GET
+          WORKSTATION TYPE SET
+
+  <B>Include</B> <B>Files</B>
+     PEX-SI applications should use the constants and  enumerated
+     values  defined in the PHIGS files to decrease the possibil-
+     ity of passing bad  data  and  avoid  conflict  with  future
+     changes.   C  applications  should include the file <B>phigs.h</B>.
+     See     the     example     programs     in      Xsrc/exten-
+     sions/clients/PEX/demo.
+
+  <B>C</B> <B>Binding</B> <B>Notes</B>
+     The  C  binding used for the PEX-SI graphics library matches
+     the PHIGS C Binding (Draft ISO DIS 9593-4:199x(E), 1  August
+     1990), for the PHIGS standard functions, with several devia-
+     tions.  These deviations either  correct  bugs  in  the  DIS
+     binding or anticipate changes that will be made when the DIS
+     is approved.  The following lists the PEX SI deviations from
+     the DIS binding.
+
+     1.   In  the definition of the data type Pcolr_rep, the name
+          of the Phsv field is <I>hsv</I>, not <I>hlv</I>.
+
+     2.   All Pdouble usage in the DIS binding is Pfloat  in  the
+          PEX-SI binding.
+
+     3.   Everywhere the DIS binding lists the parameter ``Pstore
+          *store'',  PEX-SI  uses  ``Pstore  store''.   In  other
+          words,  the store object is passed directly, and not as
+          a pointer the store object.
+
+     4.   The Pstring_data and Pstring_data3 structures in PEX-SI
+          are  different from those specified in the DIS binding.
+          Pstring_data and Pstring_data3 are defined  as  follows
+          in PEX-SI:
+          typedef struct {
+               Pint buffer_size;/* input buffer size */
+               Pint init_pos; /* initial editing position */
+               union {
+                    Pint unused;
+               } pet_r1;
+          } Pstring_data;
+          typedef   Pstring_dataPstring_data3;
+
+     5.   The following functions do not have the <I>in</I><B>_</B><I>buf</I><B>_</B><I>size</I> and
+          <I>init</I><B>_</B><I>pos</I> parameters listed in the DIS  binding.   Those
+          fields    are   instead   in   the   Pstring_data   (or
+          Pstring_data3) structure passed to these functions:
+          INITIALIZE STRING
+          INITIALIZE STRING 3
+          INQUIRE STRING DEVICE STATE
+          INQUIRE STRING DEVICE STATE 3
+          INQUIRE DEFAULT STRING DEVICE STATE
+          INQUIRE DEFAULT STRING DEVICE STATE 3
+
+     6.   The Pstroke_data and Pstroke_data3 structures in PEX-SI
+          are  different from those specified in the DIS binding.
+          Pstroke_data and Pstroke_data3 are defined  as  follows
+          in PEX-SI:
+          typedef struct {
+               Pint buffer_size;   /* input buffer size */
+               Pint init_pos;      /* initial editing position */
+               Pfloat    x_interval;         /* x interval */
+               Pfloat    y_interval;         /* y interval */
+               Pfloat    time_interval;      /* time interval */
+               union {
+                    struct {
+                         Pint unused;
+                    } pet_r1;
+                    struct {
+                         Pint unused;
+                    } pet_r2;
+                    struct {
+                         Pmarker_attrs       marker_attrs;/* marker attributes */
+                    } pet_r3;
+                    struct {
+                         Pline_attrs         line_attrs;/* line attributes */
+                    } pet_r4;
+               } pets;
+
+          } Pstroke_data;
+          /* Pstroke_data3 -- stroke data record 3 */
+          typedef struct {
+               Pint buffer_size;   /* input buffer size */
+               Pint init_pos;      /* initial editing position */
+               Pfloat    x_interval;         /* x interval */
+               Pfloat    y_interval;         /* y interval */
+               Pfloat    z_interval;         /* z interval */
+               Pfloat    time_interval;      /* time interval */
+               union {
+                    struct {
+                         Pint      unused;
+                    } pet_r1;
+                    struct {
+                         Pint      unused;
+                    } pet_r2;
+                    struct {
+                         Pmarker_attrs       marker_attrs;/* marker attributes*/
+                    } pet_r3;
+                    struct {
+                         Pline_attrs         line_attrs;/* line attributes*/
+                    } pet_r4;
+               } pets;
+          } Pstroke_data3;
+
+     7.   The following functions do not have the <I>in</I><B>_</B><I>buf</I><B>_</B><I>size</I> and
+          <I>init</I><B>_</B><I>pos</I> fields  listed  in  the  DIS  binding.   Those
+          fields are instead in the Pstroke_data or Pstroke_data3
+          structure passed to these functions:
+          INITIALIZE STROKE
+          INITIALIZE STROKE 3
+          INQUIRE STROKE DEVICE STATE
+          INQUIRE STROKE DEVICE STATE 3
+          INQUIRE DEFAULT STROKE DEVICE STATE
+          INQUIRE DEFAULT STROKE DEVICE STATE 3
+
+     8.   The Pval_data and Pval_data3 structures in  PEX-SI  are
+          different  from  those  specified  in  the DIS binding.
+          Pval_data and Pval_data3 are defined as follows in PEX-
+          SI:
+          typedef struct {
+               Pfloat    low; /* low range limit */
+               Pfloat    high;     /* high range limit */
+               union {
+                    struct {
+                         Pint unused;
+                    } pet_r1;
+                    struct {
+                         Pchar     *label;
+                         Pchar     *format;
+                         Pchar     *low_label;
+                         Pchar     *high_label;
+
+                    } pet_u1;
+               } pets;
+          } Pval_data;
+          typedef   Pval_data Pval_data3;
+
+     9.   The  following  functions do not have the <I>low</I><B>_</B><I>value</I> and
+          <I>high</I><B>_</B><I>value</I>  parameters   listed  in  the  DIS  binding.
+          Those   fields   are   instead  in  the  Pval_data  (or
+          Pval_data3) structure passed to these functions.
+          INITIALIZE VALUATOR
+          INITIALIZE VALUATOR 3
+          INQUIRE VALUATOR DEVICE STATE
+          INQUIRE VALUATOR DEVICE STATE 3
+          INQUIRE DEFAULT VALUATOR DEVICE STATE
+          INQUIRE DEFAULT VALUATOR DEVICE STATE 3
+
+     10.  The PEX-SI binding uses ``char *''  instead  of  ``void
+          *''.
+
+     11.  Pedge_attrs.colr_asf   is  Pedge_attrs.colr_ind_asf  in
+          PEX-SI.
+
+     12.  Pline_attrs.colr_asf  is  Pline_attrs.colr_ind_asf   in
+          PEX-SI.
+
+     13.  Pint_attrs.colr_asf  is Pint_attrs.colr_ind_asf in PEX-
+          SI.
+
+     14.  Pmarker_attrs.colr_asf is Pmarker_attrs.colr_ind_asf in
+          PEX-SI.
+
+     15.  In INQUIRE ANNOTATION FACILITIES the last parameter has
+          been replaced with two Pfloat pointers:
+          <B>pinq_anno_facs</B> <B>(</B> <B>type,</B> <B>length,</B> <B>start,</B> <B>error_ind,</B> <B>styles,</B> <B>total_length,</B> <B>num_anno_char_hts,</B>
+                    <B>min_char_ht,</B> <B>max_char_ht</B> <B>)</B>
+          <B>Pwstype</B>   <B>type;</B>            <I>workstation</I> <I>type</I>
+          <B>Pint</B>      <B>length;</B>          <I>length</I> <I>of</I> <I>application</I> <I>list</I>
+          <B>Pint</B>      <B>start;</B>           <I>starting</I> <I>position</I>
+          <B>Pint</B>      <B>*error_ind;</B>      <I>OUT</I> <I>error</I> <I>indicator</I>
+          <B>Pint_list</B> <B>*styles;</B>         <I>OUT</I> <I>list</I> <I>annotation</I> <I>styles</I>
+          <B>Pint</B>      <B>*total_length;</B>   <I>OUT</I> <I>length</I> <I>of</I> <I>list</I> <I>in</I> <I>PHIGS</I>
+          <B>Pint</B>      <B>*num_anno_char_hts;</B><I>OUT</I> <I>number</I> <I>of</I> <I>character</I> <I>heights</I>
+          <B>Pfloat</B>    <B>*min_char_ht;</B>    <I>OUT</I> <I>minimum</I> <I>character</I> <I>height</I>
+          <B>Pfloat</B>    <B>*max_char_ht;</B>    <I>OUT</I> <I>maximum</I> <I>character</I> <I>height</I>
+
+     16.  The    second     parameter     to     the     function
+          pset_pat_ref_point_vec  is "Pvec3  pat_ref_vec[2]", not
+          "Pvec3  *pat_ref_vec[2]".
+
+     17.  The connection  identifier  argument  to  the  function
+          pinq_ws_conn_type is "Pconnid  *conn_id".
+
+     18.  The function identification numbers in the file <I>phigsc-</I>
+          <I>func.h</I> do not all agree with the numbers  specified  in
+          the  DIS C binding.  the transformation utilities (num-
+          bers 90 through 109 in the DIS  binding)  do  not  have
+          identification  numbers  in  PEX-SI because those func-
+          tions never invoke error handling.  See <I>phigscfun.h</I> for
+          the function numbers that PEX-SI assigns.
+
+          The  macro  names used in <I>phigscfunc.h</I> do correspond to
+          those in the DIS binding, but  the  numbers  associated
+          with  each macro may be different.  If your application
+          uses the defined macros, the differences in the identi-
+          fication numbers should not cause any problems.
+
+     A  definition  of  the  binding  is  in the file Xsrc/exten-
+     sions/lib/PEX/c_binding/phigs.c_bind.   This  file  contains
+     stubs  for all of the binding functions and is used to build
+     the lint library.  The data structures are  defined  in  the
+     file Xsrc/extensions/lib/PEX/include/phigs.h.
+
+  <B>Structure</B> <B>Storage</B>
+     The  API  supports  client side and server side CSS.  Client
+     side CSS is used if the connecting server does  not  support
+     structure storage.
+
+  <B>PHIGS</B> <B>Monitor</B> <B>(PM)</B>
+     To  meet  many  of the goals and constraints of PHIGS, PHIGS
+     PLUS, X, and PEX, the PEX-SI graphics library is implemented
+     as  two  processes. One process resides in the client's pro-
+     cess and one resides in a separate process called the  PHIGS
+     Monitor  (PM).  The  PM  processes  window  system and input
+     device events associated with a client's PHIGS workstations,
+     implements the window system event queue, and services event
+     requests and inquiries from the client-side API code. The PM
+     also  contains  the CSS for PHIGS workstations that exist on
+     the client side.
+
+     There is one PHIGS monitor per PHIGS client, and it monitors
+     all  PHIGS  workstations opened by that client regardless of
+     what server each workstation is on.  The PM  process  always
+     runs on the same machine as the client.
+
+<B>SEE</B> <B>ALSO</B>
+          <B><A HREF="p407.html">COLOUR</A></B>
+          <B><A HREF="p408.html">PHIGS DESCRIPTION TABLE</A></B>
+          <B><A HREF="p409.html">PHIGS TRAVERSAL STATE LIST</A></B>
+          <B><A HREF="p410.html">PHIGS WORKSTATION DESCRIPTION TABLE</A></B>
+
+</PRE>
+</BODY>
+</HTML>
