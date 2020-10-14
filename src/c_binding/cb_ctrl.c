@@ -60,6 +60,8 @@ SOFTWARE.
 extern char *getenv();
 #endif
 
+/* TODO: replace the Xrm calls */
+
 /* The global CP handle for the binding. */
 Cp_handle	phg_cur_cph = NULL;
 

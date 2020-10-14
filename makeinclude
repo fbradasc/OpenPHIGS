@@ -82,7 +82,8 @@ X_INCLUDES	= -I/usr/X11R6/include
 INCLUDE		= \
 	-I. \
 	-I$(TOP_SRCDIR)/src/include \
-	-I$(TOP_SRCDIR)/src/include/PEX5 \
+	-I$(TOP_SRCDIR)/src/include/phigs \
+	-I$(TOP_SRCDIR)/src/include/phigs/PEX5 \
 	$(X_INCLUDES) \
 	
 #DEFINES		= \

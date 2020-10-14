@@ -50,7 +50,7 @@ SHELL=/bin/sh
 
 LIB_SUBDIR = \
 	src/archive src/c_binding src/cp src/css src/error src/input src/pex \
-	src/swap src/util src/ws src/ws_type src/include src/doc
+	src/swap src/util src/ws src/ws_type src/include/phigs src/doc
 
 BIN_SUBDIR = \
 	src/phigsmon

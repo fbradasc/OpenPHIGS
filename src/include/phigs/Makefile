@@ -1,5 +1,5 @@
 
-TOP_SRCDIR=../..
+TOP_SRCDIR=../../..
 
 all:includes
 

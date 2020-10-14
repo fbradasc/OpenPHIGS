@@ -51,6 +51,7 @@ SOFTWARE.
 
 #include <stdio.h>
 #include <sys/types.h>
+#include <stdlib.h>
 
 
 typedef struct _Htab_entry {

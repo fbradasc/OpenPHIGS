@@ -51,6 +51,7 @@ SOFTWARE.
 /* Code from the attr package: attr.c, etc. */
 #include <stdio.h>
 #include <sys/types.h>
+#include <stdlib.h>
 #include "attr.h"
 #include <X11/Xfuncs.h>
 #if NeedVarargsPrototypes
@@ -132,7 +133,6 @@ va_list		valist;
 int		*count_ptr;
 {
    unsigned int 	count;
-   extern char	*malloc();
    
 #ifdef NON_PORTABLE
    count = (unsigned int) (LINT_CAST(phg_attr_count((Phg_attr_avlist) valist)));

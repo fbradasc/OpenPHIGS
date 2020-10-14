@@ -59,9 +59,9 @@ SOFTWARE.
  */
 
 static Wst	ws_type_x_tool;
-Pint		phigs_ws_type_x_tool = NULL;
+Pint		phigs_ws_type_x_tool = 0;
 static Wst	ws_type_x_drawable;
-Pint		phigs_ws_type_x_drawable = NULL;
+Pint		phigs_ws_type_x_drawable = 0;
 
 static void phigs_ws_init(void) __attribute__((constructor));
 
