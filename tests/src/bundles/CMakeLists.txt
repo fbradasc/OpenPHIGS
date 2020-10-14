@@ -1,0 +1,4 @@
+ADD_EXECUTABLE(bundles bundles.c)
+
+TARGET_LINK_LIBRARIES(bundles ${PHIGS_LIBRARIES})
+

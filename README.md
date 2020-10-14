@@ -4,6 +4,13 @@ Compile OpenPHIGS with the following commands:
 	make depend
 	make
 
+Or:
+
+        mkdir build
+        cd build
+        cmake ..
+        make
+
 After these you will find the compilation results under distrib :
 
 distrib/

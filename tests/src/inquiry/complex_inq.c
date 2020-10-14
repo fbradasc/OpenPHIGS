@@ -24,3 +24,10 @@ print_ar_files()
 	pdel_store( store );
     }
 }
+
+main()
+{
+    print_ar_files();
+
+    return 0;
+}

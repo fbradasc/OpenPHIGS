@@ -1,0 +1,22 @@
+INCLUDE_DIRECTORIES(
+    ${PHIGS_SOURCE_DIR}/tests/src/common
+)
+
+ADD_SUBDIRECTORY(src/archive)
+ADD_SUBDIRECTORY(src/areas)
+ADD_SUBDIRECTORY(src/bundles)
+ADD_SUBDIRECTORY(src/concepts)
+ADD_SUBDIRECTORY(src/css)
+ADD_SUBDIRECTORY(src/error)
+ADD_SUBDIRECTORY(src/input)
+ADD_SUBDIRECTORY(src/inquiry)
+ADD_SUBDIRECTORY(src/lines)
+ADD_SUBDIRECTORY(src/marker)
+ADD_SUBDIRECTORY(src/modeling)
+ADD_SUBDIRECTORY(src/namesets)
+ADD_SUBDIRECTORY(src/rendering)
+ADD_SUBDIRECTORY(src/text)
+ADD_SUBDIRECTORY(src/viewing)
+ADD_SUBDIRECTORY(src/ws)
+ADD_SUBDIRECTORY(src/xadvanced)
+ADD_SUBDIRECTORY(src/xbasic)

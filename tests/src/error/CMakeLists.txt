@@ -1,0 +1,4 @@
+ADD_EXECUTABLE(error error.c)
+
+TARGET_LINK_LIBRARIES(error ${PHIGS_LIBRARIES})
+
