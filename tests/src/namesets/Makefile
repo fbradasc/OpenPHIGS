@@ -5,6 +5,7 @@ MODULES = map.c
 
 TASKS	= ../../bin/map
 CLEAN	= $(TASKS)
+TESTS_INCLUDES = -I../common
 
 all: $(TASKS)
 

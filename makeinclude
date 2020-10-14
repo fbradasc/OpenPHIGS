@@ -85,6 +85,7 @@ INCLUDE		= \
 	-I$(TOP_SRCDIR)/src/include/phigs \
 	-I$(TOP_SRCDIR)/src/include/phigs/PEX5 \
 	$(X_INCLUDES) \
+	$(TESTS_INCLUDES) \
 	
 #DEFINES		= \
 #	-DNARROWPROTO \
