@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 ##
 ## $XConsortium: link_c_func.sh,v 1.3 94/04/17 20:54:08 hersh Exp $
@@ -24,10 +24,6 @@
 ## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 ## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 ## PERFORMANCE OF THIS SOFTWARE.
-
-env
-
-exit
 
 cd ${1}
 

@@ -21,9 +21,12 @@ IF(CMAKE_HOST_UNIX)
 #            ${DOC_DIR}/manpages
 #    )
 
+    MESSAGE("DESTDIR: ${DESTDIR}")
+    MESSAGE("CMAKE_INSTALL_PREFIX: ${CMAKE_INSTALL_PREFIX}")
+
     INSTALL(CODE
             "EXECUTE_PROCESS( \
-                COMMAND ${CMAKE_SOURCE_DIR}/src/doc/link_phigs_man.sh ${DESTINATION} \
+            COMMAND ${CMAKE_SOURCE_DIR}/src/doc/link_phigs_man.sh \${CMAKE_INSTALL_PREFIX}/${DOC_DIR} \
             )"
     )
 ENDIF(CMAKE_HOST_UNIX)
