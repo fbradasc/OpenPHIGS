@@ -1,4 +1,5 @@
 ADD_SUBDIRECTORY(include/phigs)
+ADD_SUBDIRECTORY(doc)
 
 SET(P_ARCHIVE_SRCS
     archive/ar_conv.c

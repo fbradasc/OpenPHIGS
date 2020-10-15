@@ -4,6 +4,7 @@
 *~
 .*~
 build
+tags
 distrib
 tests/bin/*
 !tests/bin/*.phar

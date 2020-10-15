@@ -12,7 +12,7 @@ project_name = 'op'
 
 -- File And Folder Filters:
 folder_filter_mode = exclude -- { include, exclude }
-folder_filter += CVS,.git
+folder_filter += CVS,.git,build,CMakeCache.txt,distrib
 file_filter +=
 file_ignore_pattern +=
 

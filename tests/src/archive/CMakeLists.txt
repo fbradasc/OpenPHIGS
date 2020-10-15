@@ -11,3 +11,12 @@ INSTALL(TARGETS
         COMPONENT tests
         EXCLUDE_FROM_ALL
 )
+
+INSTALL(FILES
+            shapes.phar
+            simple.phar
+        DESTINATION
+            share/phigs/tests
+        COMPONENT tests
+        EXCLUDE_FROM_ALL
+)
