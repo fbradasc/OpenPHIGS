@@ -14,5 +14,6 @@ INSTALL(TARGETS
             Motif
             Motif_rr
         RUNTIME DESTINATION share/phigs/tests
+        COMPONENT tests
         EXCLUDE_FROM_ALL
 )
