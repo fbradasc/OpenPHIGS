@@ -9,7 +9,12 @@ Or:
         mkdir build
         cd build
         cmake ..
-        make
+        cmake --build . [--clean-first]
+
+Install OpenPHIGS runtime, header files [and tests] with the following commands:
+
+        cd build
+        cmake --install . --prefix ../distrib [--component tests]
 
 After these you will find the compilation results under distrib :
 
@@ -19,6 +24,8 @@ distrib/
 	lib/
 		X11/
 			PEX/
+        share/
+                tests/
 	doc/
 		PEX/
 		OpenGL/

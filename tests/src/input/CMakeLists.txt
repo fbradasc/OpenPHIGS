@@ -7,3 +7,13 @@ TARGET_LINK_LIBRARIES(move ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(movex ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(pick ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(pickx ${PHIGS_LIBRARIES})
+
+INSTALL(TARGETS
+            move
+            movex
+            pick
+            pickx
+        RUNTIME DESTINATION share/phigs/tests
+        COMPONENT tests
+        EXCLUDE_FROM_ALL
+)

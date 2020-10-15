@@ -15,3 +15,17 @@ TARGET_LINK_LIBRARIES(sofas ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(surface ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(surface_trimmed ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(tristrip ${PHIGS_LIBRARIES})
+
+INSTALL(TARGETS
+            fas
+            fasd
+            fillarea
+            quad
+            sofas
+            surface
+            surface_trimmed
+            tristrip
+        RUNTIME DESTINATION share/phigs/tests
+        COMPONENT tests
+        EXCLUDE_FROM_ALL
+)

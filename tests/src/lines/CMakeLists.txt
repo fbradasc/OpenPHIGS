@@ -1,11 +1,19 @@
 ADD_EXECUTABLE(circle circle.c)
-TARGET_LINK_LIBRARIES(circle ${PHIGS_LIBRARIES})
-
 ADD_EXECUTABLE(curves curves.c)
-TARGET_LINK_LIBRARIES(curves ${PHIGS_LIBRARIES})
-
 ADD_EXECUTABLE(plineset plineset.c)
-TARGET_LINK_LIBRARIES(plineset ${PHIGS_LIBRARIES})
-
 ADD_EXECUTABLE(polyline polyline.c)
+
+TARGET_LINK_LIBRARIES(circle ${PHIGS_LIBRARIES})
+TARGET_LINK_LIBRARIES(curves ${PHIGS_LIBRARIES})
+TARGET_LINK_LIBRARIES(plineset ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(polyline ${PHIGS_LIBRARIES})
+
+INSTALL(TARGETS
+            circle
+            curves
+            plineset
+            polyline
+        RUNTIME DESTINATION share/phigs/tests
+        COMPONENT tests
+        EXCLUDE_FROM_ALL
+)

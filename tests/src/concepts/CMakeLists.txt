@@ -13,3 +13,16 @@ TARGET_LINK_LIBRARIES(buttons ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(first ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(houses ${PHIGS_LIBRARIES})
 TARGET_LINK_LIBRARIES(sedit ${PHIGS_LIBRARIES})
+
+INSTALL(TARGETS
+            billions
+            billions_color
+            billions_ind
+            buttons
+            first
+            houses
+            sedit
+        RUNTIME DESTINATION share/phigs/tests
+        COMPONENT tests
+        EXCLUDE_FROM_ALL
+)

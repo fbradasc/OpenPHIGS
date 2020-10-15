@@ -3,6 +3,7 @@
 *.o
 *~
 .*~
+build
 distrib
 tests/bin/*
 !tests/bin/*.phar
