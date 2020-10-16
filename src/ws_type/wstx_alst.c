@@ -52,6 +52,7 @@ SOFTWARE.
 #include <stdio.h>
 #include <sys/types.h>
 #include <stdlib.h>
+#include <X11/Xfuncproto.h>
 #include "attr.h"
 #include <X11/Xfuncs.h>
 #if NeedVarargsPrototypes

@@ -49,7 +49,7 @@ SOFTWARE.
 #ifndef PHG_ATTR_H_INCLUDED
 #define	PHG_ATTR_H_INCLUDED
 
-#include <X11/Xfuncproto.h>
+/* #include <X11/Xfuncproto.h> */
 
 typedef caddr_t *	Phg_attr_avlist;
 typedef unsigned	Phg_attr_attribute;		/* 32 bit quantity */
