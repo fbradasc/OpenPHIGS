@@ -111,7 +111,7 @@ Ignoring function, the specified workstation is not open
 Ignoring function, the specified workstation does not have output capability
 (that is, the workstation category is neither \s-2OUTPUT\s+2,
 \s-2OUTIN\s+2, nor \s-2MO\s+2) 
-.SH  ALSO
+.SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
