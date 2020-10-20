@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p269,v 5.2 94/04/17 20:57:33 rws Exp $
+.\" $XConsortium: p268,v 5.2 94/04/17 20:57:32 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,18 +22,18 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "ROTATE Y" 3P "29 February 1991"
+.TH "ROTATE X" 3P "29 February 1991"
 .SH NAME
-ROTATE Y \- calculate a \s-2\&3D\s+2 transformation matrix to perform a specified
-rotation about the \fIy\fP axis
-.IX "Transformation Matrix" "ROTATE Y"
+ROTATE X \- calculate a \s-2\&3D\s+2 transformation matrix to perform a specified
+rotation about the \fIx\fP axis
+.IX "Transformation Matrix" "ROTATE X"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-protate_y ( angle, error_ind, m)
+protate_x ( angle, error_ind, m)
 Pfloat	angle;	\fIrotation angle\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
 Pmatrix3	m;	\fIOUT transformation matrix\fP
@@ -43,9 +43,9 @@ Pmatrix3	m;	\fIOUT transformation matrix\fP
 (PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2ROTATE Y\s+2 to generate a \s-2\&3D\s+2
-homogeneous (4\ \(mu\ 4) transformation
-matrix that performs a \s-2\&3D\s+2 rotation about the \fIy\fP axis.
+Use \s-2ROTATE X\s+2 to generate a \s-2\&3D\s+2 homogeneous
+(4\ \(mu\ 4) transformation
+matrix that performs a \s-2\&3D\s+2 rotation about the \fIx\fP axis.
 .LP
 The returned matrix may be passed as an argument to
 \s-2SET LOCAL TRANSFORMATION 3\s+2 or \s-2SET GLOBAL TRANSFORMATION 3\s+2
@@ -67,9 +67,9 @@ Pmatrix3 is defined in phigs.h as follows:
 .IP
 typedef  Pfloat  Pmatrix3[4][4];
 .SS Execution
-\s-2ROTATE Y\s+2 returns the \s-2\&3D\s+2 homogeneous
+\s-2ROTATE X\s+2 returns the \s-2\&3D\s+2 homogeneous
 (4\ \(mu\ 4) transformation matrix
-that performs the rotation specified by \fIangle\fP about the \fIy\fP axis.
+that performs the rotation specified by \fIangle\fP about the \fIx\fP axis.
 The rotation is specified in radians and
 is relative to the origin of the current modelling
 coordinate system.

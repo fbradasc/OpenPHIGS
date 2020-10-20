@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p327,v 5.2 94/04/17 20:58:13 rws Exp $
+.\" $XConsortium: p326,v 5.3 94/04/17 20:58:13 hersh Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,111 +22,118 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
-.ds pN SET INTERIOR COLOUR
-.TH "\*(pN" 3P+ "29 February 1991"
+.TH "SET INDIVIDUAL ASF" 3P "29 February 1991"
 .SH NAME
-\*(pN \-
-create structure element to set the interior 
-colour attribute
-.IX "PHIGS Extension Functions" "\*(pN"
-.IX "Colour" "SET INTERIOR COLOUR"
-.IX "Filled Area Interior Attributes" "SET INTERIOR COLOUR"
-.IX "Attributes, Filled Area Interior Attributes" "SET INTERIOR COLOUR"
+SET INDIVIDUAL ASF \- create structure element to set the current
+Aspect Source Flag (\s-2ASF\s+2) 
+for an attribute
+.IX "Aspect Source Flags" "SET INDIVIDUAL ASF"
+.IX "Attributes, Bundled" "SET INDIVIDUAL ASF"
+.IX "Bundled Attributes" "SET INDIVIDUAL ASF"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
-.\" 6. Insert C syntax below
 void
-pset_int_colr ( colour )
-Pgcolr	*colour;	\fIinterior colour\fP
+pset_indiv_asf ( att_id, att_source )
+Paspect	att_id;	\fIattribute identifier\fP
+Pasf	att_source;	\fIattribute source\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET INTERIOR COLOUR\s+2 creates a structure element
-to set the interior 
-colour attribute.
+\s-2SET INDIVIDUAL ASF\s+2 creates a structure element
+containing the Aspect Source Flag (\s-2ASF\s+2) value
+for a specified output primitive attribute.
+The \s-2ASF\s+2 setting for each attribute determines if the
+value used for that attribute is taken from a defined attribute bundle
+(for example, from the polymarker representation selected by the current 
+polymarker index) or from an attribute value defined individually
+(for example, from the current marker type set by 
+\s-2SET MARKER TYPE (3P)\s+2).
 .LP
-When the current interior colour Aspect Source Flag (\s-2ASF\s+2) is set to
-\s-2INDIVIDUAL\s+2,
-the current value of this attribute
-defines the interior colour to be applied to the following output primitives:
-.RS
-.ta 0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i
-.LP
-\(bu
-.SM "FILL AREA"
-.LP
-\(bu
-.SM "FILL AREA 3"
-.LP
-\(bu
-.SM "FILL AREA SET"
-.LP
-\(bu
-.SM "FILL AREA SET 3"
-.LP
-\(bu
-.SM "FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "NON-UNIFORM B-SPLINE SURFACE"
-.LP
-\(bu
-.SM "SET OF FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "QUADRILATERAL MESH 3 WITH DATA"
-.LP
-\(bu
-.SM "TRIANGLE STRIP 3 WITH DATA"
-.ta
-.RE
+If the current edit mode is \s-2INSERT\s+2,
+the structure element created is inserted into the currently open
+structure after the element pointed to by the current element pointer. If
+the edit mode is \s-2REPLACE\s+2, the new \s-2SET INDIVIDUAL ASF\s+2
+element replaces the element pointed to by the element pointer. 
+In either case, the
+element pointer is updated to point to the new element.
 .SS C Input Parameters
-.IP \fIcolour\fP
-Interior colour. Pgcolr is defined as:
-.ta .5i +\w'union  'u +\w'struct  'u +\w'Pfloat      'u +\w'type;    'u +\w'x;      'u
+.IP \fIatt_id\fP
+An enumerated attribute identifier value specifying the attribute
+for which the \s-2ASF\s+2 is to be set.  Possible values are:
+.nf
+.sp
+typedef enum {
+.sp .2
+.ta .5i
+	PASPECT_LINETYPE,
+	PASPECT_LINEWIDTH,
+	PASPECT_LINE_COLR_IND,
+	PASPECT_MARKER_TYPE,
+	PASPECT_MARKER_SIZE,
+	PASPECT_MARKER_COLR_IND,
+	PASPECT_TEXT_FONT,
+	PASPECT_TEXT_PREC,
+	PASPECT_CHAR_EXPAN,
+	PASPECT_CHAR_SPACE,
+	PASPECT_TEXT_COLR_IND,
+	PASPECT_INT_STYLE,
+	PASPECT_INT_STYLE_IND,
+	PASPECT_INT_COLR_IND,
+	PASPECT_EDGE_FLAG,
+	PASPECT_EDGETYPE,
+	PASPECT_EDGEWIDTH,
+	PASPECT_EDGE_COLR_IND,
+	PASPECT_LINE_SHAD_METH,
+	PASPECT_INT_SHAD_METH,
+	PASPECT_REFL_PROPS,
+	PASPECT_INT_REFL_EQN,
+	PASPECT_BACK_INT_STYLE,
+	PASPECT_BACK_INT_STYLE_IND,
+	PASPECT_BACK_INT_COLR,
+	PASPECT_BACK_INT_SHAD_METH,
+	PASPECT_BACK_REFL_PROPS,
+	PASPECT_BACK_INT_REFL_EQN,
+	PASPECT_CURVE_APPROX_CRIT,
+	PASPECT_SURF_APPROX_CRIT
+.sp .2
+} Paspect;
+.fi
+.IP \fIatt_source\fP
+An enumerated \s-2ASF\s+2 value specifying the source that should be
+used for the attribute identifier or \fIatt_id\fP.
+Values defined are:
 .nf
 .sp .4
-typedef struct {
+.ta .5i +\w'BUNDLED,     'u
+typedef enum {
 .sp .2
-	Pint		 type;		/* indirect, RGB, CIE, HSV, HLS */
-	union {
-	   Pint		ind;		/* colour table index */
-	   struct {
-		Pfloat		x;		/* red, hue, etc. */
-		Pfloat		y;		/* green, saturation, lightness, etc. */
-		Pfloat		z;		/* blue, value, saturation, etc. */
-	   } general;
-	} val;
-} Pgcolr;
+	PASF_BUNDLED,
+	PASF_INDIV
+.sp .2
+} Pasf;
 .fi
 .SS Execution
-Depending on the edit mode, a \s-2SET INTERIOR COLOUR\s+2 element 
-is 
-inserted into the open structure after the element pointer or replaces
-the element pointed at by the element pointer. The element pointer
-is then updated to point to this \s-2SET INTERIOR COLOUR\s+2 element.
+When the \s-2SET INDIVIDUAL ASF\s+2 element is encountered during
+traversal, the \s-2ASF\s+2 entry in the traversal state list 
+for the attribute identifier is set to the \s-2ASF\s+2 value.
 .LP
-When the current interior colour \s-2ASF\s+2 is set to
-\s-2INDIVIDUAL\s+2, filled-area output primitives
-that follow in the structure network are filled using
-the current interior colour.
+The current setting of the \s-2ASF\s+2 for an attribute determines whether the
+current value of that attribute is taken from an attribute bundle or from an
+individually specified value set by the appropriate 
+\s-2SET INDIVIDUAL ASF\s+2 attribute function.
 .LP
-When the current interior colour \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the interior colour is taken from the
-workstation extended representation indicated by the current interior index.
-In this case, the interior colour
-set with \s-2SET INTERIOR COLOUR\s+2 has no effect.
-.LP
-The standard \s-2PHIGS\s+2 function \s-2SET INTERIOR COLOUR INDEX\s+2
-is equivalent to calling to \s-2SET INTERIOR COLOUR\s+2 with type
-\s-2INDIRECT\s+2.
+For example, when the current text font \s-2ASF\s+2 is set to
+\s-2INDIVIDUAL\s+2, the value of the current text font (as set by
+\s-2SET TEXT FONT\s+2) is used for text output primitives.
+When the current text font \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
+the text font from the workstation's text representation
+indicated by the current text index is used instead.
 .SH ERRORS
 .IP 005
 Ignoring function, function requires state 
@@ -135,7 +142,15 @@ Ignoring function, function requires state
 .nf
 .IP
 .ta 0.5i
-.SM "COLOUR (7P)"
+.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
+.SM "SET POLYLINE REPRESENTATION (3P)"
+.SM "SET POLYMARKER REPRESENTATION (3P)"
+.SM "SET TEXT REPRESENTATION (3P)"
+.SM "SET INTERIOR REPRESENTATION (3P)"
+.SM "SET EDGE REPRESENTATION (3P)"
+.SM "SET EDGE REPRESENTATION PLUS (3P+)"
 .SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
-.SM "SET INTERIOR COLOUR INDEX (3P)"
+.SM "SET POLYLINE REPRESENTATION PLUS (3P+)"
+.SM "SET POLYMARKER REPRESENTATION PLUS (3P+)"
+.SM "SET TEXT REPRESENTATION PLUS (3P+)"
 .fi

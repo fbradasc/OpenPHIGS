@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p226,v 5.3 94/04/17 20:57:03 hersh Exp $
+.\" $XConsortium: p225,v 5.2 94/04/17 20:57:02 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,87 +22,81 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2INQUIRE WORKSTATION CONNECTION AND TYPE\s+2
-.TH "INQUIRE WORKSTATION CONNECTION AND TYPE" 3P "15 August 1991"
+.TH "INQUIRE WORKSTATION CLASSIFICATION" 3P "29 February 1991"
 .SH NAME
-INQUIRE WORKSTATION CONNECTION AND TYPE\- inquire a workstation's
-connection identifier and type
-.IX "Workstations" "INQUIRE WORKSTATION CONNECTION AND TYPE"
+INQUIRE WORKSTATION CLASSIFICATION \- inquire the classification of a specified workstation type
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_ws_conn_type ( ws, store, error_ind, conn_id, ws_type )
-Pint	ws;	\fIworkstation identifier\fP
-Pstore  store;          \fI handle to Store object \fP 
+pinq_ws_class ( type, error_ind, class )
+Pint	type;	\fIworkstation type\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pconnid *conn_id;	\fIOUT connection identifier\fP
-Pint	*ws_type;	\fIOUT workstation type\fP
+Pws_class	*class;	\fIOUT workstation class\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, WSOP, *, *)
-.
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \*f to inquire the specific workstation type and connection identifier
-associated with a given workstation.  The connection identifier and
-workstation type are associated with a workstation when it is opened.
-At that time a \fIspecific workstation type\fP is created, based on the
-generic type supplied by the caller, and the specific workstation type
-and the user-supplied connection identifier are stored in the workstation's
-state list.
-This function returns that specific workstation type and the connection
-identifier.
-See \s-2OPEN WORKSTATION\s+2 for descriptions of the possible connection
-identifiers and generic workstation types.
+Use \s-2INQUIRE WORKSTATION CLASSIFICATION\s+2 to determine the classification of a specified workstation type.
 .SS C Input Parameters
-.IP \fIws\fP
-The workstation identifier of the workstation in question.
-.IP \fIstring_length\fP
-The size of the buffer (in bytes) pointed to by \fIconnid\fR for
-the connection identifier to be returned in.
+.IP \fItype \fP
+Type of workstation.
 .SS C Output Parameters
 .IP \fIerror_ind\fP
-A pointer to the location to store the error number of any error detected by this function.
-.IP \fIconn_id\fP
-A pointer to a Pconnid (a pointer to the connection identifier).
-.IP \fIws_type\fP
-A pointer to a Pint variable in which to store the workstation type.
-.
+A pointer to the location to store the error number of any error
+detected by this function.
+.IP \fIclass\fP
+A pointer to a Pws_class enumerated variable in which the system returns the 
+workstation class. 
+Values for Pws_class are defined in phigs.h as follows:
+.ta .5i +1.25i
+.nf
+.sp .4
+typedef enum {
+.sp .2
+	PCLASS_VEC,	/* Vector Device */
+	PCLASS_RASTER,	/* Raster Device */
+	PCLASS_OTHER	/* Other Device */
+.sp .2
+} Pws_class;
+.fi
 .SS Execution
-\*f returns the specific workstation type and connection identifier
-associated with the specified workstation.  See \s-2OPEN WORKSTATION\s+2
-for a description of the possible connection identifiers and workstation
-types.
 .LP
-Except in the case mentioned in the \s-2C\s+2 Parameters sections above,
-if an error is detected by this function the \fIerror indicator\fP will
-indicate the error number of the error detected and no other output data
-will be returned.  If no error is detected, the \fIerror indicator\fP will
-be set to zero and the inquired information will be available in the output
-parameters.  Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not
-invoked when an error is detected by this function.
-.
+If the inquired information is available, the error indicator is returned
+as zero and values are returned in the output parameters.
+.LP
+If the inquired information is not available, the values returned in the
+output parameters are undefined and the error indicator is
+set to one of the below error numbers to indicate the reason for
+nonavailability.
+.LP
+Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
+when an error is detected by this function.
 .SH ERRORS
-.IP 003
-Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
-.IP 054
-Ignoring function, the specified workstation is not open
-.IP 2200
-Buffer overflow in input or inquiry function
-.
+.IP 002
+Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
+.IP 052
+Ignoring function, workstation type not recognized by the implementation
+.IP 051
+Ignoring function, this information is not yet available
+for this workstation type; open a workstation of this type
+and use the specific workstation type
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(i.e., the workstation category is neither \s-2OUTPUT\s+2,
+\s-2OUTIN\s+2, nor \s-2MO\s+2) 
+.IP 062
+Ignoring function, this information is not available for this
+\s-2MO\s+2 workstation type
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
 .SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
-.SM "INQUIRE LIST OF AVAILABLE WORKSTATION TYPES (3P)"
-.SM "OPEN WORKSTATION (3P)"
-.SM "WORKSTATION TYPE CREATE (3P)"
-.SM "WORKSTATION TYPE GET (3P)"
-.SM "WORKSTATION TYPE SET (3P)"
+.SM "INQUIRE WORKSTATION CATEGORY (3P)"
+.SM "INQUIRE DISPLAY SPACE SIZE (3P)"
 .fi

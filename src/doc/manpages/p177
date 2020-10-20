@@ -1,5 +1,5 @@
 .\"
-.\" $XConsortium: p177,v 5.5 94/04/17 20:56:29 hersh Exp $
+.\" $XConsortium: p176,v 5.2 94/04/17 20:56:28 rws Exp $
 .\"
 .\" 
 .\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,87 +22,133 @@
 .\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE PHIGS FACILITIES" 3P "26 July 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
+.ds pN INQUIRE PATTERN REPRESENTATION PLUS
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-INQUIRE PHIGS FACILITIES\- inquire the current list of \s-2PHIGS\s+2 facilities defined in the \s-2PHIGS\s+2 description table
+\*(pN \- 
+inquire an extended pattern representation on a workstation
+.IX "Pattern Fill" "INQUIRE PATTERN REPRESENTATION PLUS"
+.IX "Attribute Representations" "INQUIRE PATTERN REPRESENTATION PLUS"
+.IX "Inquiry functions" "INQUIRE PATTERN REPRESENTATION PLUS"
+.IX "PHIGS Extension Functions" "\*(pN"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
-.ta 1.25i 3i
+.ta 1.5i 3i
 .nf
 void
-pinq_phigs_facs ( length, start, error_ind, open_ws, open_ar, num_names, char_sets, length_list, norm_filt, inv_filt )
-Pint	length;	\fIlength of application list\fP
-Pint	start;	\fIstarting position\fP
+pinq_pat_rep_plus (ws, index, type, store, error_ind, rep )
+Pint	ws;	\fIworkstation identifier\fP
+Pint	index;	\fIpattern index\fP
+Pinq_type	type;	\fItype of returned value\fP
+Pstore	store;	\fIOUT pointer to buffer\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pint	*open_ws;	\fIOUT max. num. simultaneously open ws\fP
-Pint	*open_ar;	\fIOUT max. num. simultaneously open archive files\fP
-Pint	*num_names;	\fIOUT number of available names for name sets\fP      
-Pint_list	*char_sets;	\fIOUT list of character sets\fP
-Pint	*length_list;	\fIOUT length of list in PHIGS\fP
-Pint	*norm_filt;	\fIOUT maximum length of norm filter list for ISS\fP
-Pint	*inv_filt;	\fIOUT maximum length of inverted filter list for ISS\fP
+Ppat_rep_plus	**rep;	\fIOUT pattern representation\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, *)
+(PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE PHIGS FACILITIES\s+2 to obtain a list of the available
-\s-2PHIGS\s+2 facilities from the \s-2PHIGS\s+2 description table.
+\s-2INQUIRE PATTERN REPRESENTATION PLUS\s+2 
+inquires an extended pattern representation on a workstation.
 .SS C Input Parameters
-.IP \fIlength\fP
-The number of list elements for which the application has allocated memory
-in the output parameter \fIchar_sets\fR\(->\fIints\fP.
-0 may be specified, in order to have \fIlength_list\fP
-return the total number of elements in the list of character sets.
-.IP \fIstart\fP
-The starting position in the list at which the inquiry is to begin.
+Applications using the \s-2C\s+2 binding must create a buffer to be used by this
+function as memory space for storing data associated with the device state.
+This buffer is passed as the \fIstore\fP argument.  
+.LP
+The store buffer is a data area managed by \s-2PHIGS\s+2. While the application 
+is responsible for creating the inital buffer through a call to \s-2\CREATE STORE\s+2, 
+\s-2PHIGS\s+2 manages this area such that there is sufficient memory for the 
+specific inquiry. The data record within the store buffer is accessed 
+by the pointer pointed to by \fIrep\fR.
+.IP \fIws\fP
+The workstation identifier.
+.IP \fIindex\fP
+The pattern index.
+.IP \fItype\fP
+An enumerated value specifying whether the values to be returned are 
+those originally specified by the application (\s-2PINQ_SET\s+2), or
+those resulting after \s-2PHIGS\s+2 mapped them to ones available on the
+workstation (\s-2PINQ_REALIZED\s+2).  A Pinq_type structure is defined as:
+.nf
+.ta .5i +\w'PINQ_REALIZED     'u
+.sp .4
+typedef enum {
+.sp .2
+	PINQ_SET,
+	PINQ_REALIZED
+.sp .2
+} Pinqtype;
+.fi
+.IP \fIstore\fP
+The memory buffer \s-2PHIGS\s+2 is to use for storing the information
+returned.  This buffer must exist prior to calling this function (see
+\s-2CREATE STORE (3P)\s+2).
 .SS C Output Parameters
 .IP \fIerror_ind\fP
 A pointer to the location to store the error number of any error
 detected by this function.
-.IP \fIopen_ws\fP
-A pointer to an integer that returns the
-\fImaximum number of simultaneously open workstations\fP supported.
-.IP \fIopen_ar\fP
-A pointer to an integer that returns the
-\fImaximum number of simultaneously open archive files\fP supported.
-.IP \fInum_names\fP
-A pointer to an integer that returns the number of available names for name sets.
-.IP \fIchar_sets\fP
-A pointer to a data structure that returns a portion
-of the list of available character sets, starting with
-the \fIstart\fP number item.
-Pint_list is defined in phigs.h as follows:
+.IP \fIrep\fP
+A pointer to a pointer to a Ppat_rep_plus structure which returns the
+specified extended pattern representation.
+Ppat_rep_plus is defined as:
 .nf
-.ta .5i +\w'Pint	'u +\w'num_ints;		'u
-.sp .3
+.ta .5i +\w'Pint_size     'u +\w'*colr_array;     'u
+.sp .4
 typedef struct {
 .sp .2
-	Pint	 num_ints;	/* number of Pints in list */
-	Pint	*ints;	/* list of integers */
+	Pint_size	dims;	/* pattern's dimensions */
+	Pint	type;	/* colour model */
+	Pcoval	*colr_array;	/* array of colours */
 .sp .2
-} Pint_list;
+} Ppat_rep_plus;
 .fi
 .IP
-Prior to calling this function, the \fIints\fR field of the Pint_list
-structure must contain a pointer to an application supplied buffer.
-This buffer must be at least as large as the \fIlength\fR parameter.
-.IP \fIlength_list\fP
-A pointer to an integer that returns the length of the list in \s-2PHIGS\s+2.
-.IP \fInorm_filt\fP
-A pointer to an integer that returns the
-maximum length of the norm filter list for Incremental Spatial Search.
-.IP \fIinv_filt\fP
-A pointer to an integer that returns the
-maximum length of the inverted filter list for Incremental Spatial Search.
+See \s-2SET PATTERN REPRESENTATION PLUS\s+2
+for a full description of the contents of this structure.
+.SS Execution
+.LP
+If the inquired information is available, the error indicator is returned
+as zero and values are returned in the output parameters.
+.LP
+If the specified pattern index is not present in the pattern bundle table
+on the workstation and the specified type of returned value is 
+\fIRealized\fP,
+the representation for pattern index one is returned.
+.LP
+If the inquired information is not available, the values returned in the
+output parameters are undefined and the error indicator is
+set to one of the following error numbers to indicate the reason for
+non-availability.
+.LP
+Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
+when an error is detected by this function.
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state (\s-2PHOP\s+2, *, *, *)
+.IP 003
+Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 059
+Ignoring function, the specified workstation does not have output
+capability (that is, the workstation category is neither \s-2OUTPUT\s+2,
+\s-2OUTIN\s+2, nor \s-2MO\s+2)
+.IP 101
+Ignoring function, the specified representation has not been defined
+.IP 109
+Ignoring function, interior style \s-2PATTERN\s+2 is not supported on
+the workstation
+.IP 112
+Ignoring function, the pattern index value is less than one
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "PHIGS DESCRIPTION TABLE (7P)"
+.SM "SET PATTERN REPRESENTATION PLUS (3P)"
+.SM "INQUIRE PATTERN REPRESENTATION (3P)"
+.\".SM "INQUIRE PATTERN FACILITIES PLUS (3P+)"
+.SM "INQUIRE PREDEFINED PATTERN REPRESENTATION PLUS (3P+)"
+.SM "CREATE STORE (3P)"
+.SM "DELETE STORE (3P)"
 .fi

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p263,v 5.2 94/04/17 20:57:29 rws Exp $
+.\" $XConsortium: p262,v 5.2 94/04/17 20:57:28 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,25 +22,25 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "RETRIEVE PATHS TO DESCENDANTS" 3P "29 February 1991"
+.TH "RETRIEVE PATHS TO ANCESTORS" 3P "29 February 1991"
 .SH NAME
-RETRIEVE PATHS TO DESCENDANTS \- retrieve the descendants of the
-specified structure from an archive file
-.IX "Archive Files" "RETRIEVE PATHS TO DESCENDANTS"
-.IX "Structure Networks" "RETRIEVE PATHS TO DESCENDANTS"
+RETRIEVE PATHS TO ANCESTORS \- retrieve the ancestors of the specified
+structure from an archive file
+.IX "Archive Files" "RETRIEVE PATHS TO ANCESTORS"
+.IX "Structure Networks" "RETRIEVE PATHS TO ANCESTORS"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.5i 3i
 .nf
 void
-pret_paths_descs ( ar_id, struct_id, po, pd, store, paths, status )
+pret_paths_ances ( ar_id, struct_id, po, pd, store, paths, status )
 Pint	ar_id;	\fIarchive identifier\fP
 Pint	struct_id;	\fIstructure identifier\fP
 Ppath_order	po;	\fIpath order\fP
 Pint	pd;	\fIpath depth\fP
-Pstore	store;	\fIhandle to Store object\fP
-Pelem_ref_list_list	**paths;	\fI\s-2OUT\s+2 path list\fP
+Pstore	store;	\fIhandle to store object\fP
+Pelem_ref_list_list	**paths;	\fI\s-2OUT\s+2 structure path list\fP
 Pint	*status;	\fI\s-2OUT\s+2 status of retrieval\fP
 .fi
 .ft R
@@ -48,10 +48,10 @@ Pint	*status;	\fI\s-2OUT\s+2 status of retrieval\fP
 (PHOP, *, *, AROP)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2RETRIEVE PATHS TO DESCENDANTS\s+2 to determine the path or
-paths in the specified archive file that are referenced by the
-specified structure.  It performs the same function in \s-2PEX-SI\s0 
-as \s-2RETRIEVE PATHS TO DESCENDANTS\s+2 does in standard \s-2PHIGS\s+2.
+Use \s-2RETRIEVE PATHS TO ANCESTORS\s+2 to determine the path or paths
+in the specified archive file which reference the specified structure.  
+It performs the same function in \s-2PEX-SI\s0 as 
+\s-2RETRIEVE PATHS TO ANCESTORS\s+2 does in standard \s-2PHIGS\s+2.
 .SS C Input Parameters
 Applications using the \s-2C\s+2 binding must create a buffer to be used by this
 function as memory space for storing data associated with the device state.
@@ -65,7 +65,7 @@ by the pointer pointed to by \fIpaths\fR.
 .IP \fIar_id\fP
 Identifier of the archive file from which to retrieve structure path data.
 .IP \fIstruct_id\fP
-Identifier of the structure whose descendants are to be retrieved.
+Identifier of the structure whose ancestors are to be retrieved.
 .IP \fIpo\fP
 Order in which the path lists are to be returned.
 Valid values defined in phigs.h are:
@@ -75,6 +75,7 @@ Valid values defined in phigs.h are:
 	PORDER_TOP_FIRST
 	PORDER_BOTTOM_FIRST
 .fi
+.sp .2
 .IP \fIpd\fP
 Depth (maximum number of references) of path lists to return.
 .IP \fIstore\fP
@@ -84,7 +85,7 @@ This buffer must exist prior to calling this function (see
 \s-2CREATE STORE (3P)\s+2).
 .SS C Output Parameters
 .IP \fIpaths\fP
-A pointer to a structure, Pelem_ref_list_list,
+A pointer to a structure Pelem_ref_list_list,
 containing a list of the specified structure's structure path lists.
 Pelem_ref_list_list is defined in phigs.h as follows:
 .sp .4
@@ -98,8 +99,7 @@ typedef struct{
 } Pelem_ref_list_list;
 .fi
 .sp
-The \fInum_elem_ref_lists\fP component specifies the number
-of structure path lists,
+The \fInum_elem_ref_lists\fP component specifies the number of structure path lists,
 or execute reference lists.
 .IP
 The \fIelem_ref_lists\fP component is a pointer to 
@@ -117,10 +117,9 @@ typedef struct{
 } Pelem_ref_list;
 .fi
 .sp
-\fIelem_refs\fP is a pointer to a list \fInum_elem_refs\fP long of 
-Pelem_ref structures containing the structure identifier 
-and element number of each execute reference structure element 
-in the execute reference list.  
+\fIelem_refs\fP is a pointer to a list \fInum_elem_refs\fP long of Pelem_ref 
+structures containing the structure identifier and element number of 
+each execute reference structure element in the execute reference list.  
 Pelem_ref is defined in phigs.h as follows:
 .sp .4
 .ta .5i +\w'Pint     'u +\w'elem_pos;     'u
@@ -132,21 +131,21 @@ typedef struct {
 .sp .2
 } Pelem_ref;
 .fi
-.IP \fIstatus\fR
+.IP \fIstatus\fP
 An integer used for returning the success or failure of the routine.
 .SS Execution
-When \s-2RETRIEVE PATHS TO DESCENDANTSS\s+2 is called,
+When \s-2RETRIEVE PATHS TO ANCESTORS\s+2 is called,
 \fIstructure path list\fP is
 filled with list(s) identifying the \s-2EXECUTE STRUCTURE\s+2 structure
-elements that are referenced by \fIstructure identifier\fP,
+elements that refer to \fIstructure identifier\fP,
 in the order of traversal.
 These \s-2EXECUTE STRUCTURE\s+2 structure elements are represented as
-(structure identifier, element position) pairs, giving the parent structure
+(\fIstructure identifier\fP, element position) pairs, giving the parent structure
 identifier and the position of the \s-2EXECUTE STRUCTURE\s+2 structure element.
-The bottom-most element of a structure network, if included in a returned
-path, is indicated by a
-(structure identifier, element position) pair containing the identifier
-of the bottom-most structure and an element position of 0.
+Whenever \fIstructure identifier\fP itself is included at the bottom
+of a returned path of ancestors, it is represented by a
+(\fIstructure identifier\fP, element position) pair
+with an element position of 0.
 \fIpath order\fP and \fIpath depth\fP are used to determine the portion
 of each path returned.
 The number of references returned in each path is specified by
@@ -159,11 +158,10 @@ If a path truncation results in two or more partial paths with the same
 set of element references, only one of the identical path portions is returned.
 .LP
 For example, specifying \fItop first\fP and a depth of 0 returns all
-paths from \fIstructure identifier\fP. Specifying \fItop first\fP
-and a depth of 1 returns each \s-2EXECUTE STRUCTURE\s+2 structure
-element in \fIstructure identifier\fP as a separate path list.
-Specifying \fIbottom first\fP and a depth of
-1 returns all the bottom-most structures of the network.
+paths to \fIstructure identifier\fP. Specifying \fItop first\fP 
+and a depth of 1 returns the root of each structure network that
+references \fIstructure identifier\fP. Specifying \fIbottom first\fP and a depth of
+2 returns all the parents of \fIstructure identifier\fP.
 .SH ERRORS
 .IP 007
 Ignoring function, function requires state 
@@ -181,7 +179,7 @@ Ignoring function, the specified path depth is less than zero
 .SM "SET CONFLICT RESOLUTION (3P)"
 .SM "INQUIRE ALL CONFLICTING STRUCTURES (3P)"
 .SM "INQUIRE CONFLICTING STRUCTURES IN NETWORK (3P)"
-.SM "RETRIEVE PATHS TO ANCESTORS (3P)"
+.SM "RETRIEVE PATHS TO DESCENDANTS (3P)"
 .SM "RETRIEVE STRUCTURE NETWORKS (3P)"
 .SM "DELETE STRUCTURE NETWORKS FROM ARCHIVE (3P)"
 .SM "CREATE STORE (3P)"

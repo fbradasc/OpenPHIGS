@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p229,v 5.2 94/04/17 20:57:05 rws Exp $
+.\" $XConsortium: p228,v 5.2 94/04/17 20:57:04 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,58 +22,94 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE WORKSTATION STATE VALUE" 3P "29 February 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
+.ds pN INQUIRE WORKSTATION STATE TABLE PLUS LENGTHS
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-INQUIRE WORKSTATION STATE VALUE \- inquire state value of workstation
-.IX "Operating States" "INQUIRE WORKSTATION STATE VALUE"
-.IX "Workstations" "INQUIRE WORKSTATION STATE VALUE"
+\*(pN \- 
+inquire the lengths of the extended workstation state tables 
+for a specified workstation type
+.IX "Workstation State Table" "INQUIRE WORKSTATION STATE TABLE PLUS LENGTHS"
+.IX "Inquiry functions" "INQUIRE WORKSTATION STATE TABLE PLUS LENGTHS"
+.IX "PHIGS Extension Functions" "\*(pN"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
-void
-pinq_ws_st ( ws_state )
-Pws_st	*ws_state;	\fIOUT workstation state\fP
+void 
+pinq_ws_st_table_plus ( type, error_ind, lengths )
+Pint	type;	\fIworkstation type\fP
+Pint	*error_ind;	\fIOUT error indicator\fP
+Pws_tables_plus	*lengths;	\fIOUT lengths of the workstation tables\fP
+.fi
 .ft R
 .SS Required PHIGS Operating States
-(*, *, *, *)
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE WORKSTATION STATE VALUE\s+2 to determine the current state
-of the workstation. The state value can be either workstation open
-(\s-2PWS_ST_WSOP\s+2) or workstation closed (\s-2PWS_ST_WSCL\s+2).
-.LP
-This function can be used to verify that
-\s-2OPEN WORKSTATION\s+2
-was successful before performing additional \s-2PHIGS\s+2
-operations on the workstation.
-.LP
+\s-2INQUIRE WORKSTATION STATE TABLE PLUS LENGTHS\s+2
+inquires the lengths of the extended workstation state tables 
+for a specified workstation type.
+.SS C Input Parameters
+.IP \fItype\fP
+The workstation type in question.
 .SS C Output Parameters
-.IP \fIws_state \fP
-A pointer to an enumerated variable in which the current state of the
-workstation is returned.
-Pws_st is defined in phigs.h as follows:
+.IP \fIerror_ind\fP
+A pointer to the location to store the error number of any error
+detected by this function.
+.IP \fIlengths\fP
+A pointer to a Pws_tables_plus structure which returns the
+lengths of the workstation's tables.
+Pws_tables_plus is defined in phigs.h as follows:
 .nf
-.ta .5i +\w'PWS_ST_WSOP     'u
+.ta .5i +.5i +1i
 .sp .4
-typedef enum {
+typedef struct {
 .sp .2
-	PWS_ST_WSCL,	/* Workstation Closed */
-	PWS_ST_WSOP	/* Workstation Open */
+	Pint	line_bundles;	/* polyline tables */
+	Pint	mark_bundles;	/* polymarker tables */
+	Pint	text_bundles;	/* text tables */
+	Pint	int_bundles;	/* interior tables */
+	Pint	edge_bundles;	/* edge tables */
+	Pint	pat_reps;	/* pattern tables */
+	Pint	colr_reps;	/* colour tables */
+	Pint	view_reps;	/* view tables */
+	Pint	dcue_rep;	/* depth cue tables */
+	Pint	light_src_rep;	/* light source tables */
+	Pint	colr_map_rep;	/* colour mapping tables */
 .sp .2
-} Pws_st;
-.sp .4
+} Pws_tables_plus;
 .fi
+.SS Execution
+.LP
+If the inquired information is available, the error indicator is returned
+as zero and values are returned in the output parameters.
+.LP
+If the inquired information is not available, the values returned in the
+output parameters are undefined and the error indicator is
+set to one of the below error numbers to indicate the reason for
+nonavailability.
+.LP
+Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
+when an error is detected by this function.
 .SH ERRORS
-.IP 
-No Error
+.IP 002
+Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
+.IP 051
+Ignoring function, this information unavailable for this workstation type
+.IP 052
+Ignoring function, workstation type not recognized by the implementation
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(i.e. the workstation category is neither \s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
+.IP 062
+Ignoring function, this information is not available for this
+\s-2MO\s+2 workstation type
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE SET OF OPEN WORKSTATIONS (3P)"
-.SM "OPEN WORKSTATION (3P)"
-.SM "CLOSE WORKSTATION (3P)"
-.SM "INQUIRE SYSTEM STATE VALUE (3P)"
+.SM "INQUIRE WORKSTATION STATE TABLE LENGTHS (3P)"
+.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
 .fi

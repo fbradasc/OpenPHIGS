@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p381,v 5.2 94/04/17 20:58:54 rws Exp $
+.\" $XConsortium: p380,v 5.2 94/04/17 20:58:53 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,114 +22,87 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET TEXT PRECISION" 3P "29 February 1991"
+.TH "SET TEXT PATH" 3P "29 February 1991"
 .SH NAME
-SET TEXT PRECISION \- create a structure element to set the current text precision attribute
-.IX "Aspect Source Flags" "SET TEXT PRECISION"
-.IX "Text Attributes" "SET TEXT PRECISION"
-.IX "Attributes, Text Attributes" "SET TEXT PRECISION"
+SET TEXT PATH \- create a structure element to set the \fIcurrent text path\fP
+attribute
+.IX "Text Attributes" "SET TEXT PATH"
+.IX "Attributes, Text Attributes" "SET TEXT PATH"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_text_prec ( precision )
-Ptext_prec	precision;	\fItext precision\fP
+pset_text_path ( path )
+Ptext_path	path;	\fItext path\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET TEXT PRECISION\s+2 creates a structure element
-containing a value for the current text precision attribute,
-which controls how closely the text must be drawn in
-relation to the font definition and the applicable text attributes.
-.LP
-When the current text precision Aspect Source Flag (\s-2ASF\s+2) is set to
-\s-2INDIVIDUAL\s+2, this attribute
-defines the text precision applied to the output primitives:
+\s-2SET TEXT PATH\s+2 creates a structure element
+containing a value for the text path attribute,
+which controls the direction in which the string is written 
+relative to the \fIcharacter up\fR and \fIcharacter base\fR vectors.  
+This attribute applies to the following output primitives:  
 .RS
-.ta 0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i
-.LP
-\(bu
-.SM "TEXT"
 .LP
 \(bu 
+.SM TEXT
+.LP
+\(bu
 .SM "TEXT 3"
-.LP
-\(bu
-.SM "ANNOTATION TEXT RELATIVE"
-.LP
-\(bu
-.SM "ANNOTATION TEXT RELATIVE 3"
-.ta
 .RE
+.LP
+If the current edit mode is \s-2INSERT\s+2, 
+a \s-2SET TEXT PATH\s+2 element is inserted into the currently open
+structure after the element pointed to by the current element pointer.  
+If the edit mode is \s-2REPLACE\s+2, the new \s-2SET TEXT PATH\s+2 
+element replaces the element pointed to by the element pointer.  
+In either case, the
+element pointer is updated to point to the new element.  
 .SS C Input Parameter
-.IP \fIprecision\fP
-The text precision is an enumerated type with one of the following values:
-.sp
-.ta .5i +\w'PPREC_STRING     'u
+.IP \fIpath\fP
+The text path is one of the following enumerated values:
+.sp .2
+.ta .5i +\w'PPATH_DOWN 'u
 .nf
-PPREC_STRING	\fIString Precision\fP
-PPREC_CHAR	\fICharacter Precision\fP
-PPREC_STROKE	\fIStroke Precision\fP
-.sp
+	PPATH_RIGHT	   \fIRight\fP
+	PPATH_LEFT	   \fILeft\fP
+	PPATH_UP	   \fIUp\fP
+	PPATH_DOWN	   \fIDown\fP
+.sp .2
 .fi
 .SS Execution
-If the current edit mode is \s-2INSERT\s+2, 
-a \s-2SET TEXT PRECISION\s+2 element is inserted into the currently open
-structure after the element pointed to by the current element pointer. If
-the edit mode is \s-2REPLACE\s+2, the new
-\s-2SET TEXT PRECISION\s+2 element
-replaces the element pointed to by the element pointer. In either case, the
-element pointer is updated to point to the new element.
+When the \s-2SET TEXT PATH\s+2 element is traversed, the current text path
+entry in the traversal state list is set to text path.  
+The text path determines the direction of displacement between
+one character and the next in a string, defined in relation to the
+\fIcharacter up\fR and \fIcharacter base\fR vectors.  
 .LP
-When the \s-2SET TEXT PRECISION\s+2 element is traversed,
-the current text precision
-entry in the traversal state list is set to text precision.
+If text path is set to \fIRight\fP, then the text string is written
+along a base line in the direction of the \s-2CHARACTER BASE VECTOR\s+2.  
+If text path is set to \fILeft\fP, then the text string is written
+along a base line in the direction opposite to the \s-2CHARACTER BASE
+VECTOR\s+2.  
+If text path is set to \fIUp\fP, then the text string is written in
+the direction of the \s-2CHARACTER UP VECTOR\s+2.  
+If text path is set to \fIDown\fP, the text string is written in
+the direction opposite to the \s-2CHARACTER UP VECTOR\s+2.  
 .LP
-When the current text precision \s-2ASF\s+2 is set to
-\s-2INDIVIDUAL\s+2, the text output primitives that follow in
-the structure network are then drawn with the precision specified.
-.LP
-The text precision attribute allows the tradeoff of quality and performance
-for text primitives.
-.IP \fIStroke\fP
-Stroke precision
-demands adherence to all
-text attributes. Clipping must be performed on portions of
-characters, but need not involve vector strokes.
-Stroke precision provides the highest quality available.
-.IP \fICharacter\fP
-Character precision allows the implementation to
-clip on a character-by-character basis. If any portion of a character
-is outside the clipping limits, the entire character can be clipped.
-.IP \fIString\fP
-String precision allows the implementation to ignore the
-\fIcharacter up\fR and \fIcharacter base\fR vectors, text path, text alignment, and
-character spacing, and permits clipping in an implementation-dependent way.
-.LP
-The default text font is 1.
-The default text precision is \fIString\fP precision.
-The default is used when the font selected is
-not available in the selected precision on the workstation.
-.LP
-When the current text precision \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the text precision is taken from the
-workstation's representation indicated by the current text index.
-In this case, the text precision set with \s-2SET TEXT
-PRECISION\s+2 has no effect.
+\fBNote:\fP  Text path controls only the direction in which the string
+is written.  The position of the string in relation to the text position
+point is controlled by the text alignment.  
 .SH ERRORS
 .IP 005
-Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET TEXT FONT (3P)"
-.SM "SET INDIVIDUAL ASF (3P)"
-.SM "SET TEXT REPRESENTATION (3P)"
-.SM "SET TEXT REPRESENTATION PLUS (3P+)"
+.SM "SET TEXT ALIGNMENT (3P)"
+.SM "SET CHARACTER UP VECTOR (3P)"
 .fi

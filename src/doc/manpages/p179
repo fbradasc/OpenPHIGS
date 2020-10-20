@@ -1,5 +1,5 @@
 .\"
-.\" $XConsortium: p179,v 5.4 94/04/17 20:56:30 hersh Exp $
+.\" $XConsortium: p178,v 5.4 94/04/17 20:56:29 hersh Exp $
 .\"
 .\" 
 .\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,19 +22,20 @@
 .\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2INQUIRE PICK DEVICE STATE 3\s+2
-.TH "INQUIRE PICK DEVICE STATE 3" 3P "16 August 1991"
+.ds f \s-2INQUIRE PICK DEVICE STATE\s+2
+.TH "INQUIRE PICK DEVICE STATE" 3P "16 August 1991"
 .SH NAME
-INQUIRE PICK DEVICE STATE 3 \- inquire state of a pick device
-.IX "Pick Input Devices" "INQUIRE PICK DEVICE STATE 3"
+INQUIRE PICK DEVICE STATE \- inquire state of a pick device
+.IX "Pick Input Devices" "INQUIRE PICK DEVICE STATE"
+.IX "Detectability" "INQUIRE PICK DEVICE STATE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_pick_st3 ( ws, dev, type, store, err, op_mode, echo_switch, filter, init_status, init_pick, 
-    prompt_echo, echo_vol,  path_data, pick_order )
+pinq_pick_st ( ws, dev, type, store, err, op_mode, echo_switch, filter, init_status,
+	init_pick, prompt_echo, echo_area, path_data, pick_order )
 Pint	ws;	\fIworkstation identifier\fP
 Pint	dev;	\fIpick device number\fP
 Pinq_type	type;	\fItype of returned value\fP
@@ -46,8 +47,8 @@ Pfilter	**filter;	\fIOUT pick filter\fP
 Pin_status	*init_status;	\fIOUT initial pick status\fP
 Ppick_path	**init_pick;	\fIOUT initial pick path\fP
 Pint	*prompt_echo;	\fIOUT prompt/echo type\fP
-Plimit3	*echo_vol;	\fIOUT echo  area\fP
-Ppick_data3	**pick_data;	\fIOUT data record\fP
+Plimit	*echo_area;	\fIOUT echo area\fP
+Ppick_data	**pick_data;	\fIOUT data record\fP
 Ppath_order	*path_order;	\fIOUT path order\fP
 .fi
 .ft R
@@ -99,7 +100,6 @@ This buffer must exist prior to calling this function (see
 The error indicator.  See the \fIExecution\fP section below for a
 description of its use.  See the \fIErrors\fP section below for the
 possible values it may return.
-.bp
 .IP \fIop_mode\fP
 The operating mode. Pop_mode is an enumerated type with the following values:
 .sp .2
@@ -141,19 +141,22 @@ typedef struct {
 .sp .2
 } Pint_list;
 .fi
+.IP
+The \fInum_ints\fR component specifies the number of elements in the list.
+The \fIints\fR component is a pointer to a list \fInum_ints\fR long.
 .IP \fIinit_status\fP
 A pointer to the initial pick status.
-Pin_status is an enumerated type with the following values:
-.sp .4
-.nf
-.ta .5i
-typedef enum {
-.sp .2
-	PIN_STATUS_NONE,
-	PIN_STATUS_OK,
-	PIN_STATUS_NO_IN
-.sp .2
-} Pin_status;
+Pin_status is an enumerated type with the following values: 
+.sp .4 
+.nf 
+.ta .5i 
+typedef enum { 
+.sp .2 
+	PIN_STATUS_NONE, 
+	PIN_STATUS_OK, 
+	PIN_STATUS_NO_IN 
+.sp .2 
+} Pin_status; 
 .fi
 .IP \fIinit_pick\fP
 A pointer to the initial pick path.
@@ -184,31 +187,28 @@ typedef struct {
 The prompt/echo type desired.
 See the \fIAvailable Devices\fP Section of \s-2INITIALIZE PICK\s+2
 for a description of the available types.
-.IP \fIecho_vol\fP
-A pointer to a Plimit3 structure defining the
-\fIx\fP, \fIy\fP, and \fIz\fP
-components of the echo volume, in Device Coordinates.
-Plimit3 is defined in phigs.h as follows:
+.IP \fIecho_area\fP
+A pointer to a variable of type Plimit that contains the echo area of
+the device. Plimit is defined in phigs.h as follows:
 .sp .4
-.ta .5i +1i  +1i
 .nf
+.ta .5i  +1i  +1i   
+.sp .2
 typedef struct {
 .sp .2
-	Pfloat	x_min;	/* minimum x coordinate value */
-	Pfloat	x_max;	/* maximum x coordinate value */
-	Pfloat	y_min;	/* minimum y coordinate value */
-	Pfloat	y_max;	/* maximum y coordinate value */
-	Pfloat	z_min;	/* minimum z coordinate value */
-	Pfloat	z_max;	/* maximum z coordinate value */
+	Pfloat	x_min;	/* x min */
+	Pfloat	x_max;	/* x max */
+	Pfloat	y_min;	/* y min */
+	Pfloat	y_max;	/* y max */
 .sp .2
-} Plimit3;
+} Plimit;
 .fi
 .IP \fIpick_data\fP
-Pointer to a pointer that points to the pick device state within the store.
-Pick_data3 is defined in phigs.h as follows:
+Pointer to a pointer that points to the pick device state within store.
+Ppick_data is defined in phigs.h as follows:
 .nf
 .ta .5i +.5i +.5i
-.sp .4
+.sp .2
 typedef struct {
 .sp .2
       union {
@@ -217,14 +217,13 @@ typedef struct {
 	} pet_r1;
       } pets;
 .sp .2
-} Ppick_data3;
+} Ppick_data;
+.sp .2
 .fi
 .IP \fIpath_order\fP
-A pointer to the path order.
-Ppath_order is an enumerated type with the following values:
+Pointer to the path order. Ppath_order is an enumerated type with the following values:
 .nf
 .ta .5i
-.sp .4
 typedef enum {
 .sp .2
 	PORDER_TOP_FIRST,
@@ -237,11 +236,11 @@ typedef enum {
 specified pick device, which is stored in the workstation
 state list of the workstation associated with the device.  The
 current state includes the operating mode, echo switch, initial pick,
-prompt/echo type, echo volume, pick path order, data record, and pick filter.
+prompt/echo type, echo area, pick path order, data record, and detectability filter.
 See \s-2SET PICK MODE\s+2 for a description of the operating mode and the
 echo switch, and how to set these values.
-See \s-2INITIALIZE PICK 3\s+2 for a description of the initial pick,
-prompt/echo type, echo volume, pick path order, and data record contents,
+See \s-2INITIALIZE PICK\s+2 for a description of the initial pick,
+prompt/echo type, echo area, pick path order, and data record contents,
 and how to set these values.
 See \s-2SET PICK FILTER\s+2 for a description of the pick filter and how to
 set it.
@@ -266,10 +265,10 @@ on the specified workstation
 .nf
 .IP
 .ta 0.5i
-.SM "INITIALIZE PICK 3 (3P)"
+.SM "INITIALIZE PICK (3P)"
 .SM "SET PICK MODE (3P)"
 .SM "SET PICK FILTER (3P)"
-.SM "INQUIRE PICK DEVICE STATE (3P)"
+.SM "INQUIRE PICK DEVICE STATE 3 (3P)"
 .SM "CREATE STORE (3P)"
 .SM "DELETE STORE (3P)"
 .fi

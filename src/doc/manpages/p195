@@ -1,5 +1,5 @@
 .\"
-.\" $XConsortium: p195,v 5.2 94/04/17 20:56:40 rws Exp $
+.\" $XConsortium: p194,v 5.2 94/04/17 20:56:40 rws Exp $
 .\"
 .\" 
 .\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,195 +22,211 @@
 .\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" PERFORMANCE OF THIS SOFTWARE.
-.\" 1. Substitute PHIGS+ function name (in CAPS) for "PNAME" in line below:
-.ds pN INQUIRE PREDEFINED LIGHT SOURCE REPRESENTATION
-.TH "\*(pN" 3P+ "29 February 1991"
+.TH "INQUIRE PREDEFINED INTERIOR REPRESENTATION PLUS" 3P+ "29 February 1991"
 .SH NAME
-\*(pN \-
-inquire a predefined light source representation 
-.IX "Inquiry functions" "INQUIRE PREDEFINED LIGHT SOURCE REPRESENTATION"
-.IX "PHIGS Extension Functions" "\*(pN"
+INQUIRE PREDEFINED INTERIOR REPRESENTATION PLUS \- inquire the values of 
+a predefined extended interior representation for a specified
+workstation type
+.IX "Inquiry functions" "INQUIRE PREDEFINED INTERIOR REPRESENTATION PLUS"
+.IX "PHIGS Extension Functions" "INQUIRE PREDEFINED INTERIOR REPRESENTATION PLUS"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
-.ta 1.5i 3i
+.ta 1.25i 3i
 .nf
-.\" 6. Insert C syntax below
-void
-pinq_pred_light_src_rep ( type, index, error_ind, bundle )
+pinq_pred_int_rep_plus ( type, index, error_ind, bundle )
 Pint	type;	\fIworkstation type\fP
-Pint	index;	\fIpredefined index\fP
+Pint	index;	\fIinterior index\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Plight_src_bundle	*bundle;	\fIOUT predefined light source rep\fP
+Pint_bundle_plus	*bundle;	\fIOUT predefined interior rep\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-.LP
-\s-2INQUIRE PREDEFINED LIGHT SOURCE REPRESENTATION\s+2 
-returns the attribute values of a specified predefined entry in the light
-source bundle table of a workstation type's workstation description table.
-See \s-2SET LIGHT SOURCE REPRESENTATION\s+2 for a full description of the
-contents of the bundle table entry and a description of the extended light
-source bundle table.
+\s-2INQUIRE PREDEFINED INTERIOR REPRESENTATION PLUS\s+2
+returns the attribute values of a specified predefined entry in the
+extended interior bundle table of a workstation type's workstation
+description table.  See \s-2SET INTERIOR REPRESENTATION PLUS\s+2 for a
+full description of the contents of the bundle table entry and a
+description of the extended interior bundle table.
 .SS C Input Parameters
-.IP \fItype\fR
+.IP \fItype\fP
 The workstation type.
-.IP \fIindex\fR
+.IP \fIindex\fP
 Index of the predefined entry to be returned.
 .SS C Output Parameters
-.IP \fIerror_ind\fR
-A pointer to the location to store the error number
-of any error detected by this function.
-.IP \fIbundle\fR
-A pointer to the location in which to return the light source
-representation. The Plight_src_bundle data structure
-contains values needed to define the specified type of light source
-representation. Plight_src_bundle is defined as:
+.IP "\fIerror_ind\fP"
+A pointer to the location for storing the error number of any error 
+this function detects.  
+.IP \fIbundle\fP
+A pointer to a Pint_bundle_plus structure in which the system returns the
+specified predefined extended interior representation.  
+Pint_bundle_plus is defined as:  
 .nf
-.ta .5i +\w'Plight_src_rec     'u +\w'type;     'u
+.ta .5i +1.25i  +1.25i   +1.25i
 .sp .4
 typedef struct {
 .sp .2
-	Pint	type;	/* light source type */
-	Plight_src_rec	rec;	/* light source data record */
+	Pint_style	style;	/* interior style */
+	Pint	style_ind;	/* interior style index */
+	Pgcolr	colr;	/* interior colour */
+	Pint	refl_eqn;	/* reflectance equation */
+	Pint	shad_meth;	/* shading method */
+	Prefl_props	refl_props;	/* area properties */
+	Pint_style	back_style;	/* interior style */
+	Pint	back_style_ind;	/* interior style index */
+	Pgcolr	back_colr;	/* interior colour */
+	Pint	back_refl_eqn;	/* back reflectance equation */
+	Pint	back_shad_meth;	/* back shading method */
+	Prefl_props	back_refl_props;	/* back area properties */
+	Pint	approx_type;	/* approximation method */
+	Pfloat	approx_val[2];	/* approximation values, u and v */
 .sp .2
-} Plight_src_bundle;
+} Pint_bundle_plus;
 .IP
 .fi
-Plight_src_rec is defined as:
+.bp
+Pint_style is defined as:  
+.ta .5i
 .nf
-.ta .5i +1.5i   +1i
 .sp .4
-typedef union {
+typedef enum {
 .sp .2
-	Pamb_light_src_rec	ambient;
-	Pdir_light_src_rec	directional;
-	Ppos_light_src_rec	positional;
-	Pspot_light_src_rec	spot;
+	PSTYLE_HOLLOW,
+	PSTYLE_SOLID,
+	PSTYLE_PAT,
+	PSTYLE_HATCH,
+	PSTYLE_EMPTY
 .sp .2
-} Plight_src_rec;
-.IP
-.fi
-Pamb_light_src_rec is defined as:
-.nf
-.ta .5i +\w'Pgcolr     'u +\w'colr;     'u
-.sp .4
-typedef struct {
-.sp .2
-	Pgcolr	colr;	/* light source colour */
-.sp .2
-} Pamb_light_src_rec;
+} Pint_style;
 .fi
 .IP
-Pdir_light_src_rec is defined as:
-.nf
-.ta .5i +\w'Pgcolr     'u +\w'colr;     'u
-.sp .4
-typedef struct {
-.sp .2
-	Pgcolr	colr;	/* light source colour */
-	Pvec3	dir;	/* light source direction */
-.sp .2
-} Pdir_light_src_rec;
-.fi
+See \s-2SET INTERIOR STYLE\s+2 for a description of each style.
 .IP
-Ppos_light_src_rec is defined as:
-.nf
-.ta .5i +\w'Ppoint3     'u +\w'coef[2];     'u
-.sp .4
-typedef struct {
-.sp .2
-	Pgcolr	colr;	/* light source colour */
-	Ppoint3	pos;	/* light source position */
- 	Pfloat	coef[2];	/* attenuation coefficients */
-.sp .2
-} Ppos_light_src_rec;
 .fi
-.IP
-Pspot_light_src_rec is defined as:
-.nf
-.ta .5i +\w'Ppoint3     'u +\w'coef[2];     'u
-.sp .4
-typedef struct {
-.sp .2
-	Pgcolr	colr;	/* light source colour */
-	Ppoint3	pos;	/* light source position */
-	Pvec3	dir;	/* light source direction */
-	Pfloat	exp;	/* concentration exponent */
-	Pfloat	coef[2];	/* attenuation coefficients */
-	Pfloat	angle;	/* spread angle */
-.sp .2
-} Pspot_light_src_rec;
-.fi
-.IP
 Pgcolr is defined as:
-.ta .5i +1.5i   +1i  +2i
+.ta .5i +.5i +.5i +.5i +.5i
 .nf
 .sp .4
 typedef struct {
 .sp .2
 	Pint	type;	/* indirect, RGB, CIE, HSV, HLS */
 	union {
-	     Pint	ind;	/* index in workstation colour bundle table */
-	     struct {
-	          Pfloat	x;	/* red, hue, etc. */
-	          Pfloat	y;	/* green, saturation, lightness, etc. */
-	          Pfloat	z;	/* blue, value, saturation, etc. */
-	     } general;
+		Pint	ind;	/* index in workstation colour bundle table */
+		struct {
+			Pfloat	x;	/* red, hue, etc. */
+			Pfloat	y;	/* green, saturation, lightness, etc. */
+			Pfloat	z;	/* blue, value, saturation, etc. */
+		} general;
 	} val;
 } Pgcolr;
+.sp .4
 .fi
 .IP
-Pvec3 is defined as:
-.sp .2
+Constants defined for colour type are:
+.sp
 .nf
-.ta .5i +\w'Pfloat     'u +\w'delta_x;     'u
-.sp .2
-typedef struct {	
-.sp .2
-	Pfloat	delta_x;	/* x magnitude */
-	Pfloat	delta_y;	/* y magnitude */
-	Pfloat	delta_z;	/* z magnitude */
-.sp .2
-} Pvec3;
+.ta .5i +\w'0     'u +\w'PMODEL_CIELUV      'u
+0	PINDIRECT	\fIIndirect\fP
+1	PMODEL_RGB	\fIRed, Green, Blue\fP
+2	PMODEL_CIELUV	\fICIE\fP
+3	PMODEL_HSV	\fIHue, Saturation, Value\fP
+4	PMODEL_HLS	\fIHue, Lightness, Saturation\fP
 .fi
+.sp
+The index member of the \fIval\fR union is used for 
+type \s-2PINDIRECT\s+2.  The general member is used for the other types.  
 .IP
-.fi
-Ppoint3 is defined as: 
-.sp .2
+Prefl_props is defined as:
 .nf
-.ta .5i +\w'Pfloat     'u +\w'x;     'u
-.sp .2
+.ta .5i +\w'Pfloat     'u +\w'specular_colr;     'u
+.sp .4
 typedef struct {
 .sp .2
-	Pfloat	x;	/* x coordinate */
-	Pfloat	y;	/* y coordinate */
-	Pfloat	z;	/* z coordinate */
+	Pfloat	ambient_coef;	/* ambient reflectance coefficient */
+	Pfloat	diffuse_coef;	/* diffuse reflectance coefficient */
+	Pfloat	specular_coef;	/* specular reflectance coefficient */
+	Pgcolr	specular_colr;	/* specular colour */
+	Pfloat	specular_exp;	/* specular exponent */
+	Pfloat	transpar_coef;	/* transparency coefficient */
 .sp .2
-} Ppoint3;
+} Prefl_props;
 .fi
+.sp
+The values for ambient, diffuse, specular,
+and transparency coefficients must all be in the range [0,1].  
+The specular exponent must be greater than zero.  
+.sp
+.fi
+.bp
+Defined reflectance equation values are:  
+.sp
+.nf
+.ta .5i +\w'0     'u +\w'PREFL_AMB_DIFF_SPEC     'u
+1	PREFL_NONE	\fINo Reflectance Calculation Performed\fP
+2	PREFL_AMBIENT	\fIUse Ambient Term\fP
+3	PREFL_AMB_DIFF	\fIUse Ambient and Diffuse Terms\fP
+4	PREFL_AMB_DIFF_SPEC	\fIUse Ambient, Diffuse, and Specular Terms\fP
+.fi
+.sp
+Defined constants for interior shading method are:  
+.sp
+.nf
+.ta .5i +\w'0     'u +\w'PSD_DOT_PRODUCT     'u
+1	PSD_NONE	\fINo Shading\fP
+2	PSD_COLOUR	\fIColour Interpolation Shading\fP
+3	PSD_DOT_PRODUCT	\fIDot Product Interpolation Shading\fP
+4	PSD_NORMAL	\fINormal Interpolation Shading\fP
+.fi
+.sp
+Constants defined for surface approximation type are:  
+.sp
+.nf
+.ta .5i
+1	PSURF_WS_DEP
+2	PSURF_CONSTANT_PARAMETRIC_BETWEEN_KNOTS
+3	PSURF_CHORDAL_SIZE_WC
+4	PSURF_CHORDAL_SIZE_NPC
+5	PSURF_CHORDAL_SIZE_DC
+6	PSURF_PLANAR_DEVIATION_WC  
+7	PSURF_PLANAR_DEVIATION_NPC  
+8	PSURF_PLANAR_DEVIATION_DC
+.fi
+.sp
+See \s-2SET SURFACE APPROXIMATION CRITERIA\s+2
+for a description of the meaning of these constants. 
 .SS Execution
+.LP
 If the inquired information is available, the error indicator is returned
-as zero and values are returned in the output parameters.
+as zero, and information is returned in the output parameters.
 .LP
-See \s-2SET LIGHT SOURCE REPRESENTATION\s+2 for the defined data record
-formats that may be returned in the data record parameter.
+If the inquired information is not available, the values returned in the
+output parameters are undefined, and the error indicator is
+set to one of the error numbers given below to indicate the reason for
+nonavailability.  
 .LP
-If the inquired information is not available, the values returned in
-the output parameters are undefined and the error
-indicator is set to one of the following error numbers to indicate
-the reason for nonavailability.
+The extended interior bundle table contains bundled entries of the
+\s-2PHIGS\s+2 and \s-2PHIGS PLUS\s+2 interior attributes.  
+During traversal, the attribute values of these
+bundles are used when the corresponding aspect source flag in the 
+workstation state list is set to \s-2BUNDLED\s+2.  
+.LP
+The \s-2PHIGS\s+2
+interior bundle table is a portion of the extended table.  The function 
+\s-2INQUIRE PREDEFINED INTERIOR REPRESENTATION\s+2
+returns the following attributes from the extended table:  
+interior style, interior style index, and colour index.  
 .LP
 Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
-when an error is detected by this function.
+when an error is detected by this function.  
 .SH ERRORS
 .IP 002
-Ignoring function, function requires state (\s-2PHOP,*,*,*\s+2)
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2*\s+2, \s-2*\s+2)
 .IP 051
-Ignoring function, this information unavailable for this workstation type
+Ignoring function, the information unavailable for this workstation type
 .IP 052
 Ignoring function, workstation type not recognized by the implementation
 .IP 059 
@@ -219,18 +235,17 @@ Ignoring function, the specified workstation does not have output capability
 .IP 062
 Ignoring function, this information is not available for this
 \s-2MO\s+2 workstation type
+.IP 100
+Ignoring function, the bundle index value is less than one
 .IP 102
-Ignoring function, specified representation has not been predefined on
-this workstation
-.IP 614
-Ignoring function, the general interior index is less than one
+Ignoring function, the specified representation has not been predefined
+on this workstation
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET LIGHT SOURCE REPRESENTATION (3P+)"
-.SM "SET LIGHT SOURCE STATE (3P+)"
-.SM "INQUIRE LIST OF LIGHT SOURCE INDICES (3P+)"
-.SM "INQUIRE LIGHT SOURCE REPRESENTATION (3P+)"
-.SM "INQUIRE LIGHT SOURCE FACILITIES (3P+)"
+.SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
+.SM "INQUIRE INTERIOR REPRESENTATION PLUS (3P+)"
+.SM "INQUIRE INTERIOR FACILITIES PLUS (3P+)"
+.SM "INQUIRE PREDEFINED INTERIOR REPRESENTATION (3P)"
 .fi

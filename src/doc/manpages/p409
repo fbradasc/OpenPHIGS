@@ -1,293 +1,96 @@
-.\"##
-.\" $XConsortium: p409,v 5.2 94/04/17 20:59:14 rws Exp $
-.\"##
-.\"## 
-.\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
-.\"## 
-.\"##                         All Rights Reserved
-.\"## 
-.\"## Permission to use, copy, modify, and distribute this software and its 
-.\"## documentation for any purpose and without fee is hereby granted, 
-.\"## provided that the above copyright notice appear in all copies and that
-.\"## both that copyright notice and this permission notice appear in 
-.\"## supporting documentation, and that the name of Sun Microsystems,
-.\"## not be used in advertising or publicity 
-.\"## pertaining to distribution of the software without specific, written 
-.\"## prior permission.  
-.\"## 
-.\"## SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
-.\"## INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-.\"## EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-.\"## CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-.\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-.\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-.\"## PERFORMANCE OF THIS SOFTWARE.
+.\" ##
+.\" $XConsortium: p408,v 5.2 94/04/17 20:59:13 rws Exp $
+.\" ##
+.\" ## 
+.\" ## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
+.\" ## 
+.\" ##                         All Rights Reserved
+.\" ## 
+.\" ## Permission to use, copy, modify, and distribute this software and its 
+.\" ## documentation for any purpose and without fee is hereby granted, 
+.\" ## provided that the above copyright notice appear in all copies and that
+.\" ## both that copyright notice and this permission notice appear in 
+.\" ## supporting documentation, and that the names of Sun Microsystems
+.\" ## and the X Consortium not be used in advertising or publicity 
+.\" ## pertaining to distribution of the software without specific, written 
+.\" ## prior permission.  
+.\" ## 
+.\" ## SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
+.\" ## INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+.\" ## EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+.\" ## CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+.\" ## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+.\" ## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+.\" ## PERFORMANCE OF THIS SOFTWARE.
 .\" t
-.TH "PHIGS TRAVERSAL STATE LIST" 7P "29 February 1991"
+.TH "PHIGS DESCRIPTION TABLE" 7P "29 February 1991"
 .SH NAME
-PHIGS TRAVERSAL STATE LIST \- contains all transient information
-\s-2PEX-SI\s+2 uses
-during traversal
-.IX "PHIGS TRAVERSAL STATE LIST"
-.IX "TRAVERSAL STATE LIST"
+PHIGS DESCRIPTION TABLE \- contains information describing the 
+static capabilities of \s-2PEX-SI\s+2
+.IX "PHIGS DESCRIPTION TABLE"
+.IX "DESCRIPTION TABLE"
 .SH DESCRIPTION
 .LP
-The \s-2PHIGS\s+2 Traversal State List is created whenever a traversal is initiated,
-and only exists during the traversal.
-Hence, its values cannot be inquired.
-Traversal is the execution of a structure network.
-Traversal begins with a structure posted to a workstation.
-Structure elements are traversed sequentially.
-The traversal state list is modified by executing attribute elements. 
+The \s-2PHIGS\s+2 Description Table is created when \s-2PHIGS\s+2 is opened
+and exists until \s-2PHIGS\s+2 is closed.  The \s-2PHIGS\s+2 standard
+includes the default values for the pipeline context in the logical 
+\s-2PHIGS\s+2 Description Table.  
 .LP
-The initial values in the traversal state list are either 
-defined by the \s-2PHIGS\s+2 standard, or are implementation
-dependent.
-These values are inherited by a posted structure.
-Whenever an \s-2EXECUTE STRUCTURE\s+2 element is traversed,
-the executed structure, or \fIchild\fP structure,
-.I inherits
-the attributes of the \fIparent\fP structure; that is, 
-the structure invoking (executing or referencing) it.
-Different parent structures can assign different attribute values.
+The remaining values are limits and capabilities. These may be inquired.
 .LP
-The
-.I child
-structure's attributes are then modified by attribute elements as they
-are sequentially executed.
-The child structure may also execute
-subordinate structures, at which point the calling structure is considered
-the parent of this generation.
-At the end of the child structure (i.e.,
-after its last element), traversal returns to the parent structure,
-restoring the saved state of the parent structure, and continues until the end of the
-parent structure.
-This continues until the entire structure network is
-traversed (i.e., until traversal of the posted structure is complete).
-The modifications to the child's structure do not affect the
-parent structure's attributes.
-Traversal state list values may be said to
-.I expire
-at the end of the structure in which they are set,
-as traversal of the parent structure resumes.
-.\".LP
-.\"A called subroutine can use local variables with the same names as
-.\"in the calling routine, and the values in the calling routine
-.\"will not be affected. Similarly, an executed structure cannot
-.\"affect its caller's attributes.
-.LP
-The values in the traversal state list are
-.I bound
-to primitives as the primitive elements are sequentially executed.
-.SS Data Type Abbreviations
+\fIKey to Data Type Abbreviations\fR
 .nf
-.ta +.5i +2i +.75i
-I	Integer	GCOLR	General Colour	
-R	Real	V2/V3	2D/3D Vector
-E	Enumeration Type	P3	3D Point
-L(type)	List of values of a given type	SET(NM)	Set of Eligible Names
-MCV	Modelling Clipping Volume	(nys)	Not Yet Supported	
+.ta .5i +2i +.75i
+I	Integer	W	Workstation Type
+E	Enumeration Type	L(type)	List of Values of a Given Type
 .fi
-.SS \s-2PEX-SI\s+2 Traversal State List
+.LP
+\fIKey Denoting the Source of Information\fR
+.IP API
+determined by API, hardcoded
+.IP ETI
+determined by server, API queries with Get Enumerated Type Information
+.IP IDC
+determined by server,API queries with Get Implementation-Dependent Constants
+
+.SS	PHIGS Description Table
+.SS ""
+.hw WORK-STATION
 .TS
 box,tab(@);
 cb | cb | cb
-l l l.
-Traversal State List Entry@Data Type@Default or Initial Value
+l c l.
+Description Table Entry@Data Type@Initial Value
 _
-polyline index@I@1
-linetype@I@1
-linewidth scale factor@R@1.0
-polyline colour index@I@1
-polyline colour@GCOLR@(INDIRECT,1)
-linetype ASF@E@INDIVIDUAL
-linewidth scale factor ASF@E@INDIVIDUAL
-polyline colour index ASF@E@INDIVIDUAL
+number of available workstation types@I@2
+list of available workstation types@L(W)@see Table 1
+max number of simultaneously open workstations@I@API(20)
+max number of simultaneously open archive files@I@API(25)
+number of available names for name sets@I@IDC
+available character sets@I@API(1,ASCII)
+max length of normal filter list for ISS@I@IDC
+max length of inverted filter list for ISS@I@IDC
  @ @
-polyline shading method@I@1 (NONE)
-curve approximation criteria type@I@1 (Workstation Dependent)
-curve approximation criteria value@R@1.0
-polyline shading method ASF@E@INDIVIDUAL
-curve approximation criteria ASF@E@INDIVIDUAL
+available generalized structure elements@I@ETI
+ @ @
+max number of distinct planes in modelling clip volumes@I@IDC
+number of available modelling clip operators@I@ETI
 .TE
-.LP
-.FS
- This is a \fI\s-2PHIGS\s+2 Extension\fP based on \s-2PHIGS PLUS\s+2
- and is not a part of the \s-2PHIGS\s+2 standard.
-.FE
-.bp
-.SS \s-2PHIGS\s+2 Traversal State List (continued)
+
+.SS	"Table 1 \(em  Workstation Type and Category"
 .TS
 box,tab(@);
-cb | cb | cb
-l l l.
-Traversal State List Entry@Data Type@Default or Initial Value
+cb | cb 
+l l. 
+Type@Category
 _
-polymarker index@I@1
-marker type@I@3
-marker size scale factor@R@1.0
-polymarker colour index@I@1
-polymarker colour@GCOLR@(INDIRECT,1)
-marker type ASF@E@INDIVIDUAL
-marker scale factor ASF@E@INDIVIDUAL
-polymarker colour index ASF@E@INDIVIDUAL
-@ @
-text index@I@1
-text font@I@T{
-1 (Monospaced Roman Simplex)
-T}
-text precision@E@STRING
-character expansion factor@R@1.0
-character spacing@R@0.0
-text colour index@I@1
-text colour@GCOLR@(INDIRECT,1)
-text font ASF@E@INDIVIDUAL
-text precision ASF@E@INDIVIDUAL
-character expansion factor ASF@E@INDIVIDUAL
-character spacing ASF@E@INDIVIDUAL
-text colour index ASF@E@INDIVIDUAL
-@ @
-character height@R@0.01
-character up vector@V2@(0.0,1.0)
-character width@R@0.01
-character base vector@V2@(1.0,0.0)
-text path@E@RIGHT
-text alignment (horz & vert)@2\(muE@(NORMAL,NORMAL)
-@ @
-annotation text character height@R@0.01
-annotation text character up vector@V2@(0.0,1.0)
-annotation text character width@R@0.01
-annotation text character base vector@V2@(1.0,0.0)
-annotation text path@E@RIGHT
-annotation text alignment (horz & vert)@2\(muE@(NORMAL,NORMAL)
-annotation style@I@1 (unconnected)
-@ @
+x_tool@OUTIN
+x_drawable@OUTIN
 .TE
-.LP
-.FS
- This is a \fI\s-2PHIGS\s+2 Extension\fP based on \s-2PHIGS PLUS\s+2
- and is not a part of the \s-2PHIGS\s+2 standard.
-.FE
-.br
-.bp
-.SS \s-2PHIGS\s+2 Traversal State List (continued)
-.TS
-box,tab(@);
-cb | cb | cb
-l l l.
-Traversal State List Entry@Data Type@Default or Initial Value
-_
-interior index@I@1
-interior style@E@HOLLOW
-back interior style@E@HOLLOW
-interior style index@I@1
-back interior style index@I@1
-interior colour index@I@1
-interior colour@GCOLR@(INDIRECT,1)
-back interior colour@GCOLR@(INDIRECT,1)
-interior style ASF@E@INDIVIDUAL
-back interior style ASF@E@INDIVIDUAL
-interior style index ASF@E@INDIVIDUAL
-back interior style index ASF@E@INDIVIDUAL
-interior colour index ASF@E@INDIVIDUAL
-back interior colour ASF@E@INDIVIDUAL
- @ @
-ambient reflection coefficient@R@1.0
-back ambient reflection coefficient@R@1.0
-diffuse reflection coefficient@R@1.0
-back diffuse reflection coefficient@R@1.0
-specular reflection coefficient@R@1.0
-back specular reflection coefficient@R@1.0
-specular colour@GCOLR@(INDIRECT,1)
-back specular colour@GCOLR@(INDIRECT,1)
-specular exponent@R@0.0
-back specular exponent@R@0.0
-interior shading method@I@1 (NONE)
-back interior shading method@I@1 (NONE)
-interior reflectance equation@I@1 (NONE)
-back interior reflectance equation@I@1 (NONE)
-area properties ASF@E@INDIVIDUAL
-back area properties ASF@E@INDIVIDUAL
-interior shading method ASF@E@INDIVIDUAL
-back interior shading method ASF@E@INDIVIDUAL
-interior reflectance equation ASF@E@INDIVIDUAL
-back interior reflectance equation ASF@E@INDIVIDUAL
- @ @
-surface approximation criteria type@I@1 (Workstation Dependent)
-surface approximation criteria value@2\(muR@(1.0,1.0)
-surface approximation criteria ASF@E@INDIVIDUAL
- @ @
-face distinguishing mode@E@NO
-face culling mode@E@NONE
-.TE
-.LP
-.FS
- This is a \fI\s-2PHIGS\s+2 Extension\fP based on \s-2PHIGS PLUS\s+2
- and is not a part of the \s-2PHIGS\s+2 standard.
-.FE
-.bp
-.SS \s-2PHIGS\s+2 Traversal State List (continued)
-.TS
-box,tab(@);
-cb | cb | cb
-l l l.
-Traversal State List Entry@Data Type@Default or Initial Value
-_
-depth cue index@I@0
- @ @
-colour mapping index@I@0
-rendering colour model@I@0
-light source state@L(I)@empty
- @ @
-edge index@I@1
-edge flag@E@OFF
-edgetype@I@1
-edgewidth scale factor@R@1.0
-edge colour index@I@1
-edge colour@GCOLR@(INDIRECT,1)
-edge flag ASF@E@INDIVIDUAL
-edgetype ASF@E@INDIVIDUAL
-edgewidth scale factor ASF@E@INDIVIDUAL
-edge colour index ASF@E@INDIVIDUAL
- @ @
-pattern size@2\(muR@(1.0,1.0)
-pattern reference point@P3@(0.0,0.0,0.0)
-pattern reference vectors@2\(muV3@(1.0,0.0,0.0) (0.0,1.0,0.0)
- @ @
-pick identifier@I@0
-view index@I@0
-HLHSR identifier@I@0
-name set@SET(NM)@no classes (empty set)
-global modelling transformation@4\(mu4\(muR@Identity
-local modelling transformation@4\(mu4\(muR@Identity
-modelling clipping volume@MCV@all of WC
-modelling clipping indicator@E@NOCLIP
-.TE
-.LP
-.FS
- This is a \fI\s-2PHIGS\s+2 Extension\fP based on \s-2PHIGS PLUS\s+2
- and is not a part of the \s-2PHIGS\s+2 standard.
-.FE
-.br
-.LP
-.FS
- This is a \fI\s-2PHIGS\s+2-specific\fP item of traversal state. 
- See the appropriate \s-2GSE\s+2 man page.
-.FE
-.br
-.LP
-.FS
- * Zero is workstation dependent.
-.FE
+
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "PHIGS DESCRIPTION TABLE (7P)"
-.SM "EXECUTE STRUCTURE (3P)"
-.SM "INQUIRE ANCESTORS OF STRUCTURE (3P)"
-.SM "INQUIRE DESCENDANTS OF STRUCTURE (3P)"
-.SM "ELEMENT SEARCH (3P)"
+.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
 .fi
-
-

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p214,v 5.3 94/04/17 20:56:55 hersh Exp $
+.\" $XConsortium: p213,v 5.2 94/04/17 20:56:54 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,54 +22,50 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE STRUCTURE STATUS" 3P "29 February 1991"
+.TH "INQUIRE STRUCTURE STATE VALUE" 3P "29 February 1991"
 .SH NAME
-INQUIRE STRUCTURE STATUS \- inquire the status of a specified structure
-.IX "Structures" "INQUIRE STRUCTURE STATUS"
+INQUIRE STRUCTURE STATE VALUE \- inquire current structure state value
+.IX "Operating States" "INQUIRE STRUCTURE STATE VALUE"
+.IX "Structures" "INQUIRE STRUCTURE STATE VALUE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_struct_status ( struct_id, error_ind, status )
-Pint	struct_id;	\fIstructure identifier\fP
-Pint	*error_ind;	\fIOUT error indicator\fP
-Pstruct_status	*struct;	\fIOUT existence status\fP
+pinq_struct_st ( struct_state )
+Pstruct_st	*struct_state;	\fIOUT structure state\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, *)
+(*, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE STRUCTURE STATUS\s+2 to determine the existence status
-of the specified structure (\s-2NON_EXISTENT\s+2, \s-2EMPTY\s+2,
-or \s-2NOTEMPTY\s+2).
-.SS C Input Parameters
-.IP \fIstruct_id\fP
-Identifier of the structure for which the status is to be returned.
+Use \s-2INQUIRE STRUCTURE STATE VALUE\s+2 to determine the current
+structure state.  The state value may be ``structure open'' (\s-2STOP\s+2),
+or ``structure closed'' (\s-2STCL\s+2).
+.LP
 .SS C Output Parameters
-.IP \fIerror_ind\fP
-A pointer to the location to store the error number of any error
-detected by this function.
-.IP \fIstruct\fP
-A pointer to a Pstruct_status enumerated variable in which the system returns the existence status of the specified structure.
-Values for Pstruct_status are defined in phigs.h as follows:
+.IP \fIstruct_state \fP
+A pointer to a Pstruct_st enumerated variable in which the current structure 
+state value is returned.
+Values for Pstruct_st are defined in phigs.h as follows:
 .nf
-.ta .5i
+.ta .3i +\w'PSTRUCT_ST_STOP  'u
 .sp
-	PSTRUCT_STATUS_NON_EXISTENT
-	PSTRUCT_STATUS_EMPTY
-	PSTRUCT_STATUS_NOT_EMPTY
+	\s-2PSTRUCT_ST_STCL\s+2	(structure closed)
+	\s-2PSTRUCT_ST_STOP\s+2	(structure open)
 .fi
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
+.IP 
+No Error
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "DELETE STRUCTURE (3P)"
-.SM "EMPTY STRUCTURE (3P)"
+.SM "OPEN STRUCTURE (3P)"
+.SM "CLOSE STRUCTURE (3P)"
+.SM "INQUIRE OPEN STRUCTURE (3P)"
 .SM "INQUIRE STRUCTURE IDENTIFIERS (3P)"
+.SM "INQUIRE STRUCTURE STATUS (3P)"
 .fi

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p225,v 5.2 94/04/17 20:57:02 rws Exp $
+.\" $XConsortium: p224,v 5.2 94/04/17 20:57:02 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,47 +22,52 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE WORKSTATION CLASSIFICATION" 3P "29 February 1991"
+.TH "INQUIRE WORKSTATION CATEGORY" 3P "29 February 1991"
 .SH NAME
-INQUIRE WORKSTATION CLASSIFICATION \- inquire the classification of a specified workstation type
+INQUIRE WORKSTATION CATEGORY \- inquire the category of a specified workstation type
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_ws_class ( type, error_ind, class )
+pinq_ws_cat ( type, error_ind, category )
 Pint	type;	\fIworkstation type\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pws_class	*class;	\fIOUT workstation class\fP
+Pws_cat	*category;	\fIOUT workstation category\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, *, *)
+.
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE WORKSTATION CLASSIFICATION\s+2 to determine the classification of a specified workstation type.
+Use \s-2INQUIRE WORKSTATION CATEGORY\s+2 to determine the category of a specified workstation type.
+.
 .SS C Input Parameters
 .IP \fItype \fP
 Type of workstation.
+.
 .SS C Output Parameters
 .IP \fIerror_ind\fP
 A pointer to the location to store the error number of any error
 detected by this function.
-.IP \fIclass\fP
-A pointer to a Pws_class enumerated variable in which the system returns the 
-workstation class. 
-Values for Pws_class are defined in phigs.h as follows:
+.IP \fIcategory\fP
+A pointer to a Pws_cat enumerated variable, in which the 
+workstation category is returned.
+Values for Pws_cat are defined in phigs.h as follows:
 .ta .5i +1.25i
 .nf
 .sp .4
 typedef enum {
 .sp .2
-	PCLASS_VEC,	/* Vector Device */
-	PCLASS_RASTER,	/* Raster Device */
-	PCLASS_OTHER	/* Other Device */
+	PCAT_OUT,	/* Output Only */
+	PCAT_IN,	/* Input Only */
+	PCAT_OUTIN,	/* Output and Input */
+	PCAT_MO,	/* Metafile Output */
+	PCAT_MI	/* Metafile Input */
 .sp .2
-} Pws_class;
+} Pws_cat;
 .fi
 .SS Execution
 .LP
@@ -85,18 +90,12 @@ Ignoring function, workstation type not recognized by the implementation
 Ignoring function, this information is not yet available
 for this workstation type; open a workstation of this type
 and use the specific workstation type
-.IP 059
-Ignoring function, the specified workstation does not have output capability
-(i.e., the workstation category is neither \s-2OUTPUT\s+2,
-\s-2OUTIN\s+2, nor \s-2MO\s+2) 
-.IP 062
-Ignoring function, this information is not available for this
-\s-2MO\s+2 workstation type
+.
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
 .SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
-.SM "INQUIRE WORKSTATION CATEGORY (3P)"
-.SM "INQUIRE DISPLAY SPACE SIZE (3P)"
+.SM "OPEN WORKSTATION (3P)"
+.SM "INQUIRE WORKSTATION CLASSIFICATION (3P)"
 .fi

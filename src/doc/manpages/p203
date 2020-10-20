@@ -1,71 +1,64 @@
-.\"
-.\" $XConsortium: p203,v 5.2 94/04/17 20:56:47 rws Exp $
-.\"
-.\" 
-.\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
-.\" 
-.\"                         All Rights Reserved
-.\" 
-.\" Permission to use, copy, modify, and distribute this software and its 
-.\" documentation for any purpose and without fee is hereby granted, 
-.\" provided that the above copyright notice appear in all copies and that
-.\" both that copyright notice and this permission notice appear in 
-.\" supporting documentation, and that the names of Sun Microsystems,
-.\" and the X Consortium not be used in advertising or publicity 
-.\" pertaining to distribution of the software without specific, written 
-.\" prior permission.  
-.\" 
-.\" SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
-.\" INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-.\" EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-.\" CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-.\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-.\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-.\" PERFORMANCE OF THIS SOFTWARE.
-.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
-.ds pN INQUIRE PREDEFINED TEXT REPRESENTATION PLUS
-.TH "\*(pN" 3P+ "29 February 1991"
+.\"##
+.\" $XConsortium: p202,v 5.2 94/04/17 20:56:47 rws Exp $
+.\"##
+.\"## 
+.\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
+.\"## 
+.\"##                         All Rights Reserved
+.\"## 
+.\"## Permission to use, copy, modify, and distribute this software and its 
+.\"## documentation for any purpose and without fee is hereby granted, 
+.\"## provided that the above copyright notice appear in all copies and that
+.\"## both that copyright notice and this permission notice appear in 
+.\"## supporting documentation, and that the name of Sun Microsystems,
+.\"## not be used in advertising or publicity 
+.\"## pertaining to distribution of the software without specific, written 
+.\"## prior permission.  
+.\"## 
+.\"## SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
+.\"## INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+.\"## EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+.\"## CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+.\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+.\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+.\"## PERFORMANCE OF THIS SOFTWARE.
+.TH "INQUIRE PREDEFINED TEXT REPRESENTATION" 3P "29 February 1991"
 .SH NAME
-\*(pN \- 
-inquire a predefined extended text representation for a specified workstation type
-.IX "Inquiry functions" "INQUIRE PREDEFINED TEXT REPRESENTATION PLUS"
-.IX "PHIGS Extension Functions" "\*(pN"
+INQUIRE PREDEFINED TEXT REPRESENTATION \- inquire a predefined text representation for a workstation type
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_pred_text_rep_plus (type, index, error_ind, bundle)
+pinq_pred_text_rep ( type, index, error_ind, bundle )
 Pint	type;	\fIworkstation type\fP
 Pint	index;	\fIpredefined index\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Ptext_bundle_plus	*bundle;	\fIOUT predefined text rep\fP
+Ptext_bundle	*bundle;	\fIOUT predefined text rep\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, *, *)
+.
 .SH DESCRIPTION
 .SS Purpose
-\s-2INQUIRE PREDEFINED TEXT REPRESENTATION PLUS\s+2 
-returns the attribute values of a specified predefined entry in the
-extended text bundle table of a workstation type's workstation description
-table.  See \s-2SET TEXT REPRESENTATION PLUS\s+2 for a full description of the
-contents of the bundle table entry and a description of the extended text bundle
-table.
+Use \s-2INQUIRE PREDEFINED TEXT REPRESENTATION\s+2 to determine
+the predefined text representation for a specified workstation type
+at a given text index.
+.
 .SS C Input Parameters
-.IP \fItype\fP
-The workstation type.
-.IP \fIindex\fP
-Index of the predefined entry to be returned.
+.IP \fItype \fP
+Type of workstation.
+.IP \fIindex \fP
+Entry to be returned from the workstation table of predefined text representations.
+.
 .SS C Output Parameters
 .IP \fIerror_ind\fP
-A pointer to the location to store the error number
-of any error detected by this function.
+A pointer to the location to store the error number of any error
+detected by this function.
 .IP \fIbundle\fP
-A pointer to a Ptext_bundle_plus structure that returns the
-specified extended text representation.
-Ptext_bundle_plus is defined as:
+A pointer to a Ptext_bundle structure, in which the system returns the text representation at \fIindex\fP in the workstation table of predefined text representations. Ptext_bundle is defined in phigs.h as:
 .nf
 .ta .5i +\w'Ptext_prec     'u +\w'char_expan;     'u
 .sp .4
@@ -75,13 +68,24 @@ typedef struct {
 	Ptext_prec	prec;	/* text precision */
 	Pfloat	char_expan;	/* character expansion factor */
 	Pfloat	char_space;	/* character spacing */
-	Pgcolr	colr;	/* text colour */
+	Pint	colr_ind;	/* text colour index */
 .sp .2
-} Ptext_bundle_plus;
+} Ptext_bundle; 
+.sp .4
 .fi
 .IP
-See \s-2SET TEXT REPRESENTATION PLUS\s+2 for a full description
-of the contents of this structure.
+Ptext_prec is defined in phigs.h as:
+.sp .4
+.ta .5i +\w'PPREC_STRING,     'u +\w'character precision     'u
+.nf
+typedef enum {
+.sp .2
+	PPREC_STRING,	/* string precision */
+	PPREC_CHAR,	/* character precision */
+	PPREC_STROKE	/* stroke precision */
+.sp .2
+} Ptext_prec;
+.fi
 .SS Execution
 .LP
 If the inquired information is available, the error indicator is returned
@@ -89,21 +93,25 @@ as zero and values are returned in the output parameters.
 .LP
 If the inquired information is not available, the values returned in the
 output parameters are undefined and the error indicator is
-set to one of the following error numbers to indicate the reason for
+set to one of the below error numbers to indicate the reason for
 nonavailability.
 .LP
 Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
 when an error is detected by this function.
 .SH ERRORS
 .IP 002
-Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2*\s+2, \s-2*\s+2)
 .IP 051
-Ignoring function, this information unavailable for this workstation type
+Ignoring function, this information is not yet available
+for this workstation type; open a workstation of this type
+and use the specific workstation type
 .IP 052
 Ignoring function, workstation type not recognized by the implementation
-.IP 059 
-Ignoring function, the specified workstation does not have output capability
-(i.e., the workstation category is neither \s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
+.IP 059
+Ignoring function, the specified workstation does not have
+output capability (in other words, the workstation category is neither 
+\s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
 .IP 062
 Ignoring function, this information is not available for this
 \s-2MO\s+2 workstation type
@@ -116,7 +124,8 @@ on this workstation
 .nf
 .IP
 .ta 0.5i
-.SM "SET TEXT REPRESENTATION PLUS (3P+)"
-.SM "INQUIRE TEXT REPRESENTATION PLUS (3P+)"
-.SM "INQUIRE PREDEFINED TEXT REPRESENTATION (3P)"
+.SM "INQUIRE TEXT FACILITIES (3P)"
+.SM "SET TEXT REPRESENTATION (3P)"
+.SM "INQUIRE TEXT REPRESENTATION (3P)"
+.SM "INQUIRE PREDEFINED TEXT REPRESENTATION PLUS (3P+)"
 .fi

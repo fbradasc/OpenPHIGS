@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p369,v 5.2 94/04/17 20:58:45 rws Exp $
+.\" $XConsortium: p368,v 5.2 94/04/17 20:58:44 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,123 +22,157 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2SET REFLECTANCE EQUATION\s+2
-.TH "SET REFLECTANCE EQUATION" 3P+ "29 February 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line .\"below:
+.ds pN SET POLYMARKER REPRESENTATION PLUS
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-SET REFLECTANCE EQUATION \-  create a structure element to set
-the current interior reflectance equation   
-.IX "PHIGS Extension Functions" "SET REFLECTANCE EQUATION"
-.IX "Aspect Source Flags" "SET REFLECTANCE EQUATION"
-.IX "Filled Area Interior Attributes" "SET REFLECTANCE EQUATION"
-.IX "Attributes, Filled Area Interior Attributes" "SET REFLECTANCE EQUATION"
+\*(pN \-
+use to define an extended
+polymarker attribute bundle on a workstation
+.IX "PHIGS Extension Functions" "\*(pN"
+.IX "Attribute Representations" "SET POLYMARKER REPRESENTATION PLUS"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
-.ta 1.25i 3i
+.ta 1.40i 3i
 .nf
+.\" 6. Insert C syntax below
 void
-pset_refl_eqn ( equation )
-Pint	equation;	\fIreflectance equation\fP
+pset_marker_rep_plus ( ws, index, rep )
+Pint	ws;	\fIworkstation identifier\fP
+Pint	index;	\fIpolymarker bundle index \fP
+Pmarker_bundle_plus	*rep;	\fIpolymarker representation pointer\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, STOP, *)
+(PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET REFLECTANCE EQUATION\s+2 creates a structure
-element to set
-the current interior reflectance equation.
-.LP
-When the current interior reflectance equation
-Aspect Source Flag (\s-2ASF\s+2) is set to
-\s-2INDIVIDUAL\s+2,
-the current value of this attribute
-defines the interior reflectance equation
-to be applied to the following output primitives:
-.RS
-.LP
-\(bu
-.SM "FILL AREA"
-.LP
-\(bu
-.SM "FILL AREA 3"
-.LP
-\(bu
-.SM "FILL AREA SET"
-.LP
-\(bu
-.SM "FILL AREA SET 3"
-.LP
-\(bu
-.SM "FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "SET OF FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "NON-UNIFORM B-SPLINE SURFACE"
-.LP
-\(bu
-.SM "QUADRILATERAL MESH 3 WITH DATA"
-.LP
-\(bu
-.SM "TRIANGLE STRIP 3 WITH DATA"
-.RE
+\s-2SET POLYMARKER REPRESENTATION PLUS\s+2 defines an
+extended polymarker attribute bundle on a workstation.
 .SS C Input Parameters
-.IP \fIequation\fR
-The reflectance equation.  The possible values defined in phigs.h are:
-.sp
+.IP \fIws\fP
+The identifier of the workstation.
+.IP \fIindex\fP
+This is an index to the workstation marker bundle table.
+.IP \fIrep\fP
+A pointer to a Pmarker_bundle_plus structure. Pmarker_bundle_plus is defined as:
+.sp .2
 .nf
-.ta .5i +\w'0     'u +\w'PREFL_AMB_DIFF_SPEC     'u
-1	PREFL_NONE	\fINo Reflectance Calculation Performed\fP
-2	PREFL_AMBIENT	\fIUse Ambient Term\fP
-3	PREFL_AMB_DIFF	\fIUse Ambient and Diffuse Terms\fP
-4	PREFL_AMB_DIFF_SPEC	\fIUse Ambient, Diffuse, and Specular Terms\fP
-.sp
+.ta .5i +1i  +1i  +1.5i
+.sp .2
+typedef struct {
+.sp .2
+	Pint	type;	/* marker type */
+	Pfloat	size;	/* marker size scale factor */
+	Pgcolr	colr;	/* marker colour */
+.sp .2
+} Pmarker_bundle_plus;
 .fi
+.IP
+Pgcolr is defined as:
+.ta .5i +1.5i   +1i  +2i
+.nf
+.sp .4
+typedef struct {
+.sp .2
+	Pint	type;	/* indirect, RGB, CIE, HSV, HLS */
+	union {
+	     Pint	ind;	/* index in workstation colour bundle table */
+	     struct {
+	          Pfloat	x;	/* red, hue, etc. */
+	          Pfloat	y;	/* green, saturation, lightness, etc. */
+	          Pfloat	z;	/* blue, value, saturation, etc. */
+	     } general;
+	} val;
+} Pgcolr;
+.fi
+.sp
+\fIrep->type\fP is an integer value specifying a \fImarker type\fP;
+the following marker types are defined:
+.nf
+.ta .5i +.8i +1.5i +1i
+.sp .2
+.\" PT is a string for a "point".
+.ds PT \v'-0.2m'.\v'+0.2m'
+	1	PMARKER_DOT		\fIPoint\fP (\*(PT)
+	2	PMARKER_PLUS		\fIPlus sign\fP (\(pl)
+	3	PMARKER_ASTERISK		\fIAsterisk\fP (\(**)
+	4	PMARKER_CIRCLE		\fICircle\fP (\(ci)
+	5	PMARKER_CROSS		\fIX-mark\fP (\(mu)
+.sp .2
+.fi
+Support for marker types is workstation-dependent.
+The \fIPoint\fP (\*(PT) marker type is always the smallest dot possible,
+regardless of the marker size scale factor value applicable.  
+.sp
+\fIrep->size\fP is the \fImarker size scale factor\fP.  
+.sp
+\fIrep->colr\fP is the \fIpolymarker colour\fP,
+which selects a colour value from the workstation's colour table.  
 .SS Execution
-Depending on the edit mode, a \s-2SET REFLECTANCE EQUATION\s+2
-element is inserted into the open
-structure after the element pointer or replaces the element pointed
-at by the element pointer. The element pointer is then updated to 
-point to this \s-2SET REFLECTANCE EQUATION\s+2
-element.
+In the polymarker bundle table of the workstation state list, the given
+index is associated with the specified parameters.
 .LP
-At traversal time, if the specified reflectance equation is not defined,
-then the default is used.
+The marker size scale factor is a scale factor applied to the nominal
+marker size. During structure traversal, the scale factor is multiplied
+by the nominal marker size on a workstation. The result is mapped by
+the workstation to the nearest available marker size.
 .LP
-When the current interior reflectance equation \s-2ASF\s+2 is set to
-\s-2INDIVIDUAL\s+2, area-defining output primitives which follow in
-the structure network are filled using the current interior
-reflectance equation.
+Polymarker colour is a general colour, either an indirect or a
+direct colour in a specified colour model. If an indirect colour is
+specified and the specified colour index is not available during
+structure traversal, then colour index one is used.
 .LP
-When the current interior reflectance equation
-\s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the interior reflectance equation is taken from the
-workstation extended representation indicated by the current interior index.
-In this case, the interior reflectance equation
-set with \s-2SET REFLECTANCE EQUATION\s+2 has no effect.
+The extended polymarker bundle table in the workstation state list has
+predefined entries taken from the workstation description table. A
+number of these entries are predefined for every workstation of category
+\s-2OUTPUT\s+2 or \s-2OUTIN\s+2. Any table entry, including the predefined
+entries, may be redefined with this function.
+.LP
+When polymarkers are displayed during structure traversal, the current
+polymarker index in the \s-2PHIGS\s+2 traversal state list
+refers to an entry in the extended polymarker bundle table. If the
+current polymarker index is not present in the extended polymarker
+bundle table, then polymarker index one is used. The setting of the 
+corresponding Aspect Source Flags(\s-2ASF\s+2s) determines which 
+aspects in the entry are used.
+.RE
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
+.IP 003
+Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(that is, the workstation category is neither \s-2OUTPUT\s+2,
+\s-2OUTIN\s+2, nor \s-2MO\s+2)
+.IP 100
+Ignoring function, the bundle index value is less than one
+.IP 103
+Ignoring function, setting this bundle table entry would exceed the maximum
+number of entries allowed in the workstation bundle table
+.IP 105
+Ignoring function, the specified marker type is not available on the 
+specified workstation
+.IP 110
+Ignoring function, the specified colour model is not available on the 
+workstation
+.IP 113
+Ignoring function, the colour index value is less than zero
+.IP 136
+Ignoring function, one of the components of the colour 
+specification is out of range
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
 .SM "SET INDIVIDUAL ASF (3P)"
-.SM "SET INTERIOR REPRESENTATION (3P)"
-.SM "SET FACE DISTINGUISHING MODE (3P+)"
-.SM "SET INDIVIDUAL ASF (3P)"
-.SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
-.SM "SET REFLECTANCE EQUATION (3P+)"
-.SM "FILL AREA (3P)"
-.SM "FILL AREA 3 (3P)"
-.SM "FILL AREA SET (3P)"
-.SM "FILL AREA SET 3 (3P)"
-.SM "FILL AREA SET 3 WITH DATA (3P+)"
-.SM "SET OF FILL AREA SET 3 WITH DATA (3P+)"
-.SM "NON-UNIFORM B-SPLINE SURFACE (3P+)"
-.SM "QUADRILATERAL MESH 3 WITH DATA (3P+)"
-.SM "TRIANGLE STRIP 3 WITH DATA (3P+)" 
+.SM "INQUIRE POLYMARKER REPRESENTATION PLUS (3P+)"
+.SM "SET POLYMARKER REPRESENTATION (3P)"
+.SM "SET MARKER TYPE (3P)"
+.SM "SET MARKER SIZE SCALE FACTOR (3P)"
+.SM "SET POLYMARKER COLOUR INDEX (3P)"
+.SM "SET POLYMARKER COLOUR (3P+)"
+.SM "INQUIRE POLYMARKER FACILITIES (3P)"
 .fi

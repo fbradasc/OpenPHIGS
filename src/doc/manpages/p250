@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p250,v 5.2 94/04/17 20:57:21 rws Exp $
+.\" $XConsortium: p249,v 5.2 94/04/17 20:57:20 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,154 +22,399 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "REDRAW ALL STRUCTURES" 3P "29 February 1991"
+.ds f \s-2QUADRILATERAL MESH 3 WITH DATA\s+2
+.TH "QUADRILATERAL MESH 3 WITH DATA" 3P+ "29 February 1991"
 .SH NAME
-REDRAW ALL STRUCTURES \- redisplay all structures posted to a workstation
+QUADRILATERAL MESH 3 WITH DATA \- creates a \s-2\&3D\s+2 quadrilateral mesh structure element that includes colour and shading data  
+.IX "PHIGS Extension Functions" "QUADRILATERAL MESH 3 WITH DATA"
+.IX "Filled Area Primitives" "QUADRILATERAL MESH 3 WITH DATA"
+.IX "Primitives, Filled Area Primitives" "QUADRILATERAL MESH 3 WITH DATA"
+.IX "Mesh" "QUADRILATERAL MESH 3 WITH DATA"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
-.ta 1.25i 3i
+.ta 1.25i 3.75i
 .nf
 void
-predraw_all_structs ( ws, control_flag )
-Pint	ws;	\fIworkstation identifier\fP
-Pctrl_flag	control_flag;	\fIcontrols the redraw of the structures\fP
+pquad_mesh3_data ( fflag, vflag, colour_model, dim, fdata, vdata )
+Pint	fflag;	\fI what data per fill facet is available\fP
+Pint	vflag;	\fI what data per vertex is available\fP
+Pint	colour_model;	\fIcolour type\fP
+Pint_size	*dim;		\fIdimension of cells (in vertices)\fP
+Pfacet_data_arr3	*fdata;	\fIfacet data \fP
+Pfacet_vdata_arr3	*vdata;	\fIvertex data \fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, WSOP, *, *)
+(PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2REDRAW ALL STRUCTURES\s+2 updates the specified
-workstation's display by:
-.RS
-.ta 0.2i +0.2i +0.2i +0.2i +0.2i
-.LP
-\(bu
-Completing any actions in progress
-.LP
-\(bu
-Clearing the display surface if the surface is \s-2NOT EMPTY\s+2,
-or if the \fIcontrol flag\fP is \s-2ALWAYS\s+2
-.LP
-\(bu
-Updating any pending viewing transformation and pending \s-2HLHSR\s+2 mode
-.LP
-\(bu
-Redisplaying all structures posted to the workstation
-.LP
-\(bu
-Setting the workstation's \fIstate of visual representation\fP
-to \s-2CORRECT\s+2
-.ta
-.RE
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2 
+creates a \s-2\&3D\s+2 quadrilateral mesh primitive with colour and shading
+data.
 .SS C Input Parameters
-.IP \fIws\fP
-The identifier of the workstation whose structures are to be redrawn.
-.IP \fIcontrol_flag\fP
-Controls whether the display surface is
-automatically cleared.
-Pctrl_flag is defined in phigs.h.
-Valid values are:
-.sp .4
-.ta .5i
+.IP \fIfflag\fR
+The data per facet flag specifies the available data for
+each quadrilateral of the quadrilateral mesh.
+.sp
 .nf
-typedef enum {
+.ta .5i +\w'0    'u +\w'PFACET_COLOUR_NORMAL     'u
+0	PFACET_NONE	\fINo Facet Data Specified\fP
+1	PFACET_COLOUR	\fIFacet Colours Specified\fP
+2	PFACET_NORMAL	\fIFacet Normal Specified\fP
+3	PFACET_COLOUR_NORMAL	\fIFacet Normal and Colours Specified\fP 
+.sp
+.fi
+.IP \fIvflag\fR
+The data per vertex flag specifies the available data for
+each vertex of the primitive.
+.sp
+.nf
+.ta .5i +\w'0     'u +\w'PVERT_COORD_COLOUR_NORMAL   'u
+0	PVERT_COORD	\fICoordinates Specified\fP
+1	PVERT_COORD_COLOUR	\fICoordinates and Colours Specified\fP 
+2	PVERT_COORD_NORMAL	\fICoordinates and Vertex Normal Specified\fP
+3	PVERT_COORD_COLOUR_NORMAL	\fICoordinates, Vertex Colour, and Vertex Normal Specified\fP
+.sp 
+.fi
+.IP \fIcolour_model\fR
+The colour type for specified vertex colours.
+.sp
+.nf
+.ta .5i +.5i +1.75i
+	0	PINDIRECT	\fIColour Index Specified\fP
+	1	PMODEL_RGB	\fIRed, Green, and Blue\fP
+	2	PMODEL_CIELUV	\fICIE Colour Model\fP
+	3	PMODEL_HSV	\fIHue, Saturation, and Value\fP
+	4	PMODEL_HLS	\fIHue, Lightness, and Saturation\fP
+.sp
+.fi
+.IP \fIdim\fR
+A pointer to a Pint_size structure that specifies the number of vertices
+along the \fIx\fP and \fIy\fP coordinates. Pint_size is defined in phigs.h as follows:
 .sp .2
-	PFLAG_COND,
-	PFLAG_ALWAYS
+.nf
+.ta .5i +\w'Pint     'u +\w'size_x;     'u
 .sp .2
-}Pctrl_flag;
+typedef struct {
+.sp .2
+	Pint	size_x;	/* number of vertices along the x-axis */
+	Pint	size_y;	/* number of vertices along the y-axis */
+.sp .2
+} Pint_size;
+.sp
+.fi
+.IP \fIfdata\fR
+A pointer to a Pfacet_data_arr3 structure that specifies
+the colour and/or normal information for each facet. 
+Note that number of facets
+= (size_x - 1) * (size_y - 1). Pfacet_data_arr3 is defined in phigs.h as follows:
+.sp .2
+.nf
+.ta .5i +1i +1.25i
+.sp .2
+typedef union {
+.sp .2	
+	Pcoval	*colrs;	/* array (size_x - 1) * (size_y - 1) of colours */
+	Pvec3	*norms;	/* array (size_x - 1) * (size_y - 1) of unit normals */
+	Pconorm3	*conorms;	/* array (size_x - 1) * (size_y - 1) of colours and normals */
+.sp .2
+} Pfacet_data_arr3;
+.IP
+.fi	
+Pcoval is defined in phigs.h as follows: 
+.sp .2
+.nf
+.ta .5i +\w'Pcolr_rep     'u +\w'direct;     'u
+.sp .2
+typedef union {	
+.sp .2
+	Pint	index;	/* index in workstation colour bundle table */
+	Pcolr_rep	direct;	/* direct colour components */
+.sp .2
+} Pcoval;
+.sp .2
+.fi
+When \fIcolour_model\fP is \s-2PINDIRECT,\s+2 index is
+used; otherwise, direct is used.
+.IP
+Pcolr_rep is defined in phigs.h as follows:
+.ta .5i +1i +1i
+.nf
+.sp .2
+typedef union {
+.sp .2
+	Prgb	rgb;	/* Red Green Blue colour specification */
+	Pcieluv	cieluv;	/* CIE L*U*V* colour specification */
+	Phls	hls;	/* Hue Lightness Saturation colour specification */
+	Phsv	hsv;	/* Hue Saturation Value colour specification */
+	Pdata	unsupp;	/* Colour in unsupported colour model */
+.sp .2
+} Pcolr_rep;
+.sp .2
 .fi
 .IP
-\s-2PFLAG_COND\s+2 clears the display surface before redrawing only if
-the surface is not empty.
+Prgb is defined in phigs.h as follows:
+.nf
+.ta .5i +1i +1i
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	red;	/* red, hue, etc */
+	Pfloat	green;	/* green, saturation, lightness, etc */
+	Pfloat	blue;	/* blue, value, saturation, etc */
+.sp .2
+} Prgb;
+.fi
 .IP
-\s-2PFLAG_ALWAYS\s+2
-automatically clears the surface before redrawing.
+Pcieluv is defined in phigs.h as follows:
+.nf
+.ta .5i +1i +1i
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	cieluv_x;	/* x coefficient */
+	Pfloat	cieluv_y;	/* y coefficient */
+	Pfloat	cieluv_y_lum;	/* y luminance */
+.sp .2
+} Pcieluv;
+.fi
+.IP
+Phls is defined in phigs.h as follows:
+.nf
+.ta .5i +1i +1i
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	hue;	/* hue */
+	Pfloat	lightness;	/* lightness */
+	Pfloat	satur;	/* saturation */
+.sp .2
+} Phls;
+.fi
+.IP
+Phsv is defined in phigs.h as follows:
+.nf
+.ta .5i +1i +1i
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	hue;	/* hue */
+	Pfloat	satur;	/* saturation */
+	Pfloat	value;	/* value */
+.sp .2
+} Phsv;
+.fi
+.IP
+Pdata is defined in phigs.h as follows:
+.nf
+.ta .5i +1i +1i
+.sp .2
+typedef struct {
+.sp .2
+	size_t	size;	/* size of data */	
+	char	*data	/* pointer to data */
+.sp .2
+} Pdata;
+.fi
+.sp .4
+Pvec3 is defined as:
+.sp .2
+.nf
+.ta .5i +\w'Pfloat     'u +\w'delta_x;     'u
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	delta_x;	/* x magnitude */
+	Pfloat	delta_y;	/* y magnitude */
+	Pfloat	delta_z;	/* z magnitude */
+.sp .2
+} Pvec3;
+.fi
+.IP
+Pconorm3 is defined as:
+.sp .2
+.nf
+.ta .5i +\w'Pcoval     'u +\w'norm;     'u
+.sp .2
+typedef union {
+.sp .2
+	Pcoval	colr;	/* colour */
+	Pvec3	norm;	/* unit normal */
+.sp .2
+} Pconorm3;
+.fi
+.IP
+Pcoval and Pvec3 are defined above.
+.sp .2
+.IP \fIvdata\fR
+A pointer to a Pfacet_vdata_arr3 structure that specifies
+the quadrilateral mesh vertices and
+optionally associated colour and normal information. 
+Pfacet_vdata_arr3 is defined as:
+.sp .2
+.nf
+.ta .5i +\w'Pptconorm3     'u +\w'*ptconorms;     'u
+.sp .2
+typedef union {	
+.sp .2			
+	Ppoint3	*points;	/* array of (size_x * size_y) of points */
+	Pptco3	*ptcolrs;	/* array of (size_x * size_y) of points and colours */
+	Pptnorm3	*ptnorms;	/* array of (size_x * size_y) of points and normals */
+	Pptconorm3	*ptconorms;	/* array of (size_x * size_y) of points, colours, and normals */
+	/* implementation-dependent types can go here */
+.\"code=	/* implementation-dependent data pointer */
+.sp .2
+} Pfacet_vdata_arr3;
+.IP
+.fi
+Ppoint3 is defined as: 
+.sp .2
+.nf
+.ta .5i +\w'Pfloat     'u +\w'x;     'u
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	x;	/* x coordinate */
+	Pfloat	y;	/* y coordinate */
+	Pfloat	z;	/* z coordinate */
+.sp .2
+} Ppoint3;
+.IP
+.fi
+Pptco3 is defined as:
+.sp .2
+.nf
+.ta .5i +\w'Ppoint3     'u +\w'point;     'u
+.sp .2
+typedef struct {	
+.sp .2
+	Ppoint3	point;	/* point coordinates */
+	Pcoval	colr;	/* colour */
+.sp .2
+} Pptco3;
+.IP
+.fi
+Ppoint3 is defined above.
+Pcoval is defined as:	 
+.sp .2
+.nf
+.ta .5i +\w'Pcolr_rep     'u +\w'direct;     'u
+.sp .2
+typedef union {	
+.sp .2
+	Pint	ind;	/* index in workstation colour bundle table */
+	Pcolr_rep	direct;	/* direct colour components */
+.sp .2
+} Pcoval;
+.IP
+.fi
+Pcolr_rep is defined above.
+Pptnorm3 is defined as:
+.sp .2
+.nf
+.ta .5i +\w'Pvec3     'u +\w'norm;     'u
+.sp .2
+typedef struct {	
+.sp .2
+	Ppoint3	point;	/* point coordinates */
+	Pvec3	norm;	/* unit normal */
+.sp .2
+} Pptnorm3;
+.IP
+.fi
+Ppoint3 and Pvec3 are defined above.
+Pptconorm3 is defined as: 
+.sp .2
+.nf
+.ta .5i +\w'Ppoint3     'u +\w'norm;     'u
+.sp .2
+typedef struct {	
+.sp .2
+	Ppoint3	point;	/* point coordinates */
+	Pcoval	colr;	/* colour */
+	Pvec3	norm;	/* unit normal */
+.sp .2
+} Pptconorm3;		    
+.IP
+.fi
+Ppoint3, Pcoval, and Pvec3 are defined above.
+.fi
 .SS Execution
-\s-2REDRAW ALL STRUCTURES\s+2 performs the following actions in
-sequence:
-.sp .5v
-.in +0.5i
-.ta +0.2i
-.ti -0.2i
-1.	Any buffered communications for the specified workstation
-are completed without first clearing the display surface.
-.\"
-.\" I'm think \s-2PEX-SI\s0 never has any data that hasn't been flushed. -wds
-.\"
-.\"		Actions below must match those for UPDATE WORKSTATION!
-.\"
-.sp .5v
-.ti -0.2i
-2.	If the \fIcontrol flag\fP is set to \s-2CONDITIONALLY\s+2, then the
-workstation's display surface is only cleared if
-it is \s-2NOT EMPTY\s+2. If the control
-flag is set to \s-2ALWAYS\s+2, the display surface is cleared regardless
-of whether the display is \s-2EMPTY\s+2. In any case,
-the entry is then set to \s-2EMPTY\s+2.
-.IP
-\fBNote:\fP
-Using a control flag of \s-2CONDITIONALLY\s+2
-avoids unnecessarily clearing an empty display surface.
-A value of \s-2ALWAYS\s+2 is useful when generating 
-multiple copies of the current image on hardcopy devices.
-However, for \s-2PEX-SI\s+2 where an output device is always
-a \s-2CRT\s+2, the value \s-2ALWAYS\s+2 is not meaningful.
-.sp .5v
-.ti -0.2i
-3.	For every view representation in the workstation's state list,
-if the \fIview transformation update state\fP is \s-2PENDING\s+2,
-the current view representation is loaded from the \fIrequested\fP view
-representation,
-and the update state is set to \s-2NOTPENDING\s+2.
-.sp .5v
-.ti -0.2i
-4.	If the workstation transformation update state is \s-2PENDING\s+2,
-the \fIcurrent workstation window\fP and \fIcurrent workstation viewport\fP
-are loaded with the \fIrequested\fP values for each,
-and the update state is set to \s-2NOTPENDING\s+2.
-.sp .5v
-.ti -0.2i
-5.	If the workstation's \fI\s-2HLHSR\s+2 update state\fP
-is \s-2PENDING\s+2, the \fIcurrent \s-2HLHSR\s+2 mode\fP is updated
-to the value of the \fIrequested \s-2HLHSR\s+2 mode\fP, and
-the update state is set to \s-2NOTPENDING\s+2.
-.sp .5v
-.ti -0.2i
-6.	All structure networks posted for this workstation are redisplayed
-in the order of their priority.
-.sp .5v
-.ti -0.2i
-7.	The workstation's \fIstate of visual representation\fP is set
-to \s-2CORRECT\s+2.
+Depending on the edit mode, a 
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2
+element is inserted into the open structure after the element
+pointer, or it replaces the element pointed to by the element pointer. 
+In either case, the element pointer is updated to point to the newly
+created \s-2QUADRILATERAL MESH 3 WITH DATA\s+2 element.
 .LP
-The workstation's state of visual representation indicates
-if the display is \s-2CORRECT\s+2, \s-2SIMULATED\s+2, or \s-2DEFERRED\s+2.
-\s-2INQUIRE DISPLAY UPDATE STATE\s+2 returns the
-workstation's \fIdisplay surface empty\fP and state of visual representation
-state list entries.
-Normally, the traversal in Step 6 causes
-the display surface empty workstation state to become \s-2NOTEMPTY\s+2.
-(If all the posted structures are empty, or if they contain elements but no
-output primitive elements, the display surface empty may be
-\s-2EMPTY\s+2 or \s-2NOTEMPTY\s+2.)
-.DT
+When the structure is traversed, 
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2
+generates a three-dimensional mesh of (\fIm\fP-1) \(mu (\fIn\fP-1) 
+quadrilaterals from a two-dimensional array of \fIm\fP \(mu \fIn\fP vertices.
+Line segments form the boundary of each quadrilateral in the mesh.
+Each quadrilateral can be rendered empty, hollow, shaded, or filled
+with a colour, pattern, or hatch style. A mesh with \fIn\fP < 2 or 
+\fIm\fP < 2 vertices can be created, but it is treated in a
+workstation-dependent fashion.
+.LP
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2 uses the same attributes as the
+\s-2FILL AREA SET 3 WITH DATA\s+2 primitive.
+.LP
+The 
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2 element can specify the facet
+colour and normal vector of each quadrilateral in the mesh, as well
+as colours and normal vectors for each vertex.
+These colours and normal vectors are used in conjunction with
+the current lighting and depth-cueing attributes to colour and
+shade the primitive. 
+Note that unexpected lighting effects will result if the supplied
+normals are not of unit length. 
+.SS Attributes Applied
+The attributes listed below are used to display the
+\s-2QUADRILATERAL MESH 3 WITH DATA\s+2 primitive when the structure is traversed. The Aspect Source 
+Flags (\s-2ASF\s+2s) tell where to access the output display attributes. 
+These attributes can come directly from the traversal state list,
+or they can be accessed indirectly, using the appropriate index 
+in the traversal state list and the corresponding bundled 
+representation in the PHIGS workstation state list.
+.RS
+.nf
+.ta .5i +\w'back interior reflectance equation   'u 
+.sp
+interior colour			interior colour index \s-2ASF\s+2
+back interior colour		back interior colour \s-2ASF\s+2
+interior style			interior style \s-2ASF\s+2
+back interior style		back interior style \s-2ASF\s+2
+interior style index		interior style index \s-2ASF\s+2
+back interior style index	back interior style index \s-2ASF\s+2
+interior shading method		interior shading method \s-2ASF\s+2
+back interior shading method	back interior shading method \s-2ASF\s+2
+interior reflectance equation 	interior reflectance equation \s-2ASF\s+2
+back interior reflectance equation	back interior reflectance equation \s-2ASF\s+2
+area properties			area properties \s-2ASF\s+2
+back area properties		back area properties \s-2ASF\s+2
+interior index
+edge colour			edge colour index \s-2ASF\s+2
+edge flag			edge flag \s-2ASF\s+2
+edgetype			edgetype \s-2ASF\s+2
+edgewidth scale factor		edgewidth scale factor \s-2ASF\s+2
+edge index
+face distinguishing mode
+face culling mode
+depth cue index
+light source state
+name set
+.fi
+.RE
+.sp .2
 .SH ERRORS
-.IP 003
+.IP 005
 Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
-.IP 054
-Ignoring function, the specified workstation is not open
-.IP 059
-Ignoring function, the specified workstation does not have output capability
-(i.e., the workstation category is neither \s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "UPDATE WORKSTATION (3P)"
-.SM "INQUIRE DISPLAY UPDATE STATE (3P)"
-.SM "SET DISPLAY UPDATE STATE (3P)"
+.SM "FILL AREA SET 3 WITH DATA (3P+)"
 .fi

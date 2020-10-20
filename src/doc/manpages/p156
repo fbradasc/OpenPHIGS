@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p156,v 5.2 94/04/17 20:56:16 rws Exp $
+.\" $XConsortium: p155,v 5.2 94/04/17 20:56:15 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -23,25 +23,25 @@
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
 .ds f \s-2INQUIRE LIST OF DEPTH CUE INDICES\s+2
-.TH "INQUIRE LIST OF DEPTH CUE INDICES" 3P+ "29 February 1991"
+.TH "INQUIRE LIST OF COLOUR MAPPING INDICES" 3P+ "29 February 1991"
 .SH NAME
-INQUIRE LIST OF DEPTH CUE INDICES \- inquire the list of depth cue indices defined
-on a workstation
-.IX "Depth Cueing" "INQUIRE LIST OF DEPTH CUE INDICES"
-.IX "Inquiry functions" "INQUIRE LIST OF DEPTH CUE INDICES"
-.IX "PHIGS Extension Functions" "INQUIRE LIST OF DEPTH CUE INDICES"
+INQUIRE LIST OF COLOUR MAPPING INDICES \- inquire the list of defined colour
+mapping indices on a workstation
+.IX "Colour Mapping" "INQUIRE LIST OF COLOUR MAPPING INDICES"
+.IX "Inquiry functions" "INQUIRE LIST OF COLOUR MAPPING INDICES"
+.IX "PHIGS Extension Functions" "INQUIRE LIST OF COLOUR MAPPING INDICES"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void 
-pinq_list_dcue_inds ( ws, length, start, error_ind, indices, total_length )
+pinq_list_colr_map_inds ( ws, length, start, error_ind, colr_map_inds, total_length )
 Pint	ws;	\fIworkstation identifier\fP
 Pint	length;	\fIlength of application list\fP
 Pint	start;	\fIstarting position\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pint_list	*indices;	\fIOUT list of polyline indices\fP
+Pint_list	*colr_map_inds;	\fIOUT list of polyline indices\fP
 Pint	*total_length;	\fIOUT length of list in PHIGS\fP
 .fi
 .ft R
@@ -50,31 +50,30 @@ Pint	*total_length;	\fIOUT length of list in PHIGS\fP
 .SH DESCRIPTION
 .SS Purpose
 .LP
-\s-2INQUIRE LIST OF DEPTH CUE INDICES\s+2
-obtains a list of the currently defined workstation depth cue indices.
-Objects are depth cued toward a specified depth cue colour. Depth cueing
-applies to all primitives. 
+\s-2INQUIRE LIST OF COLOUR MAPPING INDICES\s+2
+obtains a list of the currently defined workstation colour mapping indices.
 .SS C Input Parameters
 .IP \fIws\fP
-The workstation identifier.
+The workstation identifier of the workstation whose colour mapping
+indices are to be returned.
 .IP \fIlength\fP
-The number of \fIints\fR in the \fIindices\fR output parameter for which the 
+The number of \fIints\fR in the \fIcolr_map_inds\fR output parameter for which the 
 application has allocated memory. \fIlength\fR is the number of list elements
-that the system can return in \fIindices\(->ints\fR.
-If a value of 0 is used here, no data will be returned in the \fIindices\(->ints\fR
+that the system can return in \fIcolr_map_inds\(->ints\fR.
+If a value of 0 is used here, no data will be returned in the \fIcolr_map_inds\(->ints\fR
 list, but the total number of elements will be returned in \fItotal_length\fR.
 .IP \fIstart\fP
 Starting position of inquiry.  The elements in the list, beginning
 with the item number specified by \fIstart\fR, are copied sequentially into 
-\fIindices\(->ints\fR until \fIindices\(->ints\fR is full
+\fIcolr_map_inds\(->ints\fR until \fIcolr_map_inds\(->ints\fR is full
 or all the elements have been copied.
 .SS C Output Parameters
 .IP \fIerror_ind\fP
 A pointer to the location to store the error number of any error detected
 by this function.
-.IP \fIindices\fP
+.IP \fIcolr_map_inds\fP
 A pointer to a Pint_list data structure containing the list of
-depth cue indices.
+colour mapping indices.
 A Pint_list structure is defined as:
 .nf
 .ta .5i +\w'Pint     'u +\w'num_ints;     'u
@@ -92,10 +91,11 @@ The \fIints\fR component is a pointer to a list \fInum_ints\fR long.
 .IP
 The application must allocate memory for \fIlength\fR elements in the
 list of \fIints\fR.
+.fi
 .IP \fItotal_length\fP
-A pointer to an integer in which the system returns the total number of elements
-in the list.  This is the value required for \fIlength\fR if all elements in the
-list are to be returned.
+A pointer to an integer which returns the total length
+of the list.  This is the value required for \fIlength\fR if all items in the list
+are to be returned.
 .SS Execution
 If the inquired information is available, the error indicator is returned
 as zero and values are returned in the output parameters.
@@ -115,13 +115,13 @@ Ignoring function, function requires state (\s-2PHOP,WSOP,*,*\s+2)
 Ignoring function, the specified workstation is not open
 .IP 059
 Ignoring function, the specified workstation does not have output
-capability (that is, the workstation category is neither \s-2OUTPUT\s+2,
-\s-2OUTIN\s+2, nor \s-2MO\s+2)
+capability (that is, the workstation category is neither \s-2OUTPUT\s+2 nor 
+\s-2OUTIN\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET DEPTH CUE REPRESENTATION (3P+)"
-.SM "SET DEPTH CUE INDEX (3P+)"
-.SM "INQUIRE DEPTH CUE REPRESENTATION (3P+)"
+.SM "SET COLOUR MAPPING REPRESENTATION (3P+)"
+.SM "SET COLOUR MAPPING INDEX (3P+)"
+.SM "INQUIRE COLOUR MAPPING REPRESENTATION (3P+)"
 .fi

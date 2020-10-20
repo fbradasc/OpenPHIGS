@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p401,v 5.2 94/04/17 20:59:07 rws Exp $
+.\" $XConsortium: p400,v 5.2 94/04/17 20:59:07 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,9 +22,9 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "UNPOST STRUCTURE" 3P "29 February 1991"
+.TH "UNPOST ALL STRUCTURES" 3P "29 February 1991"
 .SH NAME
-UNPOST STRUCTURE \- unpost a structure from the
+UNPOST ALL STRUCTURES \- unpost all structures posted to the
 specified workstation
 .SH SYNOPSIS
 .SS C Syntax
@@ -32,45 +32,29 @@ specified workstation
 .ta 1.25i 3i
 .nf
 void
-punpost_struct ( ws_id, struct_id )
+punpost_all_structs ( ws_id )
 Pint	ws_id;	\fIworkstation identifier\fP
-Pint	struct_id;	\fIstructure identifier\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2UNPOST STRUCTURE\s+2 unposts a single structure from a
-workstation.
-The structure is not deleted from the Central Structure Store (\s-2CSS\s+2),
-but it is no longer eligible for display on the workstation.
-.LP
+\s-2UNPOST ALL STRUCTURES\s+2 unposts all of the structures posted to a
+specified workstation. Following \s-2UNPOST ALL STRUCTURES\s+2,
+no structure networks remain eligible for display on the workstation.
 The immediate effect of the function on the display surface will
 depend on the workstation's display update state.
-.SS C Input Parameters
+.SS C Input Parameter
 .IP \fIws_id\fP
-The structure is to be unposted from the workstation with this identifier.
-.IP \fIstruct_id\fP
-The identifier of the structure to be unposted.
+All structures are to be unposted from the workstation with this identifier.
 .SS Execution
-\s-2UNPOST STRUCTURE\s+2 removes the structure specified
-from the table of posted structures on the workstation.
-Unless the structure is part of a structure network posted to the workstation,
-the structure is no longer eligible for display on the workstation,
-and changes to the structure will no longer affect the workstation.
+\s-2UNPOST ALL STRUCTURES\s+2 removes all the structures from the
+\fItable of posted structures\fP on the specified workstation.
 .LP
-The structure is not deleted from the \s-2CSS\s+2 and may again
-be posted to the same or another workstation.
-Other workstations are unaffected.
-.LP
-If structure identifier is not listed in the table of posted structures or
-does not exist in the \s-2CSS\s+2 when \s-2UNPOST
-STRUCTURE\s+2 is called, the function takes no action.
-.LP
-The effect of unposting the structure may be immediately visible on the
-workstation's display, depending on the
-workstation's display update state.
+The unposted structures are not deleted from the Central Structure Store,
+and may again be posted to this or another workstation.
+No other workstations are affected.
 .SH ERRORS
 .IP 003
 Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
@@ -85,6 +69,6 @@ Ignoring function, the specified workstation does not have output capability
 .ta 0.5i
 .SM "POST STRUCTURE (3P)"
 .SM "INQUIRE POSTED STRUCTURES (3P)"
-.SM "INQUIRE SET OF WORKSTATIONS TO WHICH POSTED (3P)"
-.SM "UNPOST ALL STRUCTURES (3P)"
+.SM "CLOSE WORKSTATION (3P)"
+.SM "UNPOST STRUCTURE (3P)"
 .fi

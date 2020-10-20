@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p158,v 5.2 94/04/17 20:56:17 rws Exp $
+.\" $XConsortium: p157,v 5.2 94/04/17 20:56:16 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,9 +22,9 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE LIST OF INTERIOR INDICES" 3P "29 February 1991"
+.TH "INQUIRE LIST OF EDGE INDICES" 3P "29 February 1991"
 .SH NAME
-INQUIRE LIST OF INTERIOR INDICES\- inquire list of interior indices
+INQUIRE LIST OF EDGE INDICES\- inquire list of edge indices
 defined on a workstation
 .SH SYNOPSIS
 .SS C Syntax
@@ -32,12 +32,12 @@ defined on a workstation
 .ta 1.25i 3i
 .nf
 void
-pinq_list_int_inds ( ws, length, start, error_ind, indices, total_length )
+pinq_list_edge_inds ( ws, length, start, error_ind, indices, total_length )
 Pint	ws;	\fIworkstation identifier\fP
 Pint	length;	\fIlength of application list\fP
 Pint	start;	\fIstarting position\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pint_list	*indices;	\fIOUT list of interior indices\fP
+Pint_list	*indices;	\fIOUT list of edge indices\fP
 Pint	*total_length;	\fIOUT length of list in PHIGS\fP
 .fi
 .ft R
@@ -45,31 +45,31 @@ Pint	*total_length;	\fIOUT length of list in PHIGS\fP
 (PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE LIST OF INTERIOR INDICES\s+2 to obtain a list of the
-currently defined interior indices on the specified workstation.
-The defined interior table indices are \fIconceptually sparse\fP:  a \s-2PHIGS\s+2
-implementation could allow definition of \fIn\fP interior representations
+Use \s-2INQUIRE LIST OF EDGE INDICES\s+2 to obtain a list of the
+currently defined edge indices on the specified workstation.  
+The defined edge table indices are \fIconceptually sparse\fP:  a \s-2PHIGS\s+2
+implementation could allow definition of \fIn\fP edge representations
 with arbitrary indices.  
-However, interior indices are \fInonsparse\fP in \s-2PEX-SI\s0;  
-the \fIn\fP interior representations necessarily have indices 1 through \fIn\fP.  
+However, edge indices are \fInonsparse\fP in \s-2PEX-SI\s0:  
+the \fIn\fP edge representations necessarily have indices 1 through \fIn\fP.
 .SS C Input Parameters
 .IP \fIws\fP
-The \fIworkstation identifier\fP of the workstation
-whose interior indices are to be returned.
+\fIWorkstation identifier\fP of the workstation
+whose edge indices are to be returned.
 .IP \fIlength\fP
 Number of items for which the application has allocated memory
-in the output parameter \fIindices\fP.
-0 can be specified, in order to get the \fItotal length\fP of the list.
+in the output parameter \fIindices\fP.  
+Specify 0 to get the \fItotal length\fP of the list.  
 .IP \fIstart\fP
-Starting position in the list at which to begin the inquiry.
+Starting position in the list at which to begin the inquiry.  
 .SS C Output Parameters
 .IP \fIerror_ind\fP
-A pointer to the location to store the error number of any error
-detected by this function.
+Pointer to the location for storing the error number of any error
+this function detects.  
 .IP \fIindices\fP
-A pointer to a Pint_list structure
+Pointer to a Pint_list structure
 in which the system returns the portion of the
-list of currently defined interior indices,
+list of currently defined edge indices,
 starting at the entry specified with \fIstart\fP.
 .IP
 Pint_list is defined in phigs.h as follows:
@@ -83,29 +83,27 @@ typedef struct {
 .fi
 .sp .2
 } Pint_list;
-.IP
-The pointer \fIindices\fR->\fIints\fR must be initialized to an array of
+.sp .5
+Pointer \fIindices\fR\(->\fIints\fR must be initialized to an array of
 \fIlength\fP \fIPint\fP elements.
 .IP \fItotal_length\fP
-A pointer to an integer in which to return the \fItotal length\fP of
-the list.
-This is the value required for \fIlength\fP when all the items in the
-list are to be returned.
+Pointer to an integer in which to return the total length of
+the list.  
+This is the value required for \fIlength\fP if all the items in the
+list are to be returned.  
 .SH ERRORS
 .IP 003
 Ignoring function, function requires state 
 (\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
 .IP 054
-Ignoring function, the specified workstation is not open
+Ignoring function, specified workstation is not open
 .IP 059
-Ignoring function, the specified workstation does not have output capability
-(in other words, the workstation category is neither 
+Ignoring function, specified workstation does not have output capability
+(in other words, the workstation category is neither  
 \s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
 .SH SEE ALSO
-.nf
 .IP
 .ta 0.5i
-.SM "SET INTERIOR REPRESENTATION (3P)"
-.SM "SET INTERIOR INDEX (3P)"
-.SM "INQUIRE INTERIOR REPRESENTATION (3P)"
-.fi
+.SM "SET EDGE REPRESENTATION (3P)"
+.br
+.SM "INQUIRE EDGE REPRESENTATION (3P)"

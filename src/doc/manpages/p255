@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p255,v 5.3 94/04/17 20:57:24 hersh Exp $
+.\" $XConsortium: p254,v 5.3 94/04/17 20:57:23 hersh Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -23,56 +23,55 @@
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
 .ds b \s-2BREAK\s+2
-.TH "REQUEST PICK" 3P "29 February 1991"
+.TH "REQUEST LOCATOR 3" 3P "29 February 1991"
 .SH NAME
-REQUEST PICK \- request an operator interaction with a pick device
-.IX "Pick Input Devices" "REQUEST PICK"
-.IX "Request Input Mode" "REQUEST PICK"
-.IX "Input Modes" "REQUEST PICK"
+REQUEST LOCATOR 3 \- request an operator interaction with a locator device
+.IX "Request Input Mode" "REQUEST LOCATOR 3"
+.IX "Input Modes" "REQUEST LOCATOR 3"
+.IX "Locator Input Devices" "REQUEST LOCATOR 3"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-preq_pick ( ws, dev, depth, in_status, rpick )
+preq_loc3 ( ws, dev, in_status, view_ind, loc_pos )
 Pint	ws;	\fIworkstation identifier\fP
-Pint	dev;	\fIpick device number\fP
-Pint	depth;	\fImax. depth of returned path\fP
+Pint	dev;	\fIlocator device number\fP
 Pin_status	*in_status;	\fIOUT input status\fP
-Ppick_path	*rpick;	\fIOUT pick\fP
+Pint	*view_ind;	\fIOUT view index\fP
+Ppoint3	*loc_pos;	\fIOUT locator position\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2REQUEST PICK\s+2 to request an operator interaction with a
-specified pick device. The device must be in request mode. See
-\s-2SET PICK MODE\s+2 and \s-2INITIALIZE PICK\s+2 for more information.
-See the \fIAvailable Devices\fP section of \s-2INITIALIZE PICK\s+2 for a
-description of the available pick devices.
+Use \s-2REQUEST LOCATOR 3\s+2 to request an operator interaction with a
+specified locator device. The device must be in request mode. See
+\s-2SET LOCATOR MODE\s+2 and \s-2INITIALIZE LOCATOR 3\s+2 for more information.
+See the \fIAvailable Devices\fP section of \s-2INITIALIZE LOCATOR 3\s+2 for a
+description of the available locator devices.
 .LP
-The request suspends \s-2PHIGS\s+2 until the
-specified device is triggered,
+The request suspends \s-2PHIGS\s+2 until the specified device is triggered,
 or the operator performs a \*b.
 A \*b is performed by typing the \s-2CONTROL\s+2 and \s-2D\s+2 keys
 simultaneously (^D).
 .SS C Input Parameters
 .IP \fIws\fP
 Workstation identifier. An integer specifying the workstation with which
-the requested pick device is associated.
+the requested locator device is associated.
 .IP \fIdev\fP
-The device number of the requested pick device.
-.IP \fIdepth\fP
-The maximum depth of the pick path to return.
+The device number of the requested locator device.
+See the \fIAvailable Devices\fP section of \s-2INITIALIZE LOCATOR 3\s+2 for a
+description of the available locator devices.
 .SS C Output Parameters
 .IP \fIin_status\fP
 A pointer to the location to store the status of the request.
 Pin_status is defined in phigs.h as follows:
 .sp .4
-.nf
 .ta .5i
+.nf
 typedef enum {
 .sp .2
 	PIN_STATUS_NONE,
@@ -80,94 +79,77 @@ typedef enum {
 	PIN_STATUS_NO_IN
 .sp .2
 } Pin_status;
+.fi
+.IP \fIview_ind\fP
+A pointer to the location to store the view representation used to
+map from Device Coordinates (\s-2DC\s+2) to World Coordinates (\s-2WC\s+2).
+.IP \fIloc_pos\fP
+A pointer to a Ppoint3 structure in which to 
+the system stores the locator position coordinates.
+Ppoint3 is defined in phigs.h as follows:
 .sp .4
-.IP \fIrpick\fP
-A pointer to a Ppick_path structure in which the system stores the pick path.
-Ppick_path is defined in phigs.h as:
-.sp .4
-.ta .5i +\w'Ppick_path_elem     'u +\w'path_list;     'u
+.ta .5i +\w'Pfloat	'u +\w'x;     'u
 .nf
 typedef struct {
 .sp .2
-	Pint	depth;	/* pick path depth */
-	Ppick_path_elem	*path_list;	/* pick path list */
+	Pfloat	x;	/* x coordinate */
+	Pfloat	y;	/* y coordinate */
+	Pfloat	z;	/* z coordinate */
 .sp .2
-} Ppick_path;
+} Ppoint3;
 .fi
-.IP
-\fIdepth\fP indicates the number of elements in the measure's path.  
-This is the depth value contained in the device's current measure.  
-It is not affected by the \fImaximum depth to return\fP parameter.  
-Thus, the number of elements returned in \fIpath_list\fP may be less than
-\fIdepth\fP.  
-.IP
-\fIpath_list\fP is the array of path elements defining
-the location of the picked primitive in the Central Structure Store 
-(\s-2CSS\s+2). \fBThis array must be allocated by the calling program
-and the array pointer assigned to this field before calling this function\fP.  
-The array must be at least of length \fImaximum depth to return\fP.
-Ppick_path_elem is defined in phigs.h as:
-.bp
-.sp .4
-.ta .5i +1i  +1i
-.nf
-typedef struct {
-.sp .2
-	Pint	struct_id;	/* structure identifier */
-	Pint	pick_id;	/* pick identifier */
-	Pint	elem_pos;	/* element number */
-.sp .2
-} Ppick_path_elem;
-.fi
-.IP
-\fIstruct_id\fP, \fIpick_id\fP, and \fIelem_pos\fP
-are the structure identifier, pick identifier,
-and element number, respectively, of each element in the path.
 .SS Execution
-\s-2REQUEST PICK\s+2 requests a logical input value from the specified
-pick device. The specified device must be in request mode. See
-\s-2SET PICK MODE\s+2 for more information.
+\s-2REQUEST LOCATOR 3\s+2 requests a logical input value from the specified
+locator device. The specified device must be in request mode. See
+\s-2SET LOCATOR MODE\s+2 for more information.
 .LP
-\s-2REQUEST PICK\s+2 creates a measure
+\s-2REQUEST LOCATOR 3\s+2 creates a measure
 process for the specified device and suspends \s-2PHIGS\s+2 until the
 device is triggered or the operator issues a \*b. 
-A \*b is generated by the operator by depressing the
-\s-2CONTROL\s+2 and \s-2D\s+2 keys
+A \*b is generated by the operator by depressing the Control and \s-2D\s+2 keys
 simultaneously (^D).
 .LP
-If the pick device is triggered and a pick has not been made, the status
-is returned as \s-2PIN_STATUS_NONE\s+2, and no pick data is returned.
-If the pick device is triggered and a pick has been made, the status
-is returned as \s-2PIN_STATUS_OK\s+2, and the pick data is available in the output
-parameters.
-If a \*b occurs, the status is returned as \s-2PIN_STATUS_NO_IN\s+2, and no pick
-value is returned.
+If a \*b occurs, a status of \s-2PIN_STATUS_NO_IN\s+2 is returned,
+and the locator data is undefined. 
+If a status of \s-2PIN_STATUS_OK\s+2 is returned, the locator data is
+available.  In either case, the measure process is then terminated and
+\s-2PHIGS\s+2 processing resumes.
 .LP
-In all cases, when the device is triggered or a \*b is issued, the
-current measure process is terminated and \s-2PHIGS\s+2 processing resumes.
+A locator measure consists of a \fIview_ind\fP and \s-2WC\s+2
+\fIloc_pos\fP.  The \fIview_ind\fP specifies the view representation
+from the workstation's view table that was used to map the locator
+position from Normalized Projections Coordinates (\s-2NPC\s+2) to \s-2WC\s+2.
+The \fIloc_pos\fP is the position of the locator in \s-2WC\s+2.
+\fBNote:\fP The \s-2\&2D\s+2 and \s-2\&3D\s+2 locator measure
+processes are the same except
+that the \s-2\&2D\s+2 process discards the \fIz\fP coordinate.
+The \s-2\&2D\s+2 version of this
+function, \s-2REQUEST LOCATOR\s+2, can be used if the value of the \fIz\fP
+coordinate is not needed.
 .LP
-See \s-2INITIALIZE PICK 3\s+2 for a description of the available
-\s-2PICK\s+2 devices and how their measure values are determined.
+See \s-2INITIALIZE LOCATOR 3\s+2 for a description of the available locator
+devices.
 .SH ERRORS
 .IP 003
 Ignoring function, function requires state 
 (\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
 .IP 054
 Ignoring function, the specified workstation is not open
-.IP 060
-Ignoring function, specified workstation is not of category \s-2OUTIN\s+2
+.IP 061
+Ignoring function, specified workstation is neither of category \s-2INPUT\s+2
+nor of category \s-2OUTIN\s+2
 .IP 250
 Ignoring function, the specified device is not available
 on the specified workstation
 .IP 251
-Ignoring function, the function requires the input device to be
-in \s-2REQUEST\s+2 mode
+Ignoring function, the function requires the input device
+to be in \s-2REQUEST\s+2 mode
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INITIALIZE PICK 3 (3P)"
-.SM "SET PICK FILTER (3P)"
-.SM "SET PICK IDENTIFIER (3P)"
-.SM "SET PICK MODE (3P)"
+.SM "INITIALIZE LOCATOR 3 (3P)"
+.SM "SET LOCATOR MODE (3P)"
+.SM "REQUEST LOCATOR (3P)"
+.SM "SET VIEW TRANSFORMATION INPUT PRIORITY (3P)"
 .fi

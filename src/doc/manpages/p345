@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p345,v 5.2 94/04/17 20:58:27 rws Exp $
+.\" $XConsortium: p344,v 5.2 94/04/17 20:58:26 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,56 +22,88 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET MODELLING CLIPPING INDICATOR" 3P "29 February 1991"
+.TH "SET MARKER TYPE" 3P "29 February 1991"
 .SH NAME
-SET MODELLING CLIPPING INDICATOR \- create structure element to set the current modelling clipping indicator
-.IX "Modelling Clipping" "SET MODELLING CLIPPING INDICATOR"
-.IX "Modelling and Transformation Attributes" "SET MODELLING CLIPPING INDICATOR"
-.IX "Attributes, Modelling and Transformation Attributes" "SET MODELLING CLIPPING INDICATOR"
+SET MARKER TYPE \- create structure element to set the current marker type
+attribute
+.IX "Marker Attributes" "SET MARKER TYPE"
+.IX "Attributes, Marker Attributes" "SET MARKER TYPE"
+.IX "Aspect Source Flags" "SET MARKER TYPE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_model_clip_ind ( ind )
-Pclip_ind	ind;	\fIclipping indicator\fP
+pset_marker_type ( markertype )
+Pint	markertype;	\fImarker type\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
+\s-2SET MARKER TYPE\s+2 creates a structure element
+containing a value for the current marker type attribute.
 .LP
-\s-2SET MODELLING CLIPPING INDICATOR\s+2
-creates a structure element
-containing a value for the current modelling clipping indicator attribute,
-which affects all output primitives.
+When the current marker type Aspect Source Flag \s-2(ASF)\s+2
+is set to \s-2INDIVIDUAL\s+2,
+the current value of this attribute
+defines the marker type to be applied to the output primitives:
+.RS
+.ta 0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i
+.LP
+\(bu
+.SM "POLYMARKER"
+.LP
+\(bu
+.SM "POLYMARKER 3"
+.ta
+.RE
 .SS C Input Parameter
-.IP \fIind\fP
-The clipping indicator is an enumerated value, from:
+.IP \fImarkertype\fP
+An integer value specifying a marker type;
+the following marker types are defined:
+.sp
+.ta .5i +\w'-0     'u +\w'PMK_BOWTIE_NE     'u
 .nf
-.ta .5i +\w'PIND_NO_CLIP     'u
+.\" PT is a string for a "point".
+.ds PT \v'-0.2m'.\v'+0.2m'
+1	PMARKER_DOT	\fIPoint\fP (\*(PT)
+2	PMARKER_PLUS	\fIPlus sign\fP (\(pl)
+3	PMARKER_ASTERISK	\fIAsterisk\fP (\(**)
+4	PMARKER_CIRCLE	\fICircle\fP (\(ci)
+5	PMARKER_CROSS	\fIX-mark\fP (\(mu)
 .sp
-	PIND_NO_CLIP	\fIDo not clip\fP
-	PIND_CLIP	\fIClip\fP
 .fi
-.sp
+Support for marker types is workstation dependent.
 .SS Execution
-.LP
-If the current edit mode is \s-2INSERT\s+2, a
-\s-2SET MODELLING CLIPPING INDICATOR\s+2 element is inserted
-into the currently open
+If the current edit mode is \s-2INSERT\s+2,
+a \s-2SET MARKER TYPE\s+2 element is inserted into the currently open
 structure after the element pointed to by the current element pointer. If
-the edit mode is \s-2REPLACE\s+2, the new element
+the edit mode is \s-2REPLACE\s+2, the new \s-2SET MARKER TYPE\s+2 element
 replaces the element pointed to by the element pointer. In either case, the
 element pointer is updated to point to the new element.
 .LP
-During traversal, this attribute enables or disables modelling clipping
-to the volume controlled by \s-2SET MODELLING CLIPPING VOLUME\s+2,
-\s-2SET MODELLING CLIPPING VOLUME 3\s+2, and
-\s-2RESTORE MODELLING CLIPPING VOLUME\s+2
-elements.
+When the \s-2SET MARKER TYPE\s+2 element is traversed, the current marker
+type
+entry in the \s-2PHIGS\s+2 traversal state list is set to marker type.
+.LP
+When the current marker type \s-2ASF\s+2 is set to
+\s-2INDIVIDUAL\s+2,
+\s-2POLYMARKER\s+2 and \s-2POLYMARKER 3\s+2 output primitives which follow in
+the structure network are then drawn using the marker type specified.
+.LP
+The default marker type is 3, \fIAsterisk\fP (\(**).
+If the marker type specified is not available on the workstation,
+the default will be used.
+.LP
+When the current marker type \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
+the effective marker type is
+the marker type attribute in the polymarker representation selected by
+the current polymarker index.
+In this case, the marker type set with \s-2SET MARKER
+TYPE\s+2 has no effect.
 .SH ERRORS
 .IP 005
 Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
@@ -79,8 +111,9 @@ Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE MODELLING CLIPPING FACILITIES (3P)"
-.SM "SET MODELLING CLIPPING VOLUME (3P)"
-.SM "SET MODELLING CLIPPING VOLUME 3 (3P)"
-.SM "RESTORE MODELLING CLIPPING VOLUME (3P)"
+.SM "SET INDIVIDUAL ASF (3P)"
+.SM "SET POLYMARKER REPRESENTATION (3P)"
+.SM "INQUIRE POLYMARKER REPRESENTATION (3P)"
+.SM "POLYMARKER (3P)"
+.SM "POLYMARKER 3 (3P)"
 .fi

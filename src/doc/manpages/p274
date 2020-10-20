@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p274,v 5.3 94/04/17 20:57:36 hersh Exp $
+.\" $XConsortium: p273,v 5.2 94/04/17 20:57:35 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,142 +22,112 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SAMPLE PICK" 3P "29 February 1991"
+.TH "SAMPLE LOCATOR 3" 3P "29 February 1991"
 .SH NAME
-SAMPLE PICK \- sample the current measure of a pick device
-.IX "Pick Input Devices" "SAMPLE PICK"
-.IX "Sample Input Mode" "SAMPLE PICK"
-.IX "Input Modes" "SAMPLE PICK"
+SAMPLE LOCATOR 3 \- sample the current measure of a locator device
+.IX "Locator Input Devices" "SAMPLE LOCATOR 3"
+.IX "Sample Input Mode" "SAMPLE LOCATOR 3"
+.IX "Input Modes" "SAMPLE LOCATOR 3"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-psample_pick ( ws, dev, depth, pick_in_status, rpick )
+psample_loc3 ( ws, dev, view_ind, loc_pos )
 Pint	ws;	\fIworkstation identifier\fP
-Pint	dev;	\fIpick device number\fP
-Pint	depth;	\fImax. depth of returned path\fP
-Pin_status	*pick_in_status;	\fIOUT pick input status\fP
-Ppick_path	*rpick;	\fIOUT pick path\fP
+Pint	dev;	\fIlocator device number\fP
+Pint	*view_ind;	\fIOUT view index\fP
+Ppoint3	*loc_pos;	\fIOUT locator position\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2SAMPLE PICK\s+2 to sample the current measure of the specified
-pick device without waiting for input from the operator. The device
+Use \s-2SAMPLE LOCATOR 3\s+2 to sample the current measure of the specified
+locator device without waiting for input from the operator. The device
 must be in \s-2SAMPLE\s+2 mode.
-See \s-2SET PICK MODE\s+2 and \s-2INITIALIZE PICK\s+2 for more information.
+See \s-2SET LOCATOR MODE\s+2 and \s-2INITIALIZE LOCATOR 3\s+2 for more
+information.
 .SS C Input Parameters
 .IP \fIws\fP
 Workstation identifier. An integer specifying the workstation with which
-the specified pick device is associated.
+the specified locator device is associated.
 .IP \fIdev\fP
-The device number of the pick device to be sampled.
-See the \fIAvailable Devices\fP section of \s-2INITIALIZE PICK\s+2
+The device number of the locator device to be sampled.
+See the \fIAvailable Devices\fP section of \s-2INITIALIZE LOCATOR 3\s+2
 for a description of the available devices.
-.IP \fIdepth\fP
-The maximum number of path elements to return.
-.SS C Output Parameter
-.IP \fIpick_in_status\fP
-Pin_status is defined in phigs.h as:
+.SS C Output Parameters
+.IP \fIview_ind\fP
+The index of the view representation used to transform
+the Normalized Projection Coordinate (\s-2NPC\s+2)
+position to a World Coordinates (\s-2WC\s+2) position.
+.IP \fIloc_pos\fP
+Ppoint3 is defined in phigs.h as follows:
 .sp .4
-.nf
-typedef enum {
-.sp .2
-	PIN_STATUS_NONE,
-	PIN_STATUS_OK,
-	PIN_STATUS_NO_IN
-.sp .2
-} Pin_status;
-.fi
-.IP \fIrpick\fP
-Ppick_path is defined in phigs.h as:
-.sp .4
-.ta .5i +\w'Ppick_path_elem     'u +\w'*path_list;     'u
+.ta .5i +\w'Pfloat     'u +\w'x;     'u
 .nf
 typedef struct {
 .sp .2
-	Pint	depth;	/* pick path depth */
-	Ppick_path_elem	*path_list;	/* pick path list */
+	Pfloat	x;	/* x coordinate */
+	Pfloat	y;	/* y coordinate */
+	Pfloat	z;	/* z coordinate */
 .sp .2
-} Ppick_path;
+} Ppoint3;
 .fi
-.IP
-\fIdepth\fP indicates the number of elements in the measure's path.  
-This is the depth value contained in the device's current measure.  
-It is not affected by the \fImaximum depth to return\fP parameter.  
-Thus the number of elements returned in \fIpath_list\fP may be less than
-\fIdepth\fP.  
-.IP
-\fIpath_list\fP is the array of path elements defining the location of the
-picked primitive in the Central Structure Store (\s-2CSS\s+2).
-\fBThis array must be allocated by the calling program
-and the array pointer assigned to this field before calling this
-function.\fP
-The array must be at least of length \fImaximum depth to return\fP.
-Ppick_path_elem is defined in phigs.h as:
-.bp
-.sp .4
-.ta .5i +\w'Pint     'u +\w'struct_id;     'u
-.nf
-typedef struct {
-.sp .2
-	Pint	struct_id;	/* structure identifier */
-	Pint	pick_id;	/* pick identifier */
-	Pint	elem_pos;	/* element number */
-.sp .2
-} Ppick_path_elem;
-.fi
-.IP
-\fIstruct_id\fP, \fIpick_id\fP, and \fIelem_pos\fP are the 
-structure identifier, pick identifier, and element number, 
-respectively, of each element in the path.
 .SS Execution
-\s-2SAMPLE PICK\s+2 samples the specified pick device. The
+\s-2SAMPLE LOCATOR 3\s+2 samples the specified locator device. The
 device must be in \s-2SAMPLE\s+2 mode.
-See \s-2SET PICK MODE\s+2 and \s-2INITIALIZE PICK\s+2 for more
+See \s-2SET LOCATOR MODE\s+2 and \s-2INITIALIZE LOCATOR 3\s+2 for more
 information.
 .LP
 When a device is set to \s-2SAMPLE\s+2 mode, a measure process is created
-for the device and the device is activated. When \s-2SAMPLE PICK\s+2 is
+for the device and the device is activated. When \s-2SAMPLE LOCATOR 3\s+2 is
 called, the current value of the measure process for the specified device
 is retrieved without waiting for further input from the operator.
 .LP
-A \s-2PICK\s+2 device measure consists of a \fIstatus\fP and a
-\fIpick path\fP.
-The \fIstatus\fP indicates whether or not a pick by the operator was successfully
-resolved.
-The \fIpath\fP describes the location of the picked primitive, if any,
-in the \fICentral Structure Store\fP (\s-2CSS\s+2).
-The \fIpick filter\fP of a \s-2PICK\s+2 device controls which output
-primitives on the device's workstation are pickable.
-By default, no output primitives are pickable.
-See \s-2SET PICK FILTER\s+2 for more information on the \fIpick filter\fP.
+A \s-2LOCATOR\s+2 device measure consists of a \fIposition\fP and a
+\fIview index\fP.
+The \fIposition\fP is the \s-2WC\s+2 point corresponding to the
+position on the workstation selected by the operator.
+The \fIview index\fP is the index of the view used to transform
+\fIposition\fP from Device Coordinates (\s-2DC\s+2) to \s-2WC\s+2.
+See \s-2INITIALIZE LOCATOR 3\s+2 and
+\s-2SET VIEW TRANSFORMATION INPUT PRIORITY\s+2 for a
+description of how this view representation is determined.
+The workstation transform is used to transform the
+\s-2DC\s+2 position to a \s-2NPC\s+2 position.
+.LP
+\fBNote:\fP The \s-2\&2D\s+2 and \s-2\&3D\s+2 locator measure
+processes are the same except
+that the \s-2\&2D\s+2 process discards the \fIz\fP coordinate.
+The \s-2\&2D\s+2 version of this
+function, \s-2SAMPLE LOCATOR\s+2, can be used if the value of the \fIz\fP
+coordinate is not needed.
 .SH ERRORS
 .IP 003
-Ignoring function, function requires state (PHOP, WSOP, *, *)
+Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
 .IP 054
 Ignoring function, the specified workstation is not open
-.IP 060
-Ignoring function, specified workstation is not of category \s-2OUTIN\s+2
+.IP 061
+Ignoring function, specified workstation is neither of category \s-2INPUT\s+2
+nor of category \s-2OUTIN\s+2
 .IP 250
 Ignoring function, the specified device is not available
 on the specified workstation
 .IP 252
-Ignoring function, the function requires the input
-device to be in \s-2SAMPLE\s+2 mode
+Ignoring function, the function requires the input device
+to be in \s-2SAMPLE\s+2 mode
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET PICK FILTER (3P)"
-.SM "SET PICK IDENTIFIER (3P)"
-.SM "SET PICK MODE (3P)"
-.SM "INITIALIZE PICK 3 (3P)"
-.SM "REQUEST PICK (3P)"
-.SM "GET PICK (3P)"
-.SM "INQUIRE PICK DEVICE STATE (3P)"
+.SM "INITIALIZE LOCATOR 3 (3P)"
+.SM "SET LOCATOR MODE (3P)"
+.SM "REQUEST LOCATOR 3 (3P)"
+.SM "GET LOCATOR 3 (3P)"
+.SM "INQUIRE LOCATOR DEVICE STATE 3 (3P)"
+.SM "SET VIEW TRANSFORMATION INPUT PRIORITY (3P)"
+.SM "SAMPLE LOCATOR (3P)"
 .fi

@@ -1693,7 +1693,7 @@ Ignoring function, the specified element does not exist
 .nf
 .IP
 .ta 0.5i
-.SM "UNPACK DATA RECORD (3P)"
+.\" .SM "UNPACK DATA RECORD (3P)"
 .SM "INQUIRE ELEMENT TYPE AND SIZE (3P)"
 .SM "INQUIRE CURRENT ELEMENT CONTENT (3P)"
 .SM "CREATE STORE (3P)"

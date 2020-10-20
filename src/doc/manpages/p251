@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p251,v 5.2 94/04/17 20:57:21 rws Exp $
+.\" $XConsortium: p250,v 5.2 94/04/17 20:57:21 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,111 +22,154 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "REMOVE NAMES FROM SET" 3P "29 February 1991"
+.TH "REDRAW ALL STRUCTURES" 3P "29 February 1991"
 .SH NAME
-REMOVE NAMES FROM SET \- create a structure element to remove names from the
-current name set
-.IX "Highlighting" "REMOVE NAMES FROM SET"
-.IX "Invisibility" "REMOVE NAMES FROM SET"
-.IX "Detectability" "REMOVE NAMES FROM SET"
-.IX "Namesets" "REMOVE NAMES FROM SET"
-.IX "Special Attributes" "REMOVE NAMES FROM SET"
-.IX "Attributes, Special Attributes" "REMOVE NAMES FROM SET"
+REDRAW ALL STRUCTURES \- redisplay all structures posted to a workstation
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-premove_names_set ( set )
-Pint_list	*set;	\fIset of names to be removed\fP
+predraw_all_structs ( ws, control_flag )
+Pint	ws;	\fIworkstation identifier\fP
+Pctrl_flag	control_flag;	\fIcontrols the redraw of the structures\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, STOP, *)
+(PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2REMOVE NAMES FROM SET\s+2 creates a structure element
-containing names to be removed from the traversal-time \fIcurrent name set\fP,
-and puts the element
-into the currently open structure according to the current edit mode.
-The current name set is compared during traversal to the workstation's
-\fIname set filters\fP to determine if primitives which follow in the
-structure network are invisible, highlighted, and/or
-selectable by \s-2PICK\s+2 input devices.  Each name in the \fIname set\fP
-is a small non-negative integer.
-.SS C Input Parameter
-.IP \fIset\fP
-A pointer to a Pint_list structure
-containing the set of names to be removed.
-The Pint_list data structure is defined in phigs.h as:
+\s-2REDRAW ALL STRUCTURES\s+2 updates the specified
+workstation's display by:
+.RS
+.ta 0.2i +0.2i +0.2i +0.2i +0.2i
+.LP
+\(bu
+Completing any actions in progress
+.LP
+\(bu
+Clearing the display surface if the surface is \s-2NOT EMPTY\s+2,
+or if the \fIcontrol flag\fP is \s-2ALWAYS\s+2
+.LP
+\(bu
+Updating any pending viewing transformation and pending \s-2HLHSR\s+2 mode
+.LP
+\(bu
+Redisplaying all structures posted to the workstation
+.LP
+\(bu
+Setting the workstation's \fIstate of visual representation\fP
+to \s-2CORRECT\s+2
+.ta
+.RE
+.SS C Input Parameters
+.IP \fIws\fP
+The identifier of the workstation whose structures are to be redrawn.
+.IP \fIcontrol_flag\fP
+Controls whether the display surface is
+automatically cleared.
+Pctrl_flag is defined in phigs.h.
+Valid values are:
 .sp .4
-.ta .5i +\w'Piclass     'u +\w'*integers;     'u
+.ta .5i
 .nf
-typedef struct {
+typedef enum {
 .sp .2
-	Pint	num_ints;	/* number of Pints in list */
-	Pint	*ints;	/* list of integers */
+	PFLAG_COND,
+	PFLAG_ALWAYS
 .sp .2
-} Pint_list;
+}Pctrl_flag;
 .fi
+.IP
+\s-2PFLAG_COND\s+2 clears the display surface before redrawing only if
+the surface is not empty.
+.IP
+\s-2PFLAG_ALWAYS\s+2
+automatically clears the surface before redrawing.
 .SS Execution
+\s-2REDRAW ALL STRUCTURES\s+2 performs the following actions in
+sequence:
+.sp .5v
+.in +0.5i
+.ta +0.2i
+.ti -0.2i
+1.	Any buffered communications for the specified workstation
+are completed without first clearing the display surface.
+.\"
+.\" I'm think \s-2PEX-SI\s0 never has any data that hasn't been flushed. -wds
+.\"
+.\"		Actions below must match those for UPDATE WORKSTATION!
+.\"
+.sp .5v
+.ti -0.2i
+2.	If the \fIcontrol flag\fP is set to \s-2CONDITIONALLY\s+2, then the
+workstation's display surface is only cleared if
+it is \s-2NOT EMPTY\s+2. If the control
+flag is set to \s-2ALWAYS\s+2, the display surface is cleared regardless
+of whether the display is \s-2EMPTY\s+2. In any case,
+the entry is then set to \s-2EMPTY\s+2.
+.IP
+\fBNote:\fP
+Using a control flag of \s-2CONDITIONALLY\s+2
+avoids unnecessarily clearing an empty display surface.
+A value of \s-2ALWAYS\s+2 is useful when generating 
+multiple copies of the current image on hardcopy devices.
+However, for \s-2PEX-SI\s+2 where an output device is always
+a \s-2CRT\s+2, the value \s-2ALWAYS\s+2 is not meaningful.
+.sp .5v
+.ti -0.2i
+3.	For every view representation in the workstation's state list,
+if the \fIview transformation update state\fP is \s-2PENDING\s+2,
+the current view representation is loaded from the \fIrequested\fP view
+representation,
+and the update state is set to \s-2NOTPENDING\s+2.
+.sp .5v
+.ti -0.2i
+4.	If the workstation transformation update state is \s-2PENDING\s+2,
+the \fIcurrent workstation window\fP and \fIcurrent workstation viewport\fP
+are loaded with the \fIrequested\fP values for each,
+and the update state is set to \s-2NOTPENDING\s+2.
+.sp .5v
+.ti -0.2i
+5.	If the workstation's \fI\s-2HLHSR\s+2 update state\fP
+is \s-2PENDING\s+2, the \fIcurrent \s-2HLHSR\s+2 mode\fP is updated
+to the value of the \fIrequested \s-2HLHSR\s+2 mode\fP, and
+the update state is set to \s-2NOTPENDING\s+2.
+.sp .5v
+.ti -0.2i
+6.	All structure networks posted for this workstation are redisplayed
+in the order of their priority.
+.sp .5v
+.ti -0.2i
+7.	The workstation's \fIstate of visual representation\fP is set
+to \s-2CORRECT\s+2.
 .LP
-If the current edit mode is \s-2INSERT\s+2, the \s-2REMOVE NAMES FROM SET\s+2
-element is inserted into the open structure after the element pointed to
-by the current element pointer. If the edit mode is \s-2REPLACE\s+2, the
-\s-2REMOVE NAMES FROM SET\s+2 element replaces the element pointed to by the
-element pointer. In either case, the element pointer is updated to point
-to the new element.
-.LP
-When traversal of a posted structure network starts, the \fIcurrent name set\fP
-is empty. During traversal, the member names specified by
-\s-2ADD NAMES TO SET\s+2 elements are added to the current name set.
-The member names specified by \s-2REMOVE NAMES FROM SET\s+2 elements
-are removed from the current name set.
-.LP
-The updated current name set applies to primitives
-that follow in the structure network by set-intersection with the
-workstation's \fIname set filters\fP, which are set by
-\s-2SET INVISIBILITY FILTER\s+2,
-\s-2SET HIGHLIGHTING FILTER\s+2, and \s-2SET PICK FILTER\s+2.
-Each workstation has a single \fIinvisibility filter\fP,
-a single \fIhighlighting filter\fP,
-and a \fIpick filter\fP for each \s-2PICK\s+2 input device.
-The actual appearance of highlighting is workstation-dependent.
-.LP
-Each filter contains an
-\fIinclusion set\fP and an \fIexclusion set\fP of names, both
-empty by default.
-A primitive is \fIeligible\fP
-.\"	for the special treatment
-if at least one name in the current name set is in the inclusion set
-and no name in the current name set is in the exclusion set.
-If the current name set is empty, subsequent primitives are not eligible.
-If the workstation's inclusion set is empty (the default),
-no primitives are eligible.  That is, no primitives are invisible,
-highlighted, or selectable by \s-2PICK\s+2 input devices.
-.LP
-Each name is a small non-negative integer.
-\s-2PHIGS\s+2
-conformance requires support for at least 64 names;
-\s-2PEX-SI\s0
-supports the range 0 to 1023.
-The same names can be added and removed any number of times during traversal.
-Since the presence or absence of each name in the current nameset and the
-workstation's filter affects the eligibility of subsequent primitives,
-1024 names provide up to 1024 different simultaneous groupings of primitives.
+The workstation's state of visual representation indicates
+if the display is \s-2CORRECT\s+2, \s-2SIMULATED\s+2, or \s-2DEFERRED\s+2.
+\s-2INQUIRE DISPLAY UPDATE STATE\s+2 returns the
+workstation's \fIdisplay surface empty\fP and state of visual representation
+state list entries.
+Normally, the traversal in Step 6 causes
+the display surface empty workstation state to become \s-2NOTEMPTY\s+2.
+(If all the posted structures are empty, or if they contain elements but no
+output primitive elements, the display surface empty may be
+\s-2EMPTY\s+2 or \s-2NOTEMPTY\s+2.)
+.DT
 .SH ERRORS
-.IP 005
-Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
+.IP 003
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(i.e., the workstation category is neither \s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "ADD NAMES TO SET (3P)"
-.SM "SET INVISIBILITY FILTER (3P)"
-.SM "SET HIGHLIGHTING FILTER (3P)"
-.SM "SET PICK FILTER (3P)"
-.SM "INCREMENTAL SPATIAL SEARCH (3P)"
-.SM "INCREMENTAL SPATIAL SEARCH 3 (3P)"
+.SM "UPDATE WORKSTATION (3P)"
+.SM "INQUIRE DISPLAY UPDATE STATE (3P)"
+.SM "SET DISPLAY UPDATE STATE (3P)"
 .fi

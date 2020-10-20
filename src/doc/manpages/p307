@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p307,v 5.2 94/04/17 20:58:00 rws Exp $
+.\" $XConsortium: p306,v 5.2 94/04/17 20:57:59 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,33 +22,37 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET EDGE COLOUR INDEX" 3P "29 February 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
+.ds pN SET EDGE COLOUR
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-SET EDGE COLOUR INDEX \- create structure element to set the current edge colour index attribute
-.IX "Aspect Source Flags" "SET EDGE COLOUR INDEX"
-.IX "Attributes, Edge Attributes" "SET EDGE COLOUR INDEX"
-.IX "Colour" "SET EDGE COLOUR INDEX"
-.IX "Edge Attributes" "SET EDGE COLOUR INDEX"
+\*(pN \-
+create structure element to set the current edge direct colour attribute
+.IX "PHIGS Extension Functions" "\*(pN"
+.IX "Colour" "SET EDGE COLOUR"
+.IX "Edge Attributes" "SET EDGE COLOUR"
+.IX "Attributes, Edge Attributes" "SET EDGE COLOUR"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
+.\" 6. Insert C syntax below
 void
-pset_edge_colr_ind ( index )
-Pint	index;	\fIedge colour index\fP
+pset_edge_colr ( colour )
+Pgcolr	*colour;	\fIedge colour\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET EDGE COLOUR INDEX\s+2 creates a structure element
-containing a value for the current edge colour index attribute.  
-When the current edge colour index Aspect Source Flag (\s-2ASF\s+2)
-is set to \s-2INDIVIDUAL\s+2,
-this attribute indexes the colour representation
-that applies to the output primitives:
+\s-2SET EDGE COLOUR\s+2 creates a structure element to set
+the current edge direct colour attribute.
+.LP
+When the current edge colour Aspect Source Flag (\s-2ASF\s+2) is set to
+\s-2INDIVIDUAL\s+2, the current value of
+this attribute applies to the following output primitives:
 .RS
 .ta 0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i
 .LP
@@ -62,10 +66,10 @@ that applies to the output primitives:
 .SM "FILL AREA SET 3 WITH DATA"
 .LP
 \(bu
-.SM "GENERALIZED DRAWING PRIMITIVE \fI(Fill Area Set Primitives)\fP"
+.SM "GENERALIZED DRAWING PRIMITIVE (\fIFill Area Set Primitives\fP)"
 .LP
 \(bu
-.SM "GENERALIZED DRAWING PRIMITIVE 3 \fI(Fill Area Set Primitives)\fP"
+.SM "GENERALIZED DRAWING PRIMITIVE 3 (\fIFill Area Set Primitives\fP)"
 .LP
 \(bu
 .SM "NON-UNIFORM B-SPLINE SURFACE"
@@ -80,49 +84,55 @@ that applies to the output primitives:
 .SM "TRIANGLE STRIP 3 WITH DATA"
 .ta
 .RE
-.LP
-.SS C Input Parameter
-.IP \fIindex\fP
-An integer colour index, which selects a colour value from
-the workstation's colour table.
+.SS C Input Parameters
+.IP \fIcolour\fP
+Edge colour. Pgcolr is defined as:
+.ta .5i +\w'union  'u +\w'struct  'u +\w'Pfloat      'u +\w'type;    'u +\w'x;      'u
+.nf
+.sp .4
+typedef struct {
+.sp .2
+	Pint		 type;		/* indirect, RGB, CIE, HSV, HLS */
+	union {
+	   Pint		ind;		/* colour table index */
+	   struct {
+		Pfloat		x;		/* red, hue, etc. */
+		Pfloat		y;		/* green, saturation, lightness, etc. */
+		Pfloat		z;		/* blue, value, saturation, etc. */
+	   } general;
+	} val;
+} Pgcolr;
+.fi
 .SS Execution
-If the current edit mode is \s-2INSERT\s+2, then 
-a \s-2SET EDGE COLOUR INDEX\s+2 element is inserted into the currently open
-structure after the element pointed to by the current element pointer.  If
-the edit mode is \s-2REPLACE\s+2, then 
-the new \s-2SET EDGE COLOUR INDEX\s+2 element
-replaces the element pointed to by the element pointer.
-In either case, the element pointer is updated to point to the new element.
+Depending on the edit mode, a \s-2SET EDGE COLOUR\s+2 element with
+the value edge colour in the specified colour model is 
+inserted into the open structure after the element pointer or replaces
+the element pointed at by the element pointer. The element pointer
+is then updated to point to this \s-2SET EDGE COLOUR\s+2 element.
 .LP
-When the \s-2SET EDGE COLOUR INDEX\s+2 element is traversed,
-the current edge colour index
-entry in the traversal state list is set to the colour index.
+When the current edge colour \s-2ASF\s+2 is set to
+\s-2INDIVIDUAL\s+2, filled area output primitives
+that follow in
+the structure network are drawn using the current edge colour.
 .LP
-When the current edge colour index \s-2ASF\s+2 is set to
-\s-2INDIVIDUAL\s+2, the fill area output primitives that follow in
-the structure network are filled with the colour representation
-selected by the current edge colour index from the workstation's
-colour table.  
+When the current edge colour \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
+the edge colour is taken from the
+workstation extended representation indicated by the current edge index.
+In this case, the edge colour
+set with \s-2SET EDGE COLOUR\s+2 has no effect.
 .LP
-If the colour index specified is not available on the workstation,
-then colour index 1 is used.
-.LP
-When the current edge colour index \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the edge colour index is taken from the
-workstation's representation indicated by the current edge index.  
-In this case, the colour index set with \s-2SET EDGE COLOUR INDEX\s+2
-has no effect.
+The standard \s-2PHIGS\s+2 function \s-2SET EDGE COLOUR INDEX\s+2
+is equivalent to calling to \s-2SET EDGE COLOUR\s+2 with type
+\s-2INDIRECT\s+2.
 .SH ERRORS
 .IP 005
-Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
-.IP 113
-Ignoring function, the colour index value is less than zero
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET COLOUR REPRESENTATION (3P)"
-.SM "SET EDGE FLAG (3P)"
-.SM "SET INDIVIDUAL ASF (3P)"
-.SM "SET EDGE REPRESENTATION (3P)"
+.SM "COLOUR (7P)"
+.SM "SET EDGE REPRESENTATION PLUS (3P+)"
+.SM "SET EDGE COLOUR INDEX (3P)"
 .fi

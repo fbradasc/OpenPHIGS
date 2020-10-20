@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p239,v 5.2 94/04/17 20:57:12 rws Exp $
+.\" $XConsortium: p238,v 5.2 94/04/17 20:57:11 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,113 +22,87 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2OPEN PHIGS\s+2
-.ds h \s-2ERROR HANDLING\s+2
-.ds l \s-2ERROR LOGGING\s+2
-.TH "OPEN PHIGS" 3P "29 February 1991"
+.TH "OPEN ARCHIVE FILE" 3P "29 February 1991"
 .SH NAME
-OPEN PHIGS \- open and initialize the \s-2PHIGS\s+2 environment
-.IX "Errors" "OPEN PHIGS"
+OPEN ARCHIVE FILE \- open specified archive file
+.IX "Archive Files" "OPEN ARCHIVE FILE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-popen_phigs ( error_file, memory )
-char	*error_file;	\fIname of error file\fP
-size_t	memory;	\fI\s-2NOT USED\s+2\fP
+popen_ar_file ( archive_id, archive_file )
+Pint	archive_id;	\fIarchive identifier\fP
+char	*archive_file;	\fIarchive file name\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHCL, WSCL, STCL, ARCL)
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\*f initializes \s-2PHIGS\s+2 and enables access to the \s-2PHIGS\s+2
-functions.
-\s-2OPEN PHIGS\s+2 
-must be called prior to calling any other \s-2PHIGS\s+2 functions.
+Use \s-2OPEN ARCHIVE FILE\s+2 to open an archive file and associate a
+specified archive file identifier with the open archive file.  
 .SS C Input Parameters
-.IP \fIerror_file\fP
-A pointer to the \fIerror file\fP to log \s-2PHIGS\s+2 error messages to.
-The \fIerror file\fP can be either a pointer to a
-valid UNIX file name or a null pointer, for example (char*)0.
-A null pointer implies that standard error is to be used as the error file.
-If a file name is specified, \s-2PHIGS\s+2 will attempt to access the file
-for writing.  If this attempt fails, \*f will fail and the appropriate
-error will be reported to standard error.
+.IP \fIarchive_id\fP
+An integer specifying the identifier to be associated with the open
+archive file.  
+.IP \fIarchive_file\fP
+A character string giving the file name of the archive file.  The
+application should not open this file;  \s-2PHIGS\s+2 will do this when it
+needs to access the file.  
 .IP
-The error file argument passed to \*f will be passed to \*h.
-\*h will also pass this argument to \*l.
-If for some reason \*l cannot access the specified error file,
-the error message will be written to standard error.
-\*l appends messages to the error file; it does not truncate the file when
-\*f is called.  If the specified file does not exist, it will only be
-created if \*l is called.
-.IP 
-\*l writes the abstract \s-2PHIGS\s+2 function name, the
-error number, and an error description to the error file.
-If for some reason the text for the function name
-and/or error description can't be determined, \*l
-will just write the function number and the error number.
-.IP \fImemory\fP
-This parameter is not used by the \s-2PEX-SI API\s+2.
+Neither the application nor the operator should attempt to interact with
+this file after passing it to \s-2OPEN ARCHIVE FILE\s+2.  
 .SS Execution
-\s-2OPEN PHIGS\s+2:
-.sp .4
-.in .7i
-.ta .5i
-.ti -.2i
-\(bu    Connects to a default or specified server. The default server is the one returned
-by XDisplayName (\s-2NULL\s+2).
-(\s-2OPEN XPHIGS\s+2 must be used to specify a server.)
-.sp .2
-.ti -.2i
-\(bu    Sets the \s-2PHIGS\s+2 system state variable to \s-2`PHOP'\s+2.
-.sp .2
-.ti -.2i
-\(bu    Initializes the default workstation description tables and makes them
-available for use by the other \s-2PHIGS\s+2 functions.
-These tables reflect the capabilities of the default or specified server.
-.sp .2
-.ti -.2i
-\(bu    Creates the \s-2PHIGS\s+2 state list and initializes it with default values
-taken from the \s-2PHIGS\s+2 description table.
-.sp .2
-.ti -.2i
-\(bu    Stores \fIerror file\fP in the \s-2PHIGS\s+2 error state list.
-.DT
-.sp
+If the specified archive file does not exist, then a new file is 
+created and remains empty until \s-2CLOSE ARCHIVE FILE\s+2 is
+called.  At that time, any archived structures will be written to
+the file.  
 .LP
-The default values for the \s-2PHIGS\s+2 state list,
-\s-2PHIGS\s+2 description table, and workstation description tables
-are in the Appendix.
+If the specified file exists and is a valid \s-2PEX-SI\s0 archive file,
+the contents are read and available for retrieval.  If the named
+file exists but is empty, it is treated as if it did not exist 
+(in other words, it becomes a valid \s-2PEX-SI\s0 archive file and remains 
+empty until it is closed, at which time any archived structures are written to it).  
 .LP
-When an error in \s-2PHIGS\s+2 is detected, \*h is called and passes three
-items of informations: the \fIerror file\fP, the function number of the
-\s-2PHIGS\s+2 function that detected the error, and the error number.
-\*h calls \*l, which writes an error message to the error file.
-\s-2PHIGS\s+2 users can replace \*h with a function of their own.
-This function may in turn call \*l.
-See \*h and \*l for more information.
+The physical file is opened only by \s-2PHIGS\s+2 when reading from or writing
+to it (in other words, during calls to \s-2OPEN ARCHIVE\s+2 and \s-2CLOSE
+ARCHIVE\s+2).
 .LP
-\s-2PHIGS\s+2 only writes to the error file if \*l is called, either by
-\*h or the application.  If the \fIerror file\fP does not exist when
-\*f is called, it will only be created if and when \*l is called.
+The \s-2PHIGS\s+2 archive state is set to \fIarchive open\fP (\s-2AROP\s+2),
+and the specified archive file identifier is added to the
+\fIset of open archive files\fP maintained in the \s-2PHIGS\s+2 state list.  
 .LP
+\fBNote:\fP  It is recommended that the application leave an archive file open
+until it is no longer needed, in order to avoid repeating the
+overhead associated with the \s-2OPEN ARCHIVE FILE\s+2 operation.
+.LP
+One archive file format is supported: a private \fIbinary\fP format.
+The binary format is supported for users who want compact archives over
+standard conformance.  
 .SH ERRORS
-.IP 001
-Ignoring function, function requires state (\s-2PHCL, WSCL, STCL, ARCL\s+2)
-.IP 450
-Ignoring function, the specified error file is invalid
+.IP 002
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2*\s+2, \s-2*\s+2, \s-2*\s+2)
+.IP 402
+Ignoring function, archive file identifier already in use
+.IP 400
+Ignoring function, the archive file cannot be opened
+.IP 401
+Ignoring function, opening this archive file would exceed the maximum number
+of simultaneously open archive files
+.IP 403
+Ignoring function, the archive file is not a \s-2PHIGS\s+2 archive file
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE SYSTEM STATE VALUE (3P)"
-.SM "CLOSE PHIGS (3P)"
-.SM "OPEN ARCHIVE FILE (3P)"
-.SM "OPEN STRUCTURE (3P)"
-.SM "OPEN WORKSTATION (3P)"
-.SM "OPEN XPHIGS (3P)"
+.SM "ARCHIVE STRUCTURES (3P)"
+.SM "CLOSE ARCHIVE FILE (3P)"
+.SM "INQUIRE ARCHIVE FILES (3P)"
+.SM "INQUIRE ARCHIVE STATE VALUE (3P)"
+.SM "RETRIEVE STRUCTURE IDENTIFIERS (3P)"
+.SM "RETRIEVE STRUCTURES (3P)"
+.SM "DELETE ALL STRUCTURES FROM ARCHIVE (3P)"
 .fi

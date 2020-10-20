@@ -1,79 +1,83 @@
-.\"##
-.\" $XConsortium: p318,v 5.2 94/04/17 20:58:08 rws Exp $
-.\"##
-.\"## 
-.\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
-.\"## 
-.\"##                         All Rights Reserved
-.\"## 
-.\"## Permission to use, copy, modify, and distribute this software and its 
-.\"## documentation for any purpose and without fee is hereby granted, 
-.\"## provided that the above copyright notice appear in all copies and that
-.\"## both that copyright notice and this permission notice appear in 
-.\"## supporting documentation, and that the name of Sun Microsystems,
-.\"## not be used in advertising or publicity 
-.\"## pertaining to distribution of the software without specific, written 
-.\"## prior permission.  
-.\"## 
-.\"## SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
-.\"## INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
-.\"## EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
-.\"## CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
-.\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-.\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-.\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET ERROR HANDLING MODE" 3P "29 February 1991"
+.\"
+.\" $XConsortium: p317,v 1.2 94/04/17 20:58:07 rws Exp $
+.\"
+.\" 
+.\" Copyright (c) 1990 by Sun Microsystems, Inc. and the X Consortium.
+.\" 
+.\"                         All Rights Reserved
+.\" 
+.\" Permission to use, copy, modify, and distribute this software and its 
+.\" documentation for any purpose and without fee is hereby granted, 
+.\" provided that the above copyright notice appear in all copies and that
+.\" both that copyright notice and this permission notice appear in 
+.\" supporting documentation, and that the names of Sun Microsystems,
+.\" and the X Consortium not be used in advertising or publicity 
+.\" pertaining to distribution of the software without specific, written 
+.\" prior permission.  
+.\" 
+.\" SUN MICROSYSTEMS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, 
+.\" INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+.\" EVENT SHALL SUN MICROSYSTEMS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+.\" CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+.\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+.\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+.\" PERFORMANCE OF THIS SOFTWARE.
+.\" "@(#)error_handling.3 3.4 90/08/23 Copyr 1990 Sun Micro"
+.TH "SET ERROR HANDLING" 3P "29 February 1991"
 .SH NAME
-SET ERROR HANDLING MODE \- set the current error handling mode
-.IX "Errors" "SET ERROR HANDLING MODE"
+SET ERROR HANDLING \- Set the error handling function -- C binding only
+.IX "Errors" "SET ERROR HANDLING"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_err_hand_mode ( mode )
-Perr_mode	mode;	\fIerror handling mode\fP
+pset_err_hand ( new_err_hand, old_err_hand )
+void	(*new_err_hand) ();	\fIapplication's error handling function\fP
+void	(**old_err_hand) ();	\fIOUT old error handling function\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, *)
+(*, *, *, *)
 .SH DESCRIPTION
+\s-2SET ERROR HANDLER\s+2 sets the error handling function that will be called when
+\s-2PHIGS\s+2 reports an error.
+The default function is perr_hand.
+See the \s-2ERROR HANDLING\s+2 man page for a description of the parameters passed to
+the error handling function.
 .SS Purpose
-\s-2SET ERROR HANDLING MODE\s+2 enables (\s-2ON\s+2)
-or disables (\s-2OFF\s+2) \s-2PHIGS\s+2 error reporting.
+Use \s-2SET ERROR HANDLER\s+2 is used to set the error handling function to an
+application's own error handling function.
 .LP
-The default error handling mode is \s-2ON\s+2.
-.SS C Input Parameter
-.IP \fImode\fP
-An enumerated value specifying whether \s-2PHIGS\s+2 error reporting
-should be enabled or disabled.
-Valid values (defined in phigs.h) for this parameter are:
-.sp
-.ta .3i
-.nf
-	PERR_OFF
-	PERR_ON
-.fi
+When the error handling mode is \s-2ON\s+2, \s-2ERROR HANDLING\s+2 is
+called by \s-2PHIGS\s+2 functions when they detect an error.
+.LP
+An application may replace the default \s-2ERROR HANDLING\s+2 function,
+using this function, in order to modify the default response to errors, which is
+simply to call \s-2ERROR LOGGING\s+2.
+Any such replacement must have the name above and accept the same parameters.
+.SS C Input Parameters
+.IP \fInew_err_hand\fP
+A function that is to be the new error handling function.
+.IP \fIold_err_hand\fP
+A pointer to a function pointer where the current error handling function
+will be returned.
 .SS Execution
-If the error handling mode is on when an error is detected by a
-\s-2PHIGS\s+2 function, the function calls \s-2ERROR HANDLING\s+2.
-If the error handling mode is off, the \s-2PHIGS\s+2 function
-detecting the error does not call \s-2ERROR HANDLING\s+2.
+\s-2SET ERROR HANDLER\s+2 sets the error handling function that will be called when
+\s-2PHIGS\s+2 reports an error.
+The error handling function is called by \s-2PHIGS\s+2 when an error is detected in
+a non-inquiry function and the error handling mode is \s-2ON\s+2.
 .LP
-When the \s-2ERROR HANDLING\s+2 function is called, it accepts the
-identification of the error condition, the identification of the
-subroutine calling it, and the name of the error file.
-The default \s-2PHIGS ERROR HANDLING\s+2 routine simply calls the \s-2ERROR
-LOGGING\s+2 function to write this information to the error file.
+See \s-2OPEN PHIGS\s+2 for a description of the \s-2PHIGS\s+2
+interaction with the error file.
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
+.IP 
+No Errors
 .SH SEE ALSO
-.nf
 .IP
-.ta 0.5i
+.nf
 .SM "ERROR HANDLING (3P)"
-.SM "INQUIRE ERROR HANDLING MODE (3P)"
-.SM "OPEN PHIGS (3P)"
+.SM "ERROR LOGGING (3P)"
+.SM "SET ERROR HANDLING MODE (3P)"
 .fi

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p326,v 5.3 94/04/17 20:58:13 hersh Exp $
+.\" $XConsortium: p325,v 5.2 94/04/17 20:58:12 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,135 +22,108 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET INDIVIDUAL ASF" 3P "29 February 1991"
+.TH "SET HLHSR MODE" 3P "29 February 1991"
 .SH NAME
-SET INDIVIDUAL ASF \- create structure element to set the current
-Aspect Source Flag (\s-2ASF\s+2) 
-for an attribute
-.IX "Aspect Source Flags" "SET INDIVIDUAL ASF"
-.IX "Attributes, Bundled" "SET INDIVIDUAL ASF"
-.IX "Bundled Attributes" "SET INDIVIDUAL ASF"
+SET HLHSR MODE \- enable or disable hidden line and hidden surface removal on a workstation
+.IX "HLHSR" "SET HLHSR MODE"
+.IX "Z-buffering" "SET HLHSR MODE"
+.IX "Hidden Line/Hidden Surface Removal" "SET HLHSR MODE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_indiv_asf ( att_id, att_source )
-Paspect	att_id;	\fIattribute identifier\fP
-Pasf	att_source;	\fIattribute source\fP
+pset_hlhsr_mode ( ws, mode )
+Pint	ws;		\fIworkstation identifier\fP
+Pint	mode;	\fIHLHSR mode\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, STOP, *)
+(PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET INDIVIDUAL ASF\s+2 creates a structure element
-containing the Aspect Source Flag (\s-2ASF\s+2) value
-for a specified output primitive attribute.
-The \s-2ASF\s+2 setting for each attribute determines if the
-value used for that attribute is taken from a defined attribute bundle
-(for example, from the polymarker representation selected by the current 
-polymarker index) or from an attribute value defined individually
-(for example, from the current marker type set by 
-\s-2SET MARKER TYPE (3P)\s+2).
-.LP
-If the current edit mode is \s-2INSERT\s+2,
-the structure element created is inserted into the currently open
-structure after the element pointed to by the current element pointer. If
-the edit mode is \s-2REPLACE\s+2, the new \s-2SET INDIVIDUAL ASF\s+2
-element replaces the element pointed to by the element pointer. 
-In either case, the
-element pointer is updated to point to the new element.
+The \s-2SET HLHSR MODE\s+2 requests a certain Hidden Line and 
+Hidden Surface Removal
+(\s-2HLHSR\s+2) mode of the
+workstation.
+The workstation's current \s-2HLHSR\s+2 mode 
+enables or disables \s-2HLHSR\s+2
+for a workstation.
+The current \s-2HLHSR\s+2 identifier
+from the structure network
+is used in conjunction with
+the \s-2HLHSR\s+2 mode on the workstation during traversal.
 .SS C Input Parameters
-.IP \fIatt_id\fP
-An enumerated attribute identifier value specifying the attribute
-for which the \s-2ASF\s+2 is to be set.  Possible values are:
+.IP \fIws\fP
+The identifier of the workstation whose \s-2HLHSR\s+2 mode is being set.
+.IP \fImode\fP
+The \s-2HLHSR\s+2 mode value.  Presently defined values are:
 .nf
 .sp
-typedef enum {
-.sp .2
-.ta .5i
-	PASPECT_LINETYPE,
-	PASPECT_LINEWIDTH,
-	PASPECT_LINE_COLR_IND,
-	PASPECT_MARKER_TYPE,
-	PASPECT_MARKER_SIZE,
-	PASPECT_MARKER_COLR_IND,
-	PASPECT_TEXT_FONT,
-	PASPECT_TEXT_PREC,
-	PASPECT_CHAR_EXPAN,
-	PASPECT_CHAR_SPACE,
-	PASPECT_TEXT_COLR_IND,
-	PASPECT_INT_STYLE,
-	PASPECT_INT_STYLE_IND,
-	PASPECT_INT_COLR_IND,
-	PASPECT_EDGE_FLAG,
-	PASPECT_EDGETYPE,
-	PASPECT_EDGEWIDTH,
-	PASPECT_EDGE_COLR_IND,
-	PASPECT_LINE_SHAD_METH,
-	PASPECT_INT_SHAD_METH,
-	PASPECT_REFL_PROPS,
-	PASPECT_INT_REFL_EQN,
-	PASPECT_BACK_INT_STYLE,
-	PASPECT_BACK_INT_STYLE_IND,
-	PASPECT_BACK_INT_COLR,
-	PASPECT_BACK_INT_SHAD_METH,
-	PASPECT_BACK_REFL_PROPS,
-	PASPECT_BACK_INT_REFL_EQN,
-	PASPECT_CURVE_APPROX_CRIT,
-	PASPECT_SURF_APPROX_CRIT
-.sp .2
-} Paspect;
-.fi
-.IP \fIatt_source\fP
-An enumerated \s-2ASF\s+2 value specifying the source that should be
-used for the attribute identifier or \fIatt_id\fP.
-Values defined are:
-.nf
-.sp .4
-.ta .5i +\w'BUNDLED,     'u
-typedef enum {
-.sp .2
-	PASF_BUNDLED,
-	PASF_INDIV
-.sp .2
-} Pasf;
+.ta .5i +\w'0     'u +\w'PHIGS_HLHSR_MODE_LINE_ONLY     'u
+0	PHIGS_HLHSR_MODE_NONE	\fIDisable Z-buffering\fP
+1	PHIGS_HLHSR_MODE_ZBUFF	\fIEnable Z-buffering\fP
+2	PHIGS_HLHSR_MODE_PAINTERS
+3	PHIGS_HLHSR_MODE_SCANLINE
+4	PHIGS_HLHSR_MODE_LINE_ONLY
+.sp
 .fi
 .SS Execution
-When the \s-2SET INDIVIDUAL ASF\s+2 element is encountered during
-traversal, the \s-2ASF\s+2 entry in the traversal state list 
-for the attribute identifier is set to the \s-2ASF\s+2 value.
+If the requested \s-2HLHSR\s+2 mode value is supported
+on the specified workstation, then
+\s-2SET HLHSR MODE\s+2 immediately sets the requested \s-2HLHSR\s+2 mode
+entry in the PHIGS workstation state list to the specified mode.
+The effect of calling \s-2SET HLHSR MODE\s+2 is not visible
+until the \fIrequested\fP \s-2HLHSR\s+2 mode replaces the \fIcurrent\fP
+\s-2HLHSR\s+2 mode.
+The time at which this occurs
+depends on the workstation's display update state.
 .LP
-The current setting of the \s-2ASF\s+2 for an attribute determines whether the
-current value of that attribute is taken from an attribute bundle or from an
-individually specified value set by the appropriate 
-\s-2SET INDIVIDUAL ASF\s+2 attribute function.
+This assignment is performed immediately
+and the \s-2HLHSR\s+2 update state is set to \fINot Pending\fP
+if any one of the following is true:
+.sp .5v
+.in +0.5i
+.ta +0.2i
+.ti -0.2i
+\(bu	The workstation display update state allows update.
+.sp .5v
+.ti -0.2i
+\(bu	The workstation modification mode is any value other than
+\fINo Immediate Visual Effect\fP,
+and the dynamic modification accepted for \s-2HLHSR\s+2 mode
+entry in the workstation description table is set to \fIImmediate\fP.
+.sp .5v
+.ti -0.2i 
+\(bu	The \fIdisplay space empty\fP status in the workstation
+state list is \s-2EMPTY\s+2.
 .LP
-For example, when the current text font \s-2ASF\s+2 is set to
-\s-2INDIVIDUAL\s+2, the value of the current text font (as set by
-\s-2SET TEXT FONT\s+2) is used for text output primitives.
-When the current text font \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the text font from the workstation's text representation
-indicated by the current text index is used instead.
+Otherwise, the \s-2HLHSR\s+2 update state is set to \fIPending\fP
+and the requested \s-2HLHSR\s+2 mode will not replace the 
+current \s-2HLHSR\s+2 mode until
+the next time the workstation is updated.
+The \s-2HLHSR\s+2 update state will be set to \fINot Pending\fP at that time.
+.LP
+During traversal, the workstation's current \s-2HLHSR\s+2 mode entry
+and the primitive's current \s-2HLHSR\s+2 identifier
+attribute are both checked.
 .SH ERRORS
-.IP 005
-Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
+.IP 003
+Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(that is, the workstation category is neither \s-2OUTPUT\s+2,
+\s-2OUTIN\s+2, nor \s-2MO\s+2) 
+.IP 111
+Ignoring function, the specified \s-2HLHSR\s+2 mode is not available
+on the specified workstation
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
-.SM "SET POLYLINE REPRESENTATION (3P)"
-.SM "SET POLYMARKER REPRESENTATION (3P)"
-.SM "SET TEXT REPRESENTATION (3P)"
-.SM "SET INTERIOR REPRESENTATION (3P)"
-.SM "SET EDGE REPRESENTATION (3P)"
-.SM "SET EDGE REPRESENTATION PLUS (3P+)"
-.SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
-.SM "SET POLYLINE REPRESENTATION PLUS (3P+)"
-.SM "SET POLYMARKER REPRESENTATION PLUS (3P+)"
-.SM "SET TEXT REPRESENTATION PLUS (3P+)"
+.SM "SET HLHSR IDENTIFIER (3P)"
+.SM "INQUIRE HLHSR MODE (3P)"
 .fi

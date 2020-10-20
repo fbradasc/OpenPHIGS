@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p215,v 5.2 94/04/17 20:56:55 rws Exp $
+.\" $XConsortium: p214,v 5.3 94/04/17 20:56:55 hersh Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,57 +22,54 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE SYSTEM STATE VALUE" 3P "29 February 1991"
+.TH "INQUIRE STRUCTURE STATUS" 3P "29 February 1991"
 .SH NAME
-INQUIRE SYSTEM STATE VALUE \- inquire state value of PHIGS
-.IX "Operating States" "INQUIRE SYSTEM STATE VALUE"
+INQUIRE STRUCTURE STATUS \- inquire the status of a specified structure
+.IX "Structures" "INQUIRE STRUCTURE STATUS"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_sys_st ( sys_state )
-Psys_st	*sys_state;	\fIOUT the system state\fP
+pinq_struct_status ( struct_id, error_ind, status )
+Pint	struct_id;	\fIstructure identifier\fP
+Pint	*error_ind;	\fIOUT error indicator\fP
+Pstruct_status	*struct;	\fIOUT existence status\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(*, *, *, *)
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE SYSTEM STATE VALUE\s+2 to determine the current state of
-the PHIGS system. The state value may be either \fI\s-2PHIGS\s+2 open\fP (\s-2PHOP\s+2)
-or \fI\s-2PHIGS\s+2 closed\fP (\s-2PHCL\s+2).
-.LP
-\s-2PHIGS\s+2 must be opened with the \s-2OPEN PHIGS\s+2 subroutine before any operations can be performed with the \s-2PHIGS\s+2 subroutines.
-This function may be used to verify that \s-2OPEN PHIGS\s+2 was
-successful before performing additional \s-2PHIGS\s+2 operations.
+Use \s-2INQUIRE STRUCTURE STATUS\s+2 to determine the existence status
+of the specified structure (\s-2NON_EXISTENT\s+2, \s-2EMPTY\s+2,
+or \s-2NOTEMPTY\s+2).
+.SS C Input Parameters
+.IP \fIstruct_id\fP
+Identifier of the structure for which the status is to be returned.
 .SS C Output Parameters
-.IP \fIsys_state \fP
-A pointer to a Psys_st enumerated variable in which the current state
-of the \s-2PHIGS\s+2 system is returned.
-Values for Psys_st are defined in phigs.h as follows:
+.IP \fIerror_ind\fP
+A pointer to the location to store the error number of any error
+detected by this function.
+.IP \fIstruct\fP
+A pointer to a Pstruct_status enumerated variable in which the system returns the existence status of the specified structure.
+Values for Pstruct_status are defined in phigs.h as follows:
 .nf
-.ta .5i +1.25i
-.sp .4
-typdef enum {
-.sp .2
-	PSYS_ST_PHCL,	/* \s-2PHIGS\s+2 closed */
-	PSYS_ST_PHOP	/* \s-2PHIGS\s+2 open */
-.sp .2
-} Psys_st;
+.ta .5i
+.sp
+	PSTRUCT_STATUS_NON_EXISTENT
+	PSTRUCT_STATUS_EMPTY
+	PSTRUCT_STATUS_NOT_EMPTY
 .fi
 .SH ERRORS
-.IP 
-None
+.IP 002
+Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "OPEN PHIGS (3P)"
-.SM "CLOSE PHIGS (3P)"
-.SM "EMERGENCY CLOSE PHIGS (3P)"
-.SM "INQUIRE ARCHIVE STATE VALUE (3P)"
-.SM "INQUIRE STRUCTURE STATE VALUE (3P)"
-.SM "INQUIRE WORKSTATION STATE VALUE (3P)"
+.SM "DELETE STRUCTURE (3P)"
+.SM "EMPTY STRUCTURE (3P)"
+.SM "INQUIRE STRUCTURE IDENTIFIERS (3P)"
 .fi

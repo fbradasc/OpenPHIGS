@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p311,v 5.2 94/04/17 20:58:03 rws Exp $
+.\" $XConsortium: p310,v 5.2 94/04/17 20:58:02 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,149 +22,168 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line .\"below:
-.ds pN SET EDGE REPRESENTATION PLUS
-.TH "\*(pN" 3P+ "29 February 1991"
+.TH "SET EDGE REPRESENTATION" 3P "29 February 1991"
 .SH NAME
-\*(pN \-
-set an extended edge attribute bundle on a workstation
-.IX "PHIGS Extension Functions" "\*(pN"
-.IX "Attribute Representations" "SET EDGE REPRESENTATION PLUS"
+SET EDGE REPRESENTATION \- define an edge attribute bundle on the workstation
+.IX "Attribute Representations" "SET EDGE REPRESENTATION"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
-.\" 6. Insert C syntax below
 void
-pset_edge_rep_plus ( ws, index, rep )
+pset_edge_rep ( ws, index, rep )
 Pint	ws;	\fIworkstation identifier\fP
-Pint	index;	\fIedge bundle index number\fP
-Pedge_bundle_plus	*rep;	\fIedge representation pointer\fP
+Pint	index;	\fIedge bundle index\fP
+Pedge_bundle	*rep;	\fIedge representation pointer\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET EDGE REPRESENTATION PLUS\s+2 sets an extended edge 
-attribute bundle on a workstation.
+\s-2SET EDGE REPRESENTATION\s+2 defines a bundle of edge attributes for
+a specified entry in the workstation's edge bundle table.  
+Depending on the ASF for each of the edge attributes, 
+the bundled attributes may apply to the following primitives:
+.RS
+.LP
+\(bu
+.SM "FILL AREA SET"
+.LP
+\(bu 
+.SM "FILL AREA SET 3"
+.LP
+\(bu
+.SM "GENERALIZED DRAWING PRIMITIVE (\fIFill Area Set Primitives\fP)"
+.LP
+\(bu
+.SM "GENERALIZED DRAWING PRIMITIVE 3 (\fIFill Area Set Primitives\fP)"
+.LP
+\(bu
+.SM "NON-UNIFORM B-SPLINE SURFACE"
+.LP
+\(bu
+.SM "SET OF FILL AREA SET 3 WITH DATA"
+.LP
+\(bu
+.SM "QUADRILATERAL MESH 3 WITH DATA"
+.LP
+\(bu
+.SM "TRIANGLE STRIP 3 WITH DATA"
+.RE
+.\"PHIGS+:	FILL AREA SET WITH DATA
+.\"PHIGS+:	FILL AREA SET 3 WITH DATA
 .SS C Input Parameters
 .IP \fIws\fP
-The identifier of the workstation.
+The identifier of the workstation for which the edge
+representation is being defined.
 .IP \fIindex\fP
-This is an index to the workstation edge bundle table.
+The \fIedge index\fP of the entry being defined.
 .IP \fIrep\fP
-A pointer to a Pedge_bundle_plus structure. Pedge_bundle_plus is defined as:
-.sp .2
+A pointer to a structure containing the 
+attribute values defining the edge representation, defined as follows:
 .nf
-.ta .5i +1.25i  +1i  +1.25i
-.sp .2
+.ta .5i +\w'Pedge_flag     'u +\w'colr_ind;     'u
+.sp .4
 typedef struct {
 .sp .2
 	Pedge_flag	flag;	/* edge flag */
 	Pint	type;	/* edgetype */
 	Pfloat	width;	/* edgewidth scale factor */
-	Pgcolr	colr;	/* edge colour */
+	Pint	colr_ind;	/* edge colour index */
 .sp .2
-} Pedge_bundle_plus;
+} Pedge_bundle;
 .fi
 .IP
-Pedge_flag is defined as:
+\fIrep\fR\(->\fIflag\fP is an enumerated value, specifying
+whether edges are to be displayed or not. Valid values are:
 .nf
-.ta .5i 
-.sp .2
-typedef enum {
-.sp .2
-	PEDGE_OFF,
-	PEDGE_ON
-.sp .2
-} Pedge_flag;
-.nf
+.ta .5i +.5i +1.5i +1i
 .sp
-The edge type values are:
-.ta .5i +\w'-1     'u +\w'PLINE_DOT_DASHDOT     'u
-.nf
-.sp .2
-1	PLINE_SOLID	\fISolid\fP
-2	PLINE_DASH	\fIDashed\fP
-3	PLINE_DOT 	\fIDotted\fP
-4	PLINE_DOT_DASH	\fIDot-dashed\fP
+	PEDGE_OFF	\fIOff\fP
+	PEDGE_ON	\fIOn\fP
 .fi
-.bp
 .IP
-Pgcolr is defined as:
-.ta .5i +1.5i   +1i  +2i
+\fIrep->type\fP is an enumerated value, specifying one of the following:
 .nf
-.sp .4
-typedef struct {
-.sp .2
-	Pint	type;	/* indirect, RGB, CIE, HSV, HLS */
-	union {
-	     Pint	ind;	/* index in workstation colour bundle table */
-	     struct {
-	          Pfloat	x;	/* red, hue, etc. */
-	          Pfloat	y;	/* green, saturation, lightness, etc. */
-	          Pfloat	z;	/* blue, value, saturation, etc. */
-	     } general;
-	} val;
-} Pgcolr;
+.ta .5i +.5i +1.5i +1i
+.sp
+	1	PLINE_SOLID	\fISolid\fP
+	2	PLINE_DASH	\fIDashed\fP
+	3	PLINE_DOT	\fIDotted\fP
+	4	PLINE_DOT_DASH	\fIDot-dashed\fP
 .fi
+.sp
+Support for edgetypes is workstation-dependent.
+.IP
+\fIrep\fR\(->\fIwidth\fP is an edgewidth scale factor value.
+.IP 
+\fIrep\fR\(->\fIcolr_ind\fP is the edge colour index,
+which selects a colour value from the workstation's colour table.
 .SS Execution
-In the edge bundle table of the workstation state list, the given
-index is associated with the specified parameters.
+When \s-2SET EDGE REPRESENTATION\s+2 is called, the edge index entry in 
+the table of defined edge representations on the workstation is set 
+to the edge flag, edgetype, edgewidth scale factor, 
+and edge colour index values.  
 .LP
-The edgewidth scale factor is a scale factor applied to nominal edgewidth.
-During structure traversal, the edgewidth scale factor is multiplied
-by the nominal edgewidth on a workstation. The result is mapped by the
-workstation to the nearest available edgewidth.
+When area-defining output primitives are displayed, the edge
+representation specified by the \fIcurrent edge index\fP entry in the
+traversal state list provides the edge attributes
+for which the Aspect Source Flag \s-2(ASF)\s+2 is \s-2BUNDLED\s+2.  
+For example, when the current edgetype \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
+the effective edgetype is
+the edgetype attribute in the edge representation selected by
+the current edge index.  The current edge index
+is set by \s-2SET EDGE INDEX\s+2 elements.  
+.\"PHIGS+:	.LP
+.\"PHIGS+:	The source for edge colour is determined by a combination
+.\"PHIGS+:	of the edge Colour Source Flag (CSF) and the edge colour
+.\"PHIGS+:	index ASF. While the edge CSF is set to \s-2DIRECT\s+2,
+.\"PHIGS+:	edge colour is determined by a direct colour specification
+.\"PHIGS+:	set with the \s-2SET EDGE COLOUR\s+2 subroutine, and the
+.\"PHIGS+:	edge colour index ASF has no effect. When the edge
+.\"PHIGS+:	colour CSF is set to \s-2INDEXED\s+2, the edge colour
+.\"PHIGS+:	index ASF determines whether the attribute is defined by a
+.\"PHIGS+:	bundled or individual specification in the same way as the
+.\"PHIGS+:	other attributes.
 .LP
-Edge colour is a general colour, either an indirect or a
-direct colour in a specified colour model. If an indirect colour is
-specified and the specified colour index is not available during
-structure traversal, then colour index one is used.
+The edge bundle table is numbered from 1.
 .LP
-The extended edge bundle table in the workstation state list has
-predefined entries taken from the workstation description table. A
-number of these entries are predefined for every workstation of category
-\s-2OUTPUT\s+2 or \s-2OUTIN\s+2. Any table entry, including the predefined
-entries, may be redefined with this function.
-.LP
-When area defining primitives are displayed during structure traversal,
-the current edge index in the \s-2PHIGS\s+2 traversal state list
-refers to an entry in the extended edge bundle table. If the
-current edge index is not present in the extended edge
-bundle table, then edge index one is used. The setting of the 
-corresponding Aspect Source Flags(\s-2ASF\s+2s) determines which 
-aspects in the entry are used.
-.RE
+See
+.SM "GENERALIZED DRAWING PRIMITIVE"
+(3P) and
+.SM "GENERALIZED DRAWING PRIMITIVE 3"
+(3P) to determine which of the generalized primitives use the fill area set
+attributes.
 .SH ERRORS
 .IP 003
-Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
 .IP 054
 Ignoring function, the specified workstation is not open
 .IP 059
 Ignoring function, the specified workstation does not have output capability
-(that is, the workstation category is neither \s-2OUTPUT\s+2,
-\s-2OUTIN\s+2, nor \s-2MO\s+2)
+(in other words, the workstation category is neither 
+\s-2OUTPUT\s+2, \s-2OUTIN\s+2, nor \s-2MO\s+2)
 .IP 100
 Ignoring function, the bundle index value is less than one
 .IP 103
-Ignoring function, setting this bundle table entry would exceed the maximum
-number of entries allowed in the workstation bundle table
-.IP 107
-Ignoring function, the specified edgetype is not available on the
-specified workstation
-.IP 110
-Ignoring function, the specified colour model is not available on the 
-workstation
+Ignoring function, setting this bundle table entry would exceed
+the maximum number of entries allowed in the workstation bundle table
 .IP 113
 Ignoring function, the colour index value is less than zero
+.IP 107
+Ignoring function, the specified edge type is not available
+on the specified workstation
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
+.SM "SET EDGE INDEX (3P)"
+.SM "SET EDGE FLAG (3P)"
+.SM "SET EDGE COLOUR INDEX (3P)"
 .SM "SET INDIVIDUAL ASF (3P)"
-.SM "INQUIRE EDGE REPRESENTATION PLUS (3P+)"
-.SM "SET EDGE REPRESENTATION (3P)"
+.SM "INQUIRE EDGE REPRESENTATION (3P)"
+.SM "SET EDGE REPRESENTATION PLUS (3P+)"
 .fi

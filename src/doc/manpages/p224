@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p224,v 5.2 94/04/17 20:57:02 rws Exp $
+.\" $XConsortium: p223,v 5.3 94/04/17 20:57:01 hersh Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,52 +22,114 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "INQUIRE WORKSTATION CATEGORY" 3P "29 February 1991"
+.TH "INQUIRE VIEW REPRESENTATION" 3P "29 February 1991"
 .SH NAME
-INQUIRE WORKSTATION CATEGORY \- inquire the category of a specified workstation type
+INQUIRE VIEW REPRESENTATION \- inquire a view representation
+on a workstation
+.IX "Attribute Representations" "INQUIRE VIEW REPRESENTATION"
+.IX "Viewing" "INQUIRE VIEW REPRESENTATION"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_ws_cat ( type, error_ind, category )
-Pint	type;	\fIworkstation type\fP
+pinq_view_rep ( ws, view_index, error_ind, update_state, cur_rep, req_rep )
+Pint	ws;	\fIworkstation identifier\fP
+Pint	view_index;	\fIview index\fP
 Pint	*error_ind;	\fIOUT error indicator\fP
-Pws_cat	*category;	\fIOUT workstation category\fP
+Pupd_st	*update_state;	\fIOUT transformation update state\fP
+Pview_rep3	*cur_rep;	\fIOUT current view representation\fP
+Pview_rep3	*req_rep;	\fIOUT requested view representation\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, *)
+(PHOP, WSOP, *, *)
 .
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2INQUIRE WORKSTATION CATEGORY\s+2 to determine the category of a specified workstation type.
+Use \s-2INQUIRE VIEW REPRESENTATION\s+2 to obtain the current and requested
+view representation in an entry of the specified workstation's view table.
 .
 .SS C Input Parameters
-.IP \fItype \fP
-Type of workstation.
+.IP \fIws\fP
+The \fIworkstation identifier\fP of the workstation whose state list is queried.
+.IP \fIview_index\fP
+The view index whose representation is desired from
+the workstation's table of defined view representations.
 .
 .SS C Output Parameters
 .IP \fIerror_ind\fP
 A pointer to the location to store the error number of any error
 detected by this function.
-.IP \fIcategory\fP
-A pointer to a Pws_cat enumerated variable, in which the 
-workstation category is returned.
-Values for Pws_cat are defined in phigs.h as follows:
+.IP \fIupdate_state\fP
+A pointer to a location in which the system returns the
+\fIview transformation update state\fP.
+Pupd_st is an enumerated type defined in phigs.h as follows:
+.ta .5i +1.75i
+.nf
+.sp .4
+typedef enum {
+.sp .2
+	PUPD_NOT_PEND,	/* Not Pending */
+	PUPD_PEND	/* Pending */
+.sp .2
+} Pupd_st;
+.fi
+.IP \fIcur_rep\fP
+A pointer to a Pview_rep3 structure in which the system returns the
+definition of the \fIcurrent view representation\fP.
+.IP \fIreq_rep\fP
+A pointer to a Pview_rep3 structure in which the system returns the
+definition of the \fIrequested view representation\fP.
+.IP
+Pview_rep3 is defined in phigs.h as follows:
+.nf
+.ta .5i +1.0i +1.0i
+.sp .4
+typedef struct {
+.sp .2
+        Pmatrix3	ori_matrix;	/* view orientation matrix */
+        Pmatrix3	map_matrix;	/* mapping matrix */
+        Plimit3	clip_limit;	/* clipping limits */
+        Pclip_ind	xy_clip;	/* X-Y clipping indicator */
+        Pclip_ind	back_clip;	/* back clipping indicator */
+        Pclip_ind	front_clip;	/* front clipping indicator */
+.sp .2
+} Pview_rep3;
+.fi
+.sp
+The Pmatrix3 type definition is a 4x4 matrix, defined in phigs.h as:
+.sp
+typedef Pfloat Pmatrix3[4][4];
+.sp
+The Plimit3 structure used to define the clipping limits
+is defined in phigs.h as follows:
+.nf
+.ta .5i +\w'Pfloat     'u +\w'x_max;     'u
+.sp .4
+typedef struct {
+.sp .2
+	Pfloat	x_min;	/* x min */
+	Pfloat	x_max;	/* x max */
+	Pfloat	y_min;	/* y min */
+	Pfloat	y_max;	/* y max */
+	Pfloat	z_min;	/* z min */
+	Pfloat	z_max;	/* z max */
+.sp .2
+} Plimit3;
+.fi
+.sp .2
+Pclip_ind is an enumerated type defined in phigs.h as follows:
 .ta .5i +1.25i
 .nf
 .sp .4
 typedef enum {
 .sp .2
-	PCAT_OUT,	/* Output Only */
-	PCAT_IN,	/* Input Only */
-	PCAT_OUTIN,	/* Output and Input */
-	PCAT_MO,	/* Metafile Output */
-	PCAT_MI	/* Metafile Input */
+	PIND_CLIP,	/* Clipping */
+	PIND_NO_CLIP	/* Not Clipping */
 .sp .2
-} Pws_cat;
+} Pclip_ind;
 .fi
 .SS Execution
 .LP
@@ -82,20 +144,22 @@ nonavailability.
 Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not invoked
 when an error is detected by this function.
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
-.IP 052
-Ignoring function, workstation type not recognized by the implementation
-.IP 051
-Ignoring function, this information is not yet available
-for this workstation type; open a workstation of this type
-and use the specific workstation type
+.IP 003
+Ignoring function, function requires state 
+(\s-2PHOP\s+2, \s-2WSOP\s+2, \s-2*\s+2, \s-2*\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 114
+Ignoring function, the view index value is less than zero
+.IP 101
+Ignoring function, the specified representation has not been defined
 .
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
-.SM "OPEN WORKSTATION (3P)"
-.SM "INQUIRE WORKSTATION CLASSIFICATION (3P)"
+.SM "INQUIRE PREDEFINED VIEW REPRESENTATION (3P)"
+.SM "SET VIEW INDEX (3P)"
+.SM "SET VIEW REPRESENTATION 3 (3P)"
+.SM "INQUIRE VIEW FACILITIES (3P)"
 .fi

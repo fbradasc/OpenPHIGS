@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p371,v 5.2 94/04/17 20:58:46 rws Exp $
+.\" $XConsortium: p370,v 5.2 94/04/17 20:58:45 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,58 +22,155 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET RENDERING COLOUR MODEL" 3P "29 February 1991"
+.ds f \s-2SET REFLECTANCE PROPERTIES\s+2
+.TH "SET REFLECTANCE PROPERTIES" 3P+ "29 February 1991"
 .SH NAME
-SET RENDERING COLOUR MODEL \-
-create a structure element to set current rendering colour model
-.IX "Colour Model" "SET RENDERING COLOUR MODEL"
+SET REFLECTANCE PROPERTIES \- create a structure element to set surface
+area properties 
+.IX "Filled Area Interior Attributes" "SET REFLECTANCE PROPERTIES"
+.IX "Aspect Source Flags" "SET REFLECTANCE PROPERTIES"
+.IX "Attributes, Filled Area Interior Attributes" "SET REFLECTANCE PROPERTIES"
+.IX "PHIGS Extension Functions" "SET REFLECTANCE PROPERTIES"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
-.ta 1.4i 3i
+.ta 1.25i 3i
 .nf
 void
-pset_rendering_colr_model( colour_model )
-Pint	colour_model;	\fIcolour model\fP
+pset_refl_props ( properties )
+Prefl_props	*properties;	\fIsurface area properties\fP
 .fi
+.ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET RENDERING COLOUR MODEL\s+2 specifies the colour model in which
-lighting calculation and colour interpolation are performed.
-.\" .LP
-.\" This is a \s-2PHIGS\s0 Extension function based on
-.\" \s-2PHIGS PLUS\s+2 and is not part of the
-.\" \s-2PHIGS\s+2 standard.
+\s-2SET REFLECTANCE PROPERTIES\s+2 creates a structure element to set surface
+area properties. When the current area properties Aspect Source Flag
+(\s-2ASF\s+2) is set to
+\s-2INDIVIDUAL\s+2, the current value of
+this attribute applies to the following output primitives:
+.RS
+.LP
+\(bu
+.SM "FILL AREA"
+.LP
+\(bu
+.SM "FILL AREA 3"
+.LP 
+\(bu
+.SM "FILL AREA SET"
+.LP
+\(bu
+.SM "FILL AREA SET 3"
+.LP
+\(bu
+.SM "FILL AREA SET 3 WITH DATA"
+.LP
+\(bu
+.SM "SET OF FILL AREA SET 3 WITH DATA"
+.LP
+\(bu
+.SM "QUADRILATERAL MESH 3 WITH DATA"
+.LP
+\(bu
+.SM "TRIANGLE STRIP 3 WITH DATA"
+.LP
+\(bu
+.SM "NON-UNIFORM B-SPLINE SURFACE"
+.RE
 .SS C Input Parameters
-.IP \fIcolour_model\fP
-The defined rendering colour models are:
-.sp
+.IP \fIproperties\fR
+A pointer to a Prefl_props structure that specifies the area properties.
+Prefl_props is defined in phigs.h as follows:
+.sp .2
 .nf
-.ta .5i +\w'PRCM_WS_DEP    'u
-0	PRCM_WS_DEP	
-1	PRCM_RGB	\fIRed, Green, Blue Colour Model\fP
-2	PRCM_CIE	\fICommission Internationale de l'Eclairage Colour Model\fP
-3	PRCM_HSV	\fIHue, Saturation, Value Colour Model\fP
-4	PRCM_HLS	\fIHue, Lightness, Saturation Colour Model\fP
-.\" .SS C Output Parameters
+.ta .5i +\w'Pfloat     'u +\w'specular_colr;     'u
+.sp .2
+typedef struct {
+.sp .2
+	Pfloat	ambient_coef;	/* ambient reflectance coefficient */
+	Pfloat	diffuse_coef;	/* diffuse reflectance coefficient */
+	Pfloat	specular_coef;	/* specular reflectance coefficient */
+	Pgcolr	specular_colr;	/* specular colour */
+	Pfloat	specular_exp;	/* specular exponent */
+	Pfloat	transpar_coef;	/* transparency coefficient */
+.sp .2
+} Prefl_props;
+.IP
+.fi
+Pgcolr is defined as:
+.ta .5i +\w'union  'u +\w'struct  'u +\w'Pfloat      'u +\w'type;    'u +\w'x;      'u
+.nf
+.sp .4
+typedef struct {
+.sp .2
+	Pint		 type;		/* indirect, RGB, CIE, HSV, HLS */
+	union {
+	   Pint		ind;		/* colour table index */
+	   struct {
+		Pfloat		x;		/* red, hue, etc. */
+		Pfloat		y;		/* green, saturation, lightness, etc. */
+		Pfloat		z;		/* blue, value, saturation, etc. */
+	   } general;
+	} val;
+} Pgcolr;
+.fi
+.IP
+The color type is one of the following:
+.sp .2
+.ta .5i +1i
+.nf
+	0	PINDIRECT
+	1	PMODEL_RGB
+	2	PMODEL_CIELUV
+	3	PMODEL_HSV
+	4	PMODEL_HLS
+.fi
 .SS Execution
-Depending on the edit mode, a \s-2SET RENDERING COLOUR MODEL\s+2 element
-is inserted into the open structure after the element pointer, or
-replaces the element pointed to by the element pointer.
-When an element of this type is interpreted, the 
-'current rendering model' entry in the traversal state list is set to
-the value associated with the element. If the specific colour model is
-not available, colour model 0, PRCM_WS_DEP, is used.
+Depending upon the edit mode, a \s-2SET REFLECTANCE PROPERTIES\s+2
+element is inserted into the open structure after the element pointer
+or replaces the element pointed at by the element pointer. The element
+pointer is then updated to point to this \s-2SET REFLECTANCE PROPERTIES\s+2
+element.
+.LP
+When the structure is traversed, the current area properties
+entry in the traversal state list is set to the
+specified value. This value is used with subsequent 
+filled area output primitives
+when the current area properties \s-2ASF\s+2 entry
+in the traversal state list is \s-2INDIVIDUAL\s+2.
+During traversal, if the specified area properties are not available
+on a workstation, method one (\fINone\fP) will be used on that workstation.
+.LP
+When the current area properties \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
+the area properties are taken from the
+workstation extended representation indicated by the current interior index.
+In this case, the area properties
+set with \s-2SET REFLECTANCE PROPERTIES\s+2 have no effect.
+.LP
+The area properties supported by a workstation type can be determined
+with the function \s-2INQUIRE INTERIOR FACILITIES PLUS\s+2.
+.sp .2
 .SH ERRORS
 .IP 005
-Ignoring function, function requires state
-(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
-.IP
+Ignoring function, function requires state (\s-2PHOP,*,STOP,*\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE RENDERING COLOUR MODEL FACILITIES (3P+)"
+.SM "INTRO PHIGS (3P+)"
+.SM "FILL AREA (3P)"
+.SM "FILL AREA SET (3P)"
+.SM "FILL AREA 3 (3P)"
+.SM "FILL AREA SET 3 (3P)"
+.SM "FILL AREA SET 3 WITH DATA (3P+)"
+.SM "SET OF FILL AREA SET 3 WITH DATA (3P+)"
+.SM "SET INDIVIDUAL ASF (3P)"
+.SM "SET INTERIOR REPRESENTATION (3P)"
+.SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
+.SM "INQUIRE INTERIOR FACILITIES PLUS (3P+)"
+.SM "NON-UNIFORM B-SPLINE SURFACE (3P+)"
+.SM "QUADRILATERAL MESH 3 WITH DATA (3P+)"
+.SM "TRIANGLE STRIP 3 WITH DATA (3P+)"
 .fi

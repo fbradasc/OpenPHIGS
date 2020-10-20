@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p289,v 5.2 94/04/17 20:57:48 rws Exp $
+.\" $XConsortium: p288,v 5.2 94/04/17 20:57:45 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -23,15 +23,15 @@
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
 .\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
-.ds pN SET BACK INTERIOR STYLE
+.ds pN SET BACK INTERIOR SHADING METHOD
 .TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
 \*(pN \-
-create a structure element to set the back interior style
+create a structure element to set the back interior shading method
 .IX "PHIGS Extension Functions" "\*(pN"
-.IX "Aspect Source Flags" "SET BACK INTERIOR STYLE"
-.IX "Filled Area Interior Attributes" "SET BACK INTERIOR STYLE"
-.IX "Attributes, Filled Area Interior Attributes" "SET BACK INTERIOR STYLE"
+.IX "Filled Area Interior Attributes" "SET BACK INTERIOR SHADING METHOD"
+.IX "Aspect Source Flags" "SET BACK INTERIOR SHADING METHOD"
+.IX "Attributes, Filled Area Interior Attributes" "SET BACK INTERIOR SHADING METHOD"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
@@ -40,25 +40,20 @@ create a structure element to set the back interior style
 .\" 6. Insert C syntax below
 .nf
 void
-pset_back_int_style ( style )
-Pint_style	style;	\fIback interior style\fP
+pset_back_int_shade_meth ( method )
+Pint	method;	\fIback shading method\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET BACK INTERIOR STYLE\s+2 creates a structure 
-element to set the back interior style. \s-2SET BACK INTERIOR STYLE\s+2
-determines in what style the interior of the back facing area defining
-primitives should be filled: \fIHollow, Solid, Pattern, Hatch, Empty,\fP
-or \fIGeneral\fP.
+\s-2SET BACK INTERIOR SHADING METHOD\s+2 creates a structure 
+element to set the back interior shading method.
 .LP
-When the current back interior style Aspect Source Flag (\s-2ASF\s+2) is set to
-\s-2INDIVIDUAL\s+2,
-the current value of this attribute
-defines the back interior style to be applied to
-the following output primitives:
+When the current back interior shading method
+\s-2ASF\s+2 is set to \s-2INDIVIDUAL\s+2, the current value of
+this attribute applies to the following output primitives:
 .RS
 .LP
 \(bu
@@ -77,12 +72,6 @@ the following output primitives:
 .SM "FILL AREA SET 3 WITH DATA"
 .LP
 \(bu
-.SM "GENERALIZED DRAWING PRIMITIVE (\fIFill Area Primitives\fP)"
-.LP
-\(bu
-.SM "GENERALIZED DRAWING PRIMITIVE 3 (\fIFill Area Primitives\fP)"
-.LP
-\(bu
 .SM "NON-UNIFORM B-SPLINE SURFACE"
 .LP
 \(bu
@@ -94,86 +83,59 @@ the following output primitives:
 \(bu
 .SM "TRIANGLE STRIP 3 WITH DATA"
 .RE
-.LP
 .SS C Input Parameters
-.IP \fIstyle\fP
-A pointer to a Pint_style data structure.  A Pint_style structure
-is defined in phigs.h as:
-.sp .4
+.IP \fImethod\fP
+The back interior shading method.  The predefined values
+are:
+.sp
 .nf
-.ta .5i +\w'PSTYLE_HOLLOW,     'u
-typedef enum {
+.ta .5i +\w'0     'u +\w'PSD_DOT_PRODUCT     'u
+1	PSD_NONE	\fINo Shading\fP
+2	PSD_COLOUR	\fIColour Interpolation Shading\fP
+3	PSD_DOT_PRODUCT	\fIDot Product Interpolation Shading\fP
+4	PSD_NORMAL	\fINormal Interpolation Shading\fP
 .sp .2
-	PSTYLE_HOLLOW,	\fIHollow\fP	
-	PSTYLE_SOLID,	\fISolid\fP
-	PSTYLE_PAT,	\fIPatterned\fP
-	PSTYLE_HATCH,	\fIHatched\fP
-	PSTYLE_EMPTY,	\fIEmpty\fP
-.sp .2
-} Pint_style;
 .fi
 .SS Execution
-Depending on the edit mode, a \s-2SET BACK INTERIOR STYLE\s+2
-element with the value interior style is inserted into the open
-structure after the element pointer,
-or it replaces the element pointed at by the element pointer. The element
-pointer is then updated to point to this \s-2SET BACK INTERIOR STYLE\s+2
+Depending on the edit mode, a \s-2SET BACK INTERIOR SHADING METHOD\s+2
+element with the value shading method is inserted into the open structure after the element pointer
+or replaces the element pointed at by the element pointer. The element
+pointer is then updated to point to this 
+\s-2SET BACK INTERIOR SHADING METHOD\s+2
 element.
 .LP
-The back interior style is used to determine in what style the interior
-of the back facing area-defining primitives should be filled:
-.IP "\fIHollow\fP"
-.IP
-No filling, but draw the boundary using the colour, or colours, resulting
-from the rendering pipeline. The linetype and linewidth of this bounding
-polyline are implementation-dependent. \s-2PEX-SI\s0
-presently uses a solid line of default width.
-Clipping of fill areas yields visible edges at clip boundaries.
-.IP "\fISolid\fP"
-.IP
-Fill the interior using the colour, or colours, resulting from the 
-rendering pipeline.
-.IP "\fIPattern\fP"
-.IP
-Fill the interior using the colours resulting from the rendering pipeline.
-The current \s-2BACK INTERIOR STYLE INDEX\s+2 will be used to select a pattern
-from the pattern table. In this context, the \s-2BACK INTERIOR STYLE INDEX\s+2
-is sometimes referred to as the back pattern index and must have a value 
-greater than zero.
-.IP "\fIHatch\fP"
-.IP
-Fill the interior using the colours resulting from the rendering pipeline.
-The current \s-2BACK INTERIOR STYLE INDEX\s+2 will be used to select a hatch
-style from the hatch table. In this context, the \s-2BACK
-INTERIOR STYLE INDEX\s+2
-is sometimes referred to as the back hatch index.
-.IP "\fIEmpty\fP"
-.IP
-No filling is performed. Area defining primitives drawn using this
-value will be visible only if the \s-2EDGE FLAG\s+2 is set to \s-2ON\s+2.
-.LP
-If the requested interior style is not available on a workstation,
-\fIHollow\fP will be used on that workstation.
+When the structure is traversed, the current interior
+shading method entry in the traversal state list is set to the
+specified value. This value is used with subsequent
+\s-2PHIGS\s0 Extension output primitives
+when the current interior shading method \s-2ASF\s+2 entry
+in the traversal state list is \s-2INDIVIDUAL\s+2.
+During traversal, if the specified shading method is not available
+on a workstation, method one (\fINone\fP) will be used on that workstation.
+.LP 
+The interior shading method supported by a workstation type can be determined 
+with the function \s-2INQUIRE INTERIOR FACILITIES PLUS\s+2.
 .LP
 Back face attributes (such as back area properties, 
-back interior colour, back reflectance characteristics, 
+back interior colour, back interior reflectance equation, 
 back interior shading method, back interior style, and
 back interior style index) are used only when the
-face distinguishing mode has the value \fIYes\fP, and are applied only
-to the back-facing portion of area-defining primitives. See 
+face distinguishing mode has the value \fIYes\fP, and are applied 
+only to the back facing portion of area defining primitives. See 
 \s-2SET FACE DISTINGUISHING MODE (3P+)\s+2 for details on front and back face 
 determination.
 .LP
-When the current back interior style \s-2ASF\s+2 is set to
+When the current back interior shading method \s-2ASF\s+2 is set to
 \s-2INDIVIDUAL\s+2, area-defining output primitives, which follow in
 the structure network and are subject to back face attributes, are filled
-using the current back interior style.
+using the current back interior shading method.
 .LP
-When the current back interior style \s-2ASF\s+2 is set to \s-2BUNDLED\s+2,
-the back interior style is taken from the
+When the current back interior shading method \s-2ASF\s+2
+is set to \s-2BUNDLED\s+2,
+the back interior shading method is taken from the
 workstation extended representation indicated by the current interior index.
-In this case, the back interior style
-set with \s-2SET BACK INTERIOR STYLE\s+2 has no effect.
+In this case, the back interior shading meth
+set with \s-2SET BACK INTERIOR SHADING METHOD\s+2 has no effect.
 .SH ERRORS
 .IP 005
 Ignoring function, function requires state 
@@ -183,8 +145,7 @@ Ignoring function, function requires state
 .IP
 .ta 0.5i
 .SM "SET FACE DISTINGUISHING MODE (3P+)"
-.SM "SET BACK INTERIOR STYLE INDEX (3P+)"
 .SM "SET INDIVIDUAL ASF (3P)"
 .SM "SET INTERIOR REPRESENTATION PLUS (3P+)"
-.SM "SET INTERIOR STYLE (3P)"
+.SM "SET INTERIOR SHADING METHOD (3P+)"
 .fi

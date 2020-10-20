@@ -1,5 +1,5 @@
 .\" ##
-.\" $XConsortium: p407,v 5.2 94/04/17 20:59:13 rws Exp $
+.\" $XConsortium: p406,v 5.2 94/04/17 20:59:11 rws Exp $
 .\" ##
 .\" ## 
 .\" ## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,194 +22,324 @@
 .\" ## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" ## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" ## PERFORMANCE OF THIS SOFTWARE.
-.TH "COLOUR" 7P "29 February 1991"
+.TH "WORKSTATION TYPE SET" 3P "29 February 1991"
 .SH NAME
-COLOUR \- introduction to using colour in the \s-2PEX-SI\s+2
-.IX "COLOUR"
-.IX "Colour" "COLOUR"
-.SH DESCRIPTION
-This page provides an overview of using
-the capabilities of a colour system
-from the \s-2PHIGS API\s+2 to \s-2PEX\s+2.
-The topics covered are:
-.nf
+WORKSTATION TYPE SET \- set workstation type attributes \(em
+\s-2PEX-SI\s0 Extension
+.IX "Cursors" "WORKSTATION TYPE SET"
+.IX "Double Buffering" "WORKSTATION TYPE SET"
+.IX "Implementation-Specific Functions" "WORKSTATION TYPE SET"
+.IX "Nonstandard Functions" "WORKSTATION TYPE SET"
+.IX "Workstation Types" "WORKSTATION TYPE SET"
+.IX "X Window System" "WORKSTATION TYPE SET" "X Window System" "WORKSTATION TYPE SET"
+.de WA	\" workstation attribute macro -- no FORTRAN
+.IP "\fI\\$1\fP  (C)"
+..
+.\" new "WB" definition (JH, 6-26-89)
+.de WB	\" second line workstation attribute macro -- no FORTRAN
+.PD .1v
+.LP
+\fI\\$1\fP
+'in +5n
+\&  (C)
+.in
+.PD .4v
+..
+.\" new definition of "WD" macro (John Hevelin, 6-26-89):
+.\" fixes bug that appears in nroff output when $1 is longer than OUTPUT line
+.de WD	\" required data type and default macro -- no FORTRAN
+.PD .2v
 .RS
-	\(bu  Standard \s-2PHIGS\s+2: Indexed Colour 
-	\(bu  \s-2PHIGS\s+2+: General Colour 
-	\(bu  Setting a Workstation's Colour Table
-	\(bu  How Colour Maps Are Set Up 
+.LP
+Data type:\ \&
+'in +5n
+\fI\\$1\fP  (\s-2C\s+2)
+.in
+.LP
+Default:\ \&
+'in +5n
+\&\\$3
+.in
 .RE
+.PD .4v
+..
+.\" New definitions of "CE" and "FE" --
+.\" fixes bug of trying to treat "IP" tag as entire line
+.\" (which causes IP macro to barf). -- John Hevelin (03-09-89)
+.de CE	\" \s-2C\s+2 enumeration listing
+.PD .2v
+.RS
+.LP
+\s-2C\s+2 enumeration:\ \&
+'in +5n
+\fI\\$1\fP
+.in
+.RE
+.PD .4v
+..
+.SH SYNOPSIS
+.SS C Syntax
+.ft B
+.ta 1.25i 3i
+.nf
+caddr_t
+phigs_ws_type_set ( wst, <attribute-value list> )
+Pint	wst;	 \fIworkstation type\fP 
+Phigs_ws_type_attr	attributes;	\fIattributes\fR
 .fi
-.\" -------
+.ft R
+.SS Required PHIGS Operating States
+(PHOP, *, *, *)
+.SH DESCRIPTION
+.SS Purpose
+\s-2WORKSTATION TYPE SET\s+2 changes the specified attribute values in 
+the workstation description table associated with the specified
+workstation type.
 .LP
-.\"
-.\"
-.\" NOTE ABOUT SPELLING: colormap is not a PHIGS word, but a SunView and
-.\" general graphics term, so it has the SunView and general spelling.
-.\" Everything else is a PHIGS term, so we spell with the British `u'.
-.\"
-.\"
-.\" .SH ABBREVIATIONS
-.\" ****************************************************
-.SS Standard PHIGS: Indexed Colour
-Standard \s-2PHIGS\s+2 supports only 
-.IR "indexed colour" .
-Structure elements select a colour for a primitive by using an integer
-colour index,
-such as that
-selected by \s-2SET POLYLINE COLOUR INDEX(3P)\s+2.
-When a primitive is displayed on a workstation, the
-colour index is used to select a colour value (called a
-colour representation)
-from the workstation's
-colour table.
-The colour representation is what is actually seen by the observer.
-The default colour index for all primitives is 1.
-.\" -------
-.SS PHIGS PLUS: General Colour
-\s-2PHIGS PLUS\s+2 allows the specification  of
-colour either as indexed colours, or as \s-2RGB\s+2 colours directly.  
-When a colour is specified as an index, it is called \fIindirect colour\fP,
-since the colours are indirectly specified through the workstation colour table.
-When a colour is specified as an \s-2RGB\s+2 triple, it is called 
-\fIdirect colour\fP. 
-General colour is an abstraction that allows colour or direct colour
-to be specified as a single aspect.
-A general colour consists of a type and a value. 
-If the type is indirect,
-then the value is interpreted as an index into the workstation colour table.
-If the type \s-2RGB\s+2, then the value is interpreted as an \s-2RGB\s+2 value.
-In addition to \s-2RGB\s+2 type, \s-2PHIGS\s+2+ allows specification of direct color
-in other types, for example \s-2HLS, HSV\s+2 and \s-2CIELUV\s+2. In the \s-2PEX-SI\s+2,
-however, only the type \s-2RGB\s+2 is allowed.
+The workstation description table associated with each workstation type
+contains both \s-2PHIGS\s+2-defined fields and \s-2PEX-SI\s0-specific fields.
+All of the \s-2PEX-SI\s0-specific fields and some of the 
+\s-2PHIGS\s+2-specific fields can be changed with
+\s-2WORKSTATION TYPE SET\s+2.
+The fields that can be modified are listed below in the \fIWorkstation
+Type Attributes\fP section.
 .LP
-Using the \s-2PEX-SI\s+2 primitives and attributes,
-the colour for a primitive can be set using either attribute elements, such as
-\s-2SET POLYLINE COLOUR (3P+)\s+2, or primitives with one or more colours as 
-part of 
-the primitive, such as \s-2POLYLINE SET 3 WITH DATA (3P+)\s+2.
-In either case, the colour is specified as a general colour, so that an
-index or direct colour can be used.
-This functionality supercedes the standard \s-2PHIGS\s+2 functionality.
-Standard \s-2PHIGS\s+2 primitives will be rendered using the \s-2PHIGS\s+2+
-attributes, and standard \s-2PHIGS\s+2 attributes affect \s-2PHIGS\s+2+ 
-primitives. For example, 
-\s-2SET POLYLINE COLOUR INDEX(3P)\s+2 is
-equivalent to calling \s-2SET POLYLINE COLOUR(3P+)\s+2 with the type set
-to indirect, both elements set the same attribute.
-The default colour for all primitives is indirect colour, index 1.
-If a primitive or attribute specifies direct colour on an indexed colour 
-workstation, then \fIindirect colour, index 1\fP is used instead.
-.\" -------
-.\"
-.SS Setting a Workstation's Colour Table
-In \s-2PHIGS\s+2, an application can use the function 
-\s-2SET COLOUR REPRESENTATION\s+2 to specify a colour 
-representation by a triple of real values whose meaning
-depends on the current colour model.
-\s-2PEX-SI\s+2 supports only the \s-2RGB\s+2 colour model.
-The colour coordinate space is [0,1] in all three dimensions.
-No intensity is 0.0 and is mapped to X11 colour value 0.
-Maximum intensity is 1.0  and is mapped to X11 
-colour value 65535.  The \s-2RGB\s+2
-values for the default colour definitions are given above.
+\s-2WORKSTATION TYPE SET\s+2 operates only on workstation types
+created by \s-2WORKSTATION TYPE CREATE\s+2.  
+The predefined types cannot be modified, nor can types returned by
+\s-2INQUIRE WORKSTATION CONNECTION AND TYPE\s+2.
+See \s-2OPEN WORKSTATION\s+2 for a description of the predefined
+workstation types.
 .LP
-A change to a colour representation will show up during the next 
-regeneration.
-.\" -------
-.LP
-A \s-2PHIGS\s+2 application can inquire for any colour index, either the value
-it sets into the workstation's colour table or the values that will be
-\fIRealized\fP on the display, after mapping to available X11
-colour values.  See \s-2INQUIRE COLOUR REPRESENTATION (3P)\s+2.
-.\" -------
-.LP
-Other colour models \s-2PHIGS\s+2+ defines are \s-2CIE\s+2 (\fICommission
-Internationale de l'Eclairage's\fP universal colour definition system),
-\s-2HSV\s+2 (Hue, Saturation, and Value), and \s-2HLS\s+2 
-(Hue, Lightness, and Saturation).
-.\" -------
-.LP
-Colour representations 0 and 1 can be set on a monochrome workstation,
-to produce either normal or inverse video.
-.\" ****************************************************
-.bp
-.SS How Colormaps Are Set Up
-.LP
-The \s-2API\s+2 tries to manage \s-2PEX\s+2 colour and colour
-approximation lookup tables and \s-2X\s+2 colormaps when
-implementing the \s-2PHIGS\s+2 colourmap.
-Ideally, you should take the following steps before creating a window:
-.sp .5v
-.in +0.5i
-.ta +0.2i
-.ti -0.2i
-1.	Find the most appropriate visual.
-.sp .5v
-.ti -0.2i
-2.	See if there is a StandardColormap property defined on that visual.
-.sp .5v
-.ti -0.2i
-3.	Set up the colormap on that visual or use an existing colormap.
-.LP
-However, \s-2X\s+2 doesn't provide a mechanism by which 
-StandardColormap properties can be queried on an individual visual class 
-if a window on that visual doesn't exist. Therefore, heursitics are used 
-heavily to determine this. The following process takes place.
-.sp .5v
-.in +0.5i
-.ta +0.2i
-.ti -0.2i
-1.	If the workstation is of type \fIx_tool\fR, determine the ``best''
-visual for \s-2PEX\s+2 and open the window on that visual. The best visual
-is the avaiable visual with the largest colormap size and the highest
-numbered class (DirectColor > TrueColor > PseudoColor > StaticColor).
-As an attempt to cut down on colormap flashing, the default visual 
-is used if it has a StandardColormap with at least the same number 
-of entries as the best visual.
+This is a \s-2PEX-SI\s0 addition, and is not part of the 
+\s-2PHIGS\s+2 standard.  
+.SS C Input Parameters
+.IP \fIwst\fP
+The workstation type to modify.  
+This cannot be a specific workstation type (one associated with an open
+workstation) or one of the predefined types.  
+.IP "\fI<attribute-value list>\fP"
+A zero terminated list of workstation type attributes and corresponding
+values.  The attributes are members of the Phigs_ws_type_attr enumeration
+defined in phigs.h.  The data type of the values varies according to the
+attribute.  The list of attributes below specifies the value type required
+for each attribute.  The attribute fields of the workstation type are
+modified according to the contents of this list.
 .IP
-If the workstation is of type \fIx_drawable\fR, it is the application's
-responsibility to determine the most appropriate visual and
-open up the window on that visual.
+Phigs_ws_type_attr is defined as follows:
+.sp .4
+.nf
+.ta .5i
+typedef enum {
+.sp .2
+	/* generic attributes start at 1 */
+	PHG_BASE_NAME = PHIGS_ATTR( PHG_ATTR_ENUM, PHIGS_FIRST_ATTR + 5),
+#define  PHIGS_BASE_NAME  (char *)PHG_BASE_NAME
+.sp .2
+	/* generic X attributes start at 25 */
+	/* PHIGS_X_DISPLAY can only be set.  Only the name is remembered. */
+	PHG_X_DISPLAY = PHIGS_ATTR( PHG_ATTR_STRING, PHIGS_FIRST_ATTR + 25),
+#define PHIGS_X_DISPLAY (char *)PHG_X_DISPLAY
+	PHG_X_DISPLAY_NAME = PHIGS_ATTR( PHG_ATTR_STRING, PHIGS_FIRST_ATTR + 26),
+#define PHIGS_X_DISPLAY_NAME (char *)PHG_X_DISPLAY_NAME
+	PHG_X_DISPLAY_WINDOW = PHIGS_ATTR( PHG_ATTR_INT_PAIR, PHIGS_FIRST_ATTR + 27),
+#define PHIGS_X_DISPLAY_WINDOW (char *)PHG_X_DISPLAY_WINDOW
+	/* PHIGS_X_RMDB can only be set. */
+	PHG_X_RMDB = PHIGS_ATTR( PHG_ATTR_INT_TRIPLE, PHIGS_FIRST_ATTR + 28),
+#define PHIGS_X_RMDB (char *)PHG_X_RMDB
+	PHG_X_BUF_MODE = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 29),
+#define PHIGS_X_BUF_MODE (char *)PHG_X_BUF_MODE
+	PHG_X_HANDLE_EXPOSE = PHIGS_ATTR( PHG_ATTR_BOOLEAN, PHIGS_FIRST_ATTR + 31),
+#define PHIGS_X_HANDLE_EXPOSE (char *)PHG_X_HANDLE_EXPOSE
+	PHG_X_HANDLE_DESTROY = PHIGS_ATTR( PHG_ATTR_BOOLEAN, PHIGS_FIRST_ATTR + 32),
+#define PHIGS_X_HANDLE_DESTROY (char *)PHG_X_HANDLE_DESTROY
+	PHG_DC_MODEL = PHIGS_ATTR( PHG_ATTR_ENUM, PHIGS_FIRST_ATTR + 33),
+#define PHIGS_DC_MODEL  (char *)PHG_DC_MODEL
+	PHG_X_CMAP_PROP_ATOM = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 34),
+#define PHIGS_X_CMAP_PROP_ATOM (char *)PHG_X_CMAP_PROP_ATOM
+.sp .2
+	/* tool attributes start at 50 */
+	PHG_TOOL_WIDTH = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 50),
+#define PHIGS_TOOL_WIDTH (char *)PHG_TOOL_WIDTH
+	PHG_TOOL_HEIGHT = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 51),
+#define PHIGS_TOOL_HEIGHT (char *)PHG_TOOL_HEIGHT
+	PHG_TOOL_X = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 52),
+#define PHIGS_TOOL_X (char *)PHG_TOOL_X
+	PHG_TOOL_Y = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 53),
+#define PHIGS_TOOL_Y (char *)PHG_TOOL_Y
+	PHG_TOOL_LABEL = PHIGS_ATTR( PHG_ATTR_STRING, PHIGS_FIRST_ATTR + 54),
+#define PHIGS_TOOL_LABEL (char *)PHG_TOOL_LABEL
+	PHG_TOOL_ICON_NAME = PHIGS_ATTR( PHG_ATTR_STRING, PHIGS_FIRST_ATTR + 55),
+#define PHIGS_TOOL_ICON_NAME (char *)PHG_TOOL_ICON_NAME
+	PHG_TOOL_BORDER_WIDTH = PHIGS_ATTR( PHG_ATTR_INT, PHIGS_FIRST_ATTR + 56),
+#define PHIGS_TOOL_BORDER_WIDTH (char *)PHG_TOOL_BORDER_WIDTH
+.sp .2
+	/* Phigs attributes start at 150 */
+	PHG_WS_CATEGORY = PHIGS_ATTR( PHG_ATTR_ENUM, PHIGS_FIRST_ATTR + 150),
+#define PHIGS_WS_CATEGORY (char *)PHG_WS_CATEGORY
+.sp .2
+} Phigs_ws_type_attr;
+.fi
 .IP
-An error is returned if a read-only visual with no StandardColormaps
-defined is available.
-.sp .5v
-.ti -0.2i
-2.	The StandardColormap's colorcube is used if it is large enough
-to hold a 5/9/5 colorcube for an 8-bit display. The characteristics
-of the StandardColormap are set in the workstation's ColourApprox
-lookup table. 
-.IP
-If there is no StandardColormap defined, an attempt is made to define
-a contiguous colormap in the existing colormap using \fIXallocColorCells()\fR.
-If this fails, than a new colormap is created. In either case, the
-colormap is filled with the appropriate entries and the ColorApprox
-lookup table is set.  The colorcube is set up to use about the same
-percentage of the colormap that a 5/9/5 colorcube uses of a 256 entry
-colormap (about 85%). For example, a 7/14/7 colorcube is used in
-a colormap which has 1024 entries.
-.\" ****************************************************
+The following is an example of an attribute list:
+.sp .4
+.nf
+.ta .5i +.75i +1i
+	Pint	wst;
+.sp .4
+	phigs_ws_type_set( wst,
+		PHIGS_TOOL_X, (char*)700,
+		PHIGS_TOOL_Y, (char*)100,
+		PHIGS_TOOL_WIDTH, (char*)200,
+		PHIGS_TOOL_HEIGHT, (char*)200,
+		PHIGS_TOOL_LABEL, "views",
+		(char*)0 );
+.fi
+.SS Execution
+.LP
+\s-2WORKSTATION TYPE SET\s+2 modifies the fields of the 
+workstation description table associated
+with the specified workstation type.  The modifiable fields are listed
+below.  The changes are specified with \fIattribute-value\fP pairs.  The
+\fIattribute\fP specifies the field to change, the \fIvalue\fP is the
+value to assign to the field.  
+The \s-2PEX-SI\s0-specific fields are different for
+different workstation types, so the attributes are listed according to 
+the workstation type to which they apply.
+.SS Workstation Type Attributes
+.LP
+The workstation description table attributes are described here.  
+The C constants are listed along with 
+a description of each
+attribute, the data type required, and the default value.  The C
+constants are members of the Phigs_ws_type_attr
+enumerated type defined in phigs.h.
+.LP
+.SS Common x_tool and x_drawable Attributes
+.WA PHIGS_BASE_NAME  PHIGSBASENAME
+This argument to \s-2WORKSTATION TYPE GET\s+2
+retrieves the base type of the workstation
+type.
+It can not be specified as an argument to
+\s-2WORKSTATION TYPE SET\s+2 or \s-2WORKSTATION TYPE CREATE\s+2.
+.CE "\s-2PHIGS_X_TOOL, PHIGS_X_DRAWABLE\s+2"
+.WA PHIGS_WS_CATEGORY PHIGSWSCATEGORY
+The category of the workstation.  This attribute can be used to change the
+workstation category from \s-2OUTIN\s+2 (output and input) to
+\s-2OUTPUT\s+2 (output only).
+.WD "Pwscat (\s-2PCAT_OUT\s+2 or \s-2PCAT_OUTIN\s+2 only)"  \s-2INTEGER\s+2 \s-2OUTIN\s+2
+.CE "\s-2PCAT_OUT, PCAT_IN, PCAT_OUTIN, PCAT_MO, PCAT_MI\s+2"
+.fE "\s-2POUTPT,   PCAT_IN,   PCAT_OUTIN,   PCAT_MO,   PCAT_MI\s+2"
+.WA PHIGS_X_BUF_MODE  PHIGSDBLBUFFER
+Specifies the method of double buffering to use.
+.WD Phigs_dbl_buff \s-2INTEGER\s+2 \s-2PHIGS_BUF_SINGLE\s+2
+.CE "\s-2PHIGS_BUF_SINGLE, PHIGS_BUF_DOUBLE\s+2"
+.fE "\s-2PHIGSDBLNONE,   PHIGSDBLCMAP,   PHIGSDBLHW\s+2"
+.WA PHIGS_X_DISPLAY  PHIGS
+Modify the workstation type to reflect the capabilities of the
+specified display.
+The display is specified by a display pointer.
+Some of the workstation type attributes and workstation description table
+values are dependent on the capabilities of the \s-2PEX\s+2 extension in
+the \s-2X\s+2 server.
+This attribute causes such values to be modified to reflect those
+capabilities.
+This attribute can only be specified to
+\s-2WORKSTATION TYPE SET\s+2 or \s-2WORKSTATION TYPE CREATE\s+2.
+It cannot be specified to \s-2WORKSTATION TYPE GET\s+2.
+.WD Display* "" \s-2NULL\s+2
+.WA PHIGS_X_DISPLAY_NAME  PHIGS
+Modify the workstation type to reflect the capabilities of the
+specified display.
+The display is specified by a display name string.
+Some of the workstation type attributes and workstation description table
+values are dependent on the capabilities of the \s-2PEX\s+2 extension in
+the \s-2X\s+2 server.
+This attribute causes such values to be modified to reflect those
+capabilities.
+.WD char* "" \s-2NULL\s+2
+.WA PHIGS_X_DISPLAY_WINDOW  PHIGS
+Modify the workstation type to reflect the capabilities of the
+specified window.
+Some of the workstation type attributes and workstation description table
+values are dependent on the capabilities of the \s-2X\s+2 window and 
+\s-2PEX\s+2 extension the \s-2PHIGS\s+2 workstation will use.
+This attribute causes such values to be modified to reflect those
+capabilities.
+This attribute can only be specified to
+\s-2WORKSTATION TYPE SET\s+2 of \s-2WORKSTATION TYPE CREATE\s+2.
+It cannot be specified to \s-2WORKSTATION TYPE GET\s+2.
+.WD "Display*, Window" "" "\s-2NULL\s+2, 0"
+.WA PHIGS_HANDLE_EXPOSE  PHIGS
+Enable or disable \s-2PEX-SI\s+2 handling of window exposures.
+A non-zero value specifies that \s-2PHIGS\s+2 will redraw the PHIGS
+output when the window or portions of the window are exposed.
+A zero value specifies that PHIGS will not redraw when the window or
+portions of the window are exposed.
+.WD "Pint" "" "1"
+.WA PHIGS_HANDLE_DESTROY  PHIGS
+Enable or disable handling of DestroyNotify events from the workstation
+window.
+A non-zero value specifies that the \s-2PEX-SI API\s+2 will exit when a
+DestroyNotify event is received on the window of an open workstation.
+A zero value specifies that the \s-2PEX-SI API\s+2 will do nothing
+when a DestroyNotify event is received on the window of an open workstation.
+.WD "Pint" "" "1"
+.WA PHIGS_DC_MODEL  PHIGS
+Set the effect of window resizing on the workstation's DC limits.
+Valid values are defined in phigs.h:
+.nf
+.ta .5i
+.sp .2
+typedef enum {
+.sp .2
+	\s-2PHIGS_DC_LIMITS_FIXED,\s+2
+	\s-2PHIGS_DC_LIMITS_ADJUST_TO_WINDOW,\s+2
+.sp .2
+} Phigs_DC_model;
+.fi
+\s-2DC_LIMITS_FIXED\s+2 causes the \s-2DC\s+2 limits to be left
+as they are, even though the new window size is possibly smaller or larger
+than the limits.
+.br
+\s-2DC_LIMITS_ADJUST_TO_WINDOW\s+2, the default, causes the \s-2DC\s+2 limits to be adjusted
+to the new window size.
+.WD "Phigs_DC_model" "" "\s-2PHIGS_DC_LIMITS_FIXED\s+2"
+.SS x_tool Attributes
+.WA PHIGS_TOOL_WIDTH  PHIGSTOOLWIDTH
+.WB PHIGS_TOOL_HEIGHT  PHIGSTOOLHEIGHT
+The initial size of the graphics window in screen coordinates.
+.WD Pint \s-2INTEGER\s+2 "600, 600"
+.WA PHIGS_TOOL_X  PHIGSTOOLX
+.WB PHIGS_TOOL_Y  PHIGSTOOLY
+The initial position of the workstation in screen coordinates.
+.WD Pint \s-2INTEGER\s+2 "50, 50"
+.WA PHIGS_TOOL_LABEL PHIGSTOOLLABEL
+The label to put in the workstation frame banner.
+.WD char* \s-2CHARACTER(*)\s+2 "\s-2PHIGS\s+2 Workstation"
+.WA PHIGS_TOOL_ICON_LABEL  PHIGSTOOLICONFL
+The label for the icon when the workstation window is closed (iconified).
+.WD char* \s-2NULL\s+2
+.WA PHIGS_TOOL_BORDER_WIDTH  PHIGS
+The border width of the window.
+.WD Pint \s-2INTEGER\s+2 "0"
+.SH ERRORS
+.IP 
+No Error
+.\" Remove "fE" macro to avoid potential conflicts. -- JH (05-19-89)
+.rm fE
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE COLOUR FACILITIES (3P)"
-.SM "INQUIRE COLOUR MODEL FACILITIES (3P)"
-.SM "INQUIRE DIRECT COLOUR MODEL FACILITIES (3P+)"
-.SM "SET COLOUR MODEL (3P)"
-.SM "SET COLOUR REPRESENTATION (3P)"
-.SM "INQUIRE COLOUR REPRESENTATION (3P)"
-.SM "INQUIRE PREDEFINED COLOUR REPRESENTATION (3P)"
-.SM "SET POLYLINE COLOUR INDEX (3P)"
-.SM "SET POLYLINE COLOUR (3P+)"
+.SM "WORKSTATION TYPE CREATE (3P)"
+.SM "WORKSTATION TYPE DESTROY (3P)"
+.SM "WORKSTATION TYPE GET (3P)"
+.SM "OPEN WORKSTATION (3P)"
+.SM "INQUIRE LIST OF AVAILABLE WORKSTATION TYPES (3P)"
+.SM "INQUIRE WORKSTATION CONNECTION AND TYPE (3P)"
+.SM "ESCAPE -3 (3P)"
+.SM "PHIGS WORKSTATION DESCRIPTION TABLE (7P)"
 .fi
-.SH BUGS
-The
-.SM PHIGS
-standard uses the \(lqinternational\(rq (in other words, British) 
-spelling of \(lqcolour.\(rq
-X11 and American usage spell \(lqcolormap\(rq without the
-\(lqu.\(rq
 
 

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p271,v 5.3 94/04/17 20:57:34 hersh Exp $
+.\" $XConsortium: p270,v 5.2 94/04/17 20:57:34 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,89 +22,67 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SAMPLE CHOICE" 3P "29 February 1991"
+.TH "ROTATE Z" 3P "29 February 1991"
 .SH NAME
-SAMPLE CHOICE \- sample the current measure of a choice device
-.IX "Sample Input Mode" "SAMPLE CHOICE"
-.IX "Input Modes" "SAMPLE CHOICE"
-.IX "Choice Input Devices" "SAMPLE CHOICE"
+ROTATE Z \- calculate a \s-2\&3D\s+2 transformation matrix to perform a specified
+rotation about the \fIz\fP axis
+.IX "Transformation Matrix" "ROTATE Z"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-psample_choice ( ws, dev, choice_in_status, choice )
-Pint	ws;	\fIworkstation identifier\fP
-Pint	dev;	\fIchoice device number\fP
-Pin_status	*choice_in_status;	\fIOUT choice input status\fP
-Pint	*choice;	\fIOUT choice\fP
+protate_z ( angle, error_ind, m)
+Pfloat	angle;	\fIrotation angle\fP
+Pint	*error_ind;	\fIOUT error indicator\fP
+Pmatrix3	m;	\fIOUT transformation matrix\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, WSOP, *, *)
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2SAMPLE CHOICE\s+2 to sample the current measure of the specified
-choice device without waiting for the device trigger to fire. The device
-must be in \s-2SAMPLE\s+2 mode.
-See \s-2SET CHOICE MODE\s+2 and \s-2INITIALIZE CHOICE\s+2 for more information.
-.SS C Input Parameters
-.IP \fIws\fP
-Workstation identifier. An integer specifying the workstation with which
-the specified choice device is associated.
-.IP \fIdev\fP
-The device number of the choice device to be sampled.
-See the \fIAvailable Devices\fP section of \s-2INITIALIZE CHOICE\s+2
-for a description of the available devices.
-.SS C Output Parameter
-.IP \fIchoice_in_status\fP
-A pointer to a location to store the status of the sample.
-Pin_status is defined in phigs.h as:
-.sp .4
-.ta .5i
-.nf
-typedef enum {
-.sp .2
-	PIN_STATUS_NONE,
-	PIN_STATUS_OK,
-	PIN_STATUS_NO_IN
-.sp .2
-} Pin_status;
-.fi
-.IP \fIchoice\fP
-A pointer to a location to store the results of the choice.
-.SS Execution
-\s-2SAMPLE CHOICE\s+2 samples the specified choice device. The
-device must be in \s-2SAMPLE\s+2 mode.
-See \s-2SET CHOICE MODE\s+2 and \s-2INITIALIZE CHOICE\s+2 for more
-information.
+Use \s-2ROTATE Z\s+2 to generate a \s-2\&3D\s+2
+homogeneous (4\ \(mu\ 4) transformation
+matrix that performs a \s-2\&3D\s+2 rotation about the \fIz\fP axis.
 .LP
-When a device is set to \s-2SAMPLE\s+2 mode, a measure process is created
-for the device and the device is activated. When \s-2SAMPLE CHOICE\s+2 is
-called, the current value of the measure process for the specified device
-is retrieved without waiting for the device's trigger to fire.
+The returned matrix can be passed as an argument to
+\s-2SET LOCAL TRANSFORMATION 3\s+2 or \s-2SET GLOBAL TRANSFORMATION 3\s+2
+to modify the modelling transformation that is
+applied to output primitives during traversal.
+.SS C Input Parameter
+.IP \fIangle\fP
+The angle of the rotation in radians.
+Positive angles indicate counterclockwise rotation,
+and negative angles indicate clockwise rotation.
+.SS C Output Parameters
+.IP \fIerror_ind\fP
+A pointer to the location to store the error number of any error detected
+by this function.
+.IP \fIm\fP
+The 4\ \(mu\ 4 homogeneous transformation matrix that performs the specified
+rotation.
+Pmatrix3 is defined in phigs.h as follows:
+.IP
+typedef  Pfloat  Pmatrix3[4][4];
+.SS Execution
+\s-2ROTATE Z\s+2 returns the \s-2\&3D\s+2 homogeneous
+(4\ \(mu\ 4) transformation matrix
+that performs the rotation specified by \fIangle\fP about the \fIz\fP axis.
+The rotation is specified in radians and
+is relative to the origin of the current modelling
+coordinate system.
 .SH ERRORS
-.IP 003
-Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
-.IP 054
-Ignoring function, the specified workstation is not open
-.IP 061
-Ignoring function, specified workstation is neither of category \s-2INPUT\s+2
-nor of category \s-2OUTIN\s+2
-.IP 250
-Ignoring function, the specified device is not available
-on the specified workstation
-.IP 252
-Ignoring function, the function requires the input device to
-be in \s-2SAMPLE\s+2 mode
+.IP 002
+Ignoring function, function requires state (\s-2PHOP, *, *, *\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET CHOICE MODE (3P)"
-.SM "INITIALIZE CHOICE 3 (3P)"
-.SM "REQUEST CHOICE (3P)"
-.SM "GET CHOICE (3P)"
-.SM "INQUIRE CHOICE DEVICE STATE (3P)"
+.SM "ROTATE (3P)"
+.SM "SET LOCAL TRANSFORMATION 3 (3P)"
+.SM "BUILD TRANSFORMATION MATRIX 3 (3P)"
+.SM "COMPOSE MATRIX 3 (3P)"
+.SM "TRANSFORM POINT 3 (3P)"
 .fi

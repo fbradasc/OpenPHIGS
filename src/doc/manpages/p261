@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p261,v 5.2 94/04/17 20:57:28 rws Exp $
+.\" $XConsortium: p260,v 5.2 94/04/17 20:57:27 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,84 +22,58 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "RETRIEVE ALL STRUCTURES" 3P "29 February 1991"
+.TH "RESTORE MODELLING CLIPPING VOLUME" 3P "29 February 1991"
 .SH NAME
-RETRIEVE ALL STRUCTURES \- retrieve all structures from an archive file
-.IX "Archive Files" "RETRIEVE ALL STRUCTURES"
-.IX "Structures" "RETRIEVE ALL STRUCTURES"
+RESTORE MODELLING CLIPPING VOLUME \- create structure element to restore the modelling clipping volume
+.IX "Modelling Clipping" "RESTORE MODELLING CLIPPING VOLUME"
+.IX "Modelling and Transformation Attributes" "RESTORE MODELLING CLIPPING VOLUME"
+.IX "Attributes, Modelling and Transformation Attributes" "RESTORE MODELLING CLIPPING VOLUME"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pret_all_structs ( archive_id )
-Pint	archive_id;	\fIarchive identifier\fP
+prestore_model_clip_vol ()
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, AROP)
+(PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \s-2RETRIEVE ALL STRUCTURES\s+2 to retrieve all structures
-from the specified open archive file into the
-Central Structure Store (\s-2CSS\s+2).
-.SS C Input Parameter
-.IP \fIarchive_id\fP
-The archive identifier specifying the open archive file
-from which to read.
+.LP
+\s-2RESTORE MODELLING CLIPPING VOLUME\s+2
+creates a structure element
+to restore the modelling clipping volume, undoing
+the effect of \s-2SET MODELLING CLIPPING VOLUME\s+2 and
+\s-2SET MODELLING CLIPPING VOLUME 3\s+2 elements in this structure.
 .SS Execution
-All structures in the specified open archive file are copied
-into the \s-2CSS\s+2.
-If any of the structures to be retrieved currently
-exist in the \s-2CSS\s+2, the conflict is resolved as follows:
-.sp .5v
-.in +0.5i
-.ta +0.2i
-.ti -0.2i
-\(bu	If the retrieval conflict resolution flag is \s-2MAINTAIN\s+2,
-then the conflicting structure will not be copied into the \s-2CSS\s+2 
-(its contents are maintained).
-.sp .5v
-.ti -0.2i
-\(bu	If the retrieval conflict resolution flag is \s-2UPDATE\s+2,
-then the conflicting structure in the \s-2CSS\s+2 will be overwritten
-(its contents are updated).
-.sp .5v
-.ti -0.2i
-\(bu	If the retrieval conflict resolution flag is \s-2ABANDON\s+2,
-then no structures will be copied to the \s-2CSS\s+2.
-.LP
-The retrieval conflict resolution flag is set by the
-\s-2SET CONFLICT RESOLUTION\s+2
-subroutine.
-.LP
-If the currently open structure must be overwritten
-because of a conflict while
-the retrieval conflict resolution flag is \s-2UPDATE\s+2,
-then it is closed, its contents are
-overwritten, and it is re-opened. The element pointer
-will be set to point
-to the last element.
+If the current edit mode is \s-2INSERT\s+2, a
+\s-2RESTORE MODELLING CLIPPING VOLUME\s+2 element is inserted
+into the currently open structure after
+the element pointed to by the current element pointer.  If the edit
+mode is \s-2REPLACE\s+2, the new element replaces the element pointed to by
+the element pointer.  In either case, the element pointer is
+updated to point to the new \s-2RESTORE MODELLING CLIPPING VOLUME\s+2
+element.
+.LP   
+During traversal, a \s-2RESTORE MODELLING CLIPPING VOLUME\s+2 element resets
+the current modelling clipping volume to the value of that attribute
+inherited by the structure being traversed.  The attribute may have
+been modified by traversal of \s-2SET MODELLING CLIPPING VOLUME\s+2 and/or
+\s-2SET MODELLING CLIPPING VOLUME 3\s+2 elements.
+.LP    
+Modelling clipping to the volume controlled by these three elements
+is enabled and disabled by \s-2SET MODELLING CLIPPING INDICATOR\s+2.
 .SH ERRORS
-.IP 007
-Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2*\s+2, \s-2*\s+2, \s-2AROP\s+2)
-.IP 404
-Ignoring function, the specified archive file is not open
-.IP 405
-Ignoring function, name conflict occurred while conflict resolution flag
-has value \s-2ABANDON\s+2
+.IP 005
+Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "OPEN ARCHIVE FILE (3P)"
-.SM "ARCHIVE ALL STRUCTURES (3P)"
-.SM "SET CONFLICT RESOLUTION (3P)"
-.SM "INQUIRE ALL CONFLICTING STRUCTURES (3P)"
-.SM "RETRIEVE STRUCTURE IDENTIFIERS (3P)"
-.SM "RETRIEVE STRUCTURE NETWORKS (3P)"
-.SM "RETRIEVE STRUCTURES (3P)"
-.SM "DELETE ALL STRUCTURES FROM ARCHIVE (3P)"
+.SM "INQUIRE MODELLING CLIPPING FACILITIES (3P)"
+.SM "SET MODELLING CLIPPING INDICATOR (3P)"
+.SM "SET MODELLING CLIPPING VOLUME (3P)"
+.SM "SET MODELLING CLIPPING VOLUME 3 (3P)"
 .fi

@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p321,v 5.2 94/04/17 20:58:10 rws Exp $
+.\" $XConsortium: p320,v 5.2 94/04/17 20:58:09 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,119 +22,118 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET GLOBAL TRANSFORMATION" 3P "29 February 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line be.\"low:
+.ds pN SET FACE DISTINGUISHING MODE
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-SET GLOBAL TRANSFORMATION \- create structure element containing a \s-22D\s+2
-global modelling transformation matrix
-.IX "Modelling and Transformation Attributes" "SET GLOBAL TRANSFORMATION"
-.IX "Attributes, Modelling and Transformation Attributes" "SET GLOBAL TRANSFORMATION"
+\*(pN \-
+create a structure element to set the face distinguishing mode
+.IX "PHIGS Extension Functions" "\*(pN"
+.IX "Filled Area Interior Attributes" "SET FACE DISTINGUISHING MODE"
+.IX "Attributes, Filled Area Interior Attributes" "SET FACE DISTINGUISHING MODE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
+.\" 6. Insert C syntax below
+.nf
 void
-pset_global_tran ( xform )
-Pmatrix	xform;	\fItransformation matrix\fP
+pset_face_disting_mode ( mode )
+Pdisting_mode	mode;	\fIdistinguishing mode\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET GLOBAL TRANSFORMATION\s+2 creates a structure element
-containing a \s-22D\s+2 global modelling transformation matrix,
-which, during traversal, replaces the \fIcurrent global
-modelling transformation\fP.
-Then the local modelling transformation is composited with the new
-global modelling transformation to create a new composite modelling
-transformation, which maps the modelling
-coordinates \s-2(MC)\s+2 used to define individual output primitives
-to a unified world coordinate \s-2(WC)\s+2 space.
+\s-2SET FACE DISTINGUISHING MODE\s+2 creates a structure element
+to set the face distinguishing mode.
+The attribute face distinguishing mode defines control over the 
+attributes applied when rendering front and back facing portions of area 
+defining primitives.
 .LP
-If the current edit mode is \s-2INSERT\s+2,
-the \s-2SET GLOBAL TRANSFORMATION\s+2 element
-is inserted into the open structure after the element pointed to
-by the current element pointer. If the edit mode is \s-2REPLACE\s+2, the
-\s-2SET GLOBAL TRANSFORMATION\s+2
-element replaces the element pointed to by the
-element pointer. In either case, the element pointer is updated to point
-to the new element.
-.SS C Input Parameter
-.IP \fIxform\fP
-The 3 \(mu 3 homogeneous \fItransformation matrix\fP, of type:
-.sp .3
-typedef  Pfloat  Pmatrix[3][3];
+An application indirectly specifies which of the two faces of an
+area-defining primitive is the front face, by the ordering of the vertex
+data.
+.LP
+A facet of an area defining primitive is defined to be back facing
+if its geometric normal has a negative \fIz\fP component when transformed
+to \s-2NPC\s+2; otherwise, the facet is front facing. 
+.LP
+If facet normals are supplied, they are used as geometric normals;
+otherwise, a geometric normal is computed for each facet using a method
+that depends on the primitive type:
+.IP "\fIFill Area\fP or \fIFill Area Set\fP"
+A geometric normal is computed
+by first determining three points: \fI\s-2A\s+2\fP, \fI\s-2B\s+2\fP, 
+and \fI\s-2C\s+2\fP. Point \fI\s-2A\s+2\fP is the
+first of the vertices. Point \fI\s-2B\s+2\fP is the next point in the
+list that is non-coincident with \fI\s-2A\s+2\fP. Point \fI\s-2C\s+2\fP
+is the next point in
+the list (after \fI\s-2B\s+2\fP) that is non-colinear with 
+\fI\s-2A\s+2\fP and \fI\s-2B\s+2\fP. The geometric
+normal is the cross product of the vector extending from
+\fI\s-2A\s+2\fP to \fI\s-2B\s+2\fP with the vector extending from
+\fI\s-2A\s+2\fP to \fI\s-2C\s+2\fP. The utility function
+\s-2COMPUTE FILL AREA SET GEOMETRIC NORMAL (3P+)\s+2 can be used to determine
+the geometric normal for a fill area set primitive according to
+the above procedure.
+.\".LP
+.IP "\fITriangle Strip Primitive\fP"
+Determination of the
+geometric normal for each triangle is computed as for a fill area,
+using the vertices of the triangle. Order of facets in triangles
+is reversed for even numbered facets, with facets numbering
+starting at 1. 
+.IP "\fIQuadrilateral Mesh Primitive\fP"
+Determination of the
+geometric normal for each quadrilateral is calculated by taking
+the cross product of its diagonals.
+.IP "\fINon-uniform B-Spline Surface\fP"
+The geometric normal is computed
+as the normalized cross product of the tangent vector along the \fIu\fP
+direction and the tangent vector along the \fIv\fP direction.
+.ig XX
+.LP
+Notice that when the geometric normal is computed, the order of
+points determines the sense of
+direction; that is, whether it is front or back facing.
+.XX
+.SS C Input Parameters
+.IP \fImode\fP
+A pointer to a Pdisting_mode structure. A  Pdisting_mode structure is
+defined as:
+.sp .4
+.nf
+.ta .5i
+typedef enum {
+.sp .2
+	PDISTING_NO,
+	PDISTING_YES
+.sp .2
+} Pdisting_mode;
+.fi
 .SS Execution
+Depending on the edit mode, a \s-2SET FACE DISTINGUISHING MODE\s+2
+element is inserted into the open structure after the element pointer,
+or replaces the element pointed at by the element pointer. The element
+pointer is then updated to point to the new
+\s-2SET FACE DISTINGUISHING MODE (3P+)\s+2
+element.
 .LP
-When traversal of a structure begins,
-the initial current local modelling transformation \s-2(L)\s+2 and
-the current global modelling transformation \s-2(G)\s+2
-are both the \s-2\&3D\s+2, 4 \(mu 4 identity matrix.
-.\"	A composite modelling transformation \s-2(C)\s+2 is by
-.\"	definition \s-2G\s+2 \(mu \s-2L\s+2\(aa at all times.
-The composite modelling transformation \s-2(C)\s+2 within a structure traversal
-is formed by the matrix multiplication of the
-current local modelling transformation \s-2(L)\s+2 and the
-current global modelling transformation \s-2(G)\s+2 as follows:
-.IP
-C \(<- G \(mu L
-.LP
-\s-2PHIGS\s+2 assumes representation of points as column vectors.  Hence, the order
-of composition in C \(<- G \(mu L (and throughout) is ``post-concatenation''
-or ``post-multiply.''
-.LP
-When a new structure is traversed, one step in the
-invocation of the referenced structure is to save the current modelling
-transformations (\s-2L\s+2, \s-2G\s+2, and \s-2C\s+2).
-The child structure inherits the parent's
-composite modelling transformation \s-2(C)\s+2
-as its current global modelling transformation \s-2(G)\s+2, and
-an identity matrix as its initial
-current local modelling transformation \s-2(L)\s+2.
-The parent and child have equal composite modelling transformations \s-2(C)\s+2,
-because \s-2L\s+2 is the identity.  After traversal of the child structure network,
-the saved transformations are restored so that the parent is unaffected
-by the execution of a child.
-.LP
-When the \s-2SET GLOBAL TRANSFORMATION\s+2 element is traversed,
-first the element's \fItransformation matrix\fP is expanded to the \s-2\&3D\s+2
-equivalent \fItransformation matrix\fP \s-2(T)\s+2 and it replaces the
-current global modelling transformation \s-2(G)\s+2:
-.IP
-G\(aa \(<- T
-.LP
-The current local modelling transformation \s-2(L)\s+2,
-is then composited with the new current global modelling transformation \s-2(G)\s+2
-to calculate the new composite modelling transformation \s-2(C)\s+2.
-.IP
-C \(<- G\(aa \(mu L
-.LP
-The current composite modelling transformation maps the
-modelling coordinates, used to define individual output primitives, to
-world coordinates.
-Mapping the primitives to the world coordinate space establishes the
-relation between different objects of the image by redefining the parts in
-terms of a unified coordinate space. This allows the application to define
-different parts of the image in different local modelling coordinates
-convenient to the objects being defined, and then to apply
-transformations that will map the local coordinate systems of each part to
-a single world coordinate \s-2(WC)\s+2 space.
-.LP
-Finally, the viewing mechanism maps \s-2WC\s+2 to device coordinates
-on the workstation's physical display surface.
-.\"? This "transformation pipeline" is described in more detail in the
-.\"? \fI\s-2PEX-SI\s0 Programming Guide\fP.
+When the face distinguishing mode
+is \fINo\fP, the back face attributes are not
+used, and the front face attributes are used for both front facing and 
+back facing portions of the primitives. When the face distinguishing mode
+is \fIYes\fP, the back face
+attributes are used for back facing portions.
 .SH ERRORS
 .IP 005
-Ignoring function, function requires state (PHOP, *, STOP, *)
+Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET LOCAL TRANSFORMATION (3P)"
-.SM "BUILD TRANSFORMATION MATRIX (3P)"
-.SM "TRANSFORM POINT (3P)"
-.SM "SET VIEW REPRESENTATION (3P)"
-.SM "SET GLOBAL TRANSFORMATION 3 (3P)"
+.SM "SET FACE CULLING MODE (3P+)"
 .fi

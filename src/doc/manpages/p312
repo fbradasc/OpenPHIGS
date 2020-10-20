@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p312,v 5.2 94/04/17 20:58:03 rws Exp $
+.\" $XConsortium: p311,v 5.2 94/04/17 20:58:03 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,118 +22,149 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET EDGETYPE" 3P "29 February 1991"
+.\" 1. Substitute PHIGS Extension function name (in CAPS) for "PNAME" in line .\"below:
+.ds pN SET EDGE REPRESENTATION PLUS
+.TH "\*(pN" 3P+ "29 February 1991"
 .SH NAME
-SET EDGETYPE \- create a structure element to set the current edgetype attribute
-.IX "Aspect Source Flags" "SET EDGETYPE"
-.IX "Attributes, Edge Attributes" "SET EDGETYPE"
-.IX "Edge Attributes" "SET EDGETYPE"
-.IX "Patterned Lines" "SET EDGETYPE"
-.IX "Textured Lines" "SET EDGETYPE"
+\*(pN \-
+set an extended edge attribute bundle on a workstation
+.IX "PHIGS Extension Functions" "\*(pN"
+.IX "Attribute Representations" "SET EDGE REPRESENTATION PLUS"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
+.\" 6. Insert C syntax below
 void
-pset_edgetype ( edgetype )
-Pint	edgetype;	\fIedgetype\fP
+pset_edge_rep_plus ( ws, index, rep )
+Pint	ws;	\fIworkstation identifier\fP
+Pint	index;	\fIedge bundle index number\fP
+Pedge_bundle_plus	*rep;	\fIedge representation pointer\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, STOP, *)
+(PHOP, WSOP, *, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET EDGETYPE\s+2 creates a structure element
-structure containing a value for the current edgetype attribute.
-.LP
-When the current edgetype Aspect Source Flag (\s-2ASF\s+2)
-is set to \s-2INDIVIDUAL\s+2,
-this attribute defines the edgetype to be applied
-to the following output primitives:
-.RS
-.LP
-\(bu
-.SM "FILL AREA SET"
-.LP
-\(bu
-.SM "FILL AREA SET 3"
-.LP
-\(bu
-.SM "FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "SET OF FILL AREA SET 3 WITH DATA"
-.LP
-\(bu
-.SM "NON-UNIFORM B-SPLINE SURFACE"
-.LP
-\(bu
-.SM "QUADRILATERAL MESH 3 WITH DATA"
-.LP
-\(bu
-.SM "TRIANGLE STRIP 3 WITH DATA"
-.RE
-.SS C Input Parameter
-.IP \fIedgetype\fP
-An integer value specifying one of the following edge types:
-.sp
+\s-2SET EDGE REPRESENTATION PLUS\s+2 sets an extended edge 
+attribute bundle on a workstation.
+.SS C Input Parameters
+.IP \fIws\fP
+The identifier of the workstation.
+.IP \fIindex\fP
+This is an index to the workstation edge bundle table.
+.IP \fIrep\fP
+A pointer to a Pedge_bundle_plus structure. Pedge_bundle_plus is defined as:
+.sp .2
 .nf
-.\".ta .5i +.5i +1.5i +1i
-.ta .5i +\w'-3     'u +\w'PLINE_DOT_DASHDOT     'u
+.ta .5i +1.25i  +1i  +1.25i
+.sp .2
+typedef struct {
+.sp .2
+	Pedge_flag	flag;	/* edge flag */
+	Pint	type;	/* edgetype */
+	Pfloat	width;	/* edgewidth scale factor */
+	Pgcolr	colr;	/* edge colour */
+.sp .2
+} Pedge_bundle_plus;
+.fi
+.IP
+Pedge_flag is defined as:
+.nf
+.ta .5i 
+.sp .2
+typedef enum {
+.sp .2
+	PEDGE_OFF,
+	PEDGE_ON
+.sp .2
+} Pedge_flag;
+.nf
+.sp
+The edge type values are:
+.ta .5i +\w'-1     'u +\w'PLINE_DOT_DASHDOT     'u
+.nf
+.sp .2
 1	PLINE_SOLID	\fISolid\fP
 2	PLINE_DASH	\fIDashed\fP
-3	PLINE_DOT	\fIDotted\fP
+3	PLINE_DOT 	\fIDotted\fP
 4	PLINE_DOT_DASH	\fIDot-dashed\fP
 .fi
-.sp
-Support for edgetypes is workstation dependent.
+.bp
+.IP
+Pgcolr is defined as:
+.ta .5i +1.5i   +1i  +2i
+.nf
+.sp .4
+typedef struct {
+.sp .2
+	Pint	type;	/* indirect, RGB, CIE, HSV, HLS */
+	union {
+	     Pint	ind;	/* index in workstation colour bundle table */
+	     struct {
+	          Pfloat	x;	/* red, hue, etc. */
+	          Pfloat	y;	/* green, saturation, lightness, etc. */
+	          Pfloat	z;	/* blue, value, saturation, etc. */
+	     } general;
+	} val;
+} Pgcolr;
+.fi
 .SS Execution
+In the edge bundle table of the workstation state list, the given
+index is associated with the specified parameters.
 .LP
-If the current edit mode is \s-2INSERT\s+2,
-a \s-2SET EDGETYPE\s+2 element is inserted into the currently open
-structure after the element pointed to by the current element pointer.  If
-the edit mode is \s-2REPLACE\s+2, then the new \s-2SET EDGETYPE\s+2 element
-replaces the element pointed to by the element pointer.  In either case, the
-element pointer is updated to point to the new element.  
+The edgewidth scale factor is a scale factor applied to nominal edgewidth.
+During structure traversal, the edgewidth scale factor is multiplied
+by the nominal edgewidth on a workstation. The result is mapped by the
+workstation to the nearest available edgewidth.
 .LP
-When the \s-2SET EDGETYPE\s+2 element is traversed, the current edgetype
-entry in the \s-2PHIGS\s+2 traversal state list is set to edgetype.  
-When the edge flag attribute is set to \s-2ON\s+2 and
-the current edgetype \s-2ASF\s+2 is set to \s-2INDIVIDUAL\s+2,
-the edges of the fill area set output primitives that follow in
-the structure network are drawn with the edgetype specified.
+Edge colour is a general colour, either an indirect or a
+direct colour in a specified colour model. If an indirect colour is
+specified and the specified colour index is not available during
+structure traversal, then colour index one is used.
 .LP
-If the edge flag is set to \s-2OFF\s+2, then these primitives are drawn
-without edges, and only the interior fill is displayed.  
-If the edge flag is \s-2OFF\s+2 and the interior style is \fIEmpty\fP, then the
-primitive is invisible.  
+The extended edge bundle table in the workstation state list has
+predefined entries taken from the workstation description table. A
+number of these entries are predefined for every workstation of category
+\s-2OUTPUT\s+2 or \s-2OUTIN\s+2. Any table entry, including the predefined
+entries, may be redefined with this function.
 .LP
-When the edge flag is
-\s-2ON\s+2 and the current edgetype \s-2ASF\s+2 is set to \s-2BUNDLED\s+2, 
-the edgetype is taken from the 
-workstation's representation indicated by the current edge index.
-In this case, the edgetype set with \s-2SET EDGETYPE\s+2 has no effect.
-.LP
-If the edgetype specified is not available on the workstation to which the
-structure is posted, then edgetype 1 \fI(Solid)\fP is used.
+When area defining primitives are displayed during structure traversal,
+the current edge index in the \s-2PHIGS\s+2 traversal state list
+refers to an entry in the extended edge bundle table. If the
+current edge index is not present in the extended edge
+bundle table, then edge index one is used. The setting of the 
+corresponding Aspect Source Flags(\s-2ASF\s+2s) determines which 
+aspects in the entry are used.
+.RE
 .SH ERRORS
-.IP 005
-Ignoring function, function requires state (PHOP, *, STOP, *)
+.IP 003
+Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
+.IP 054
+Ignoring function, the specified workstation is not open
+.IP 059
+Ignoring function, the specified workstation does not have output capability
+(that is, the workstation category is neither \s-2OUTPUT\s+2,
+\s-2OUTIN\s+2, nor \s-2MO\s+2)
+.IP 100
+Ignoring function, the bundle index value is less than one
+.IP 103
+Ignoring function, setting this bundle table entry would exceed the maximum
+number of entries allowed in the workstation bundle table
+.IP 107
+Ignoring function, the specified edgetype is not available on the
+specified workstation
+.IP 110
+Ignoring function, the specified colour model is not available on the 
+workstation
+.IP 113
+Ignoring function, the colour index value is less than zero
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET EDGE FLAG (3P)"
 .SM "SET INDIVIDUAL ASF (3P)"
+.SM "INQUIRE EDGE REPRESENTATION PLUS (3P+)"
 .SM "SET EDGE REPRESENTATION (3P)"
-.SM "INQUIRE EDGE REPRESENTATION (3P)"
-.SM "INQUIRE EDGE FACILITIES (3P)" 
-.SM "FILL AREA SET (3P)"
-.SM "FILL AREA SET 3 (3P)"
-.SM "FILL AREA SET 3 WITH DATA (3P+)"
-.SM "SET OF FILL AREA SET 3 WITH DATA (3P+)"
-.SM "NON-UNIFORM B-SPLINE SURFACE (3P+)"
-.SM "QUADRILATERAL MESH 3 WITH DATA (3P+)"
-.SM "TRIANGLE STRIP 3 WITH DATA (3P+)"
 .fi

@@ -1,5 +1,5 @@
 .\"
-.\" $XConsortium: p209,v 5.2 94/04/17 20:56:51 rws Exp $
+.\" $XConsortium: p208,v 5.2 94/04/17 20:56:51 rws Exp $
 .\"
 .\" 
 .\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,18 +22,18 @@
 .\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2INQUIRE STRING DEVICE STATE 3\s+2
-.TH "INQUIRE STRING DEVICE STATE 3" 3P "29 February 1991"
+.ds f \s-2INQUIRE STRING DEVICE STATE\s+2
+.TH "INQUIRE STRING DEVICE STATE" 3P "29 February 1991"
 .SH NAME
-INQUIRE STRING DEVICE STATE 3 \- inquire state of a \s-2STRING\s+2 device
-.IX "String Input Devices" "INQUIRE STRING DEVICE STATE 3"
+INQUIRE STRING DEVICE STATE \- inquire state of a \s-2STRING\s+2 device
+.IX "String Input Devices" "INQUIRE STRING DEVICE STATE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_string_st3( ws, dev, store, err, op_mode, echo_switch, init_string, prompt_echo, echo_vol, 
+pinq_string_st( ws, dev, store, err, op_mode, echo_switch, init_string, prompt_echo, echo_area, 
     string_data)
 Pint	ws;	\fIworkstation identifier\fP
 Pint	dev;	\fIstring device number\fP
@@ -43,8 +43,8 @@ Pop_mode	*op_mode	\fIOUT operating mode\fP
 Pecho_switch	*echo_switch;	\fIOUT echo switch\fP
 char	**init_string;	\fIOUT initial string\fP
 Pint	 *prompt_echo;	\fIOUT prompt/echo type\fP
-Plimit3	*echo_vol;	\fIOUT echo area\fP
-Pstring_data3	**string_data;	\fIOUT data record\fP
+Plimit	*echo_area;	\fIOUT echo area\fP
+Pstring_data	**string_data;	\fIOUT data record\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
@@ -55,7 +55,7 @@ Use \*f to retrieve the current state of the specified \s-2STRING\s+2 device.
 .SS C Input Parameters
 Applications using the \s-2C\s+2 binding must create a buffer to be used by this
 function as memory space for storing data associated with the device state.
-This buffer is passed as the \fIstore\fP argument.
+This buffer is passed as the \fIstore\fP argument.  
 .LP
 The store buffer is a data area managed by \s-2PHIGS\s+2. While the application 
 is responsible for creating the inital buffer through a call to \s-2\CREATE STORE\s+2, 
@@ -66,7 +66,7 @@ by the pointer pointed to by \fIstring_data\fR.
 Workstation identifier. An integer specifying the workstation with which
 the specified \s-2STRING\s+2 device is associated.
 .IP \fIdev\fP
-The device number of the \s-2STRING\s+2 device.
+The device number of the string device.
 See the \fIAvailable Devices\fP section of \s-2INITIALIZE STRING\s+2
 for a description of the available devices.
 .IP \fIstore\fP
@@ -78,7 +78,7 @@ This buffer must exist prior to calling this function (see
 .IP \fIerr\fP
 A pointer to the location to store the error number of any error detected by this function.
 .IP \fIop_mode\fP
-The operating mode.  Pop_mode is an enumerated type defined in phigs.h
+The operating mode. Pop_mode is an enumerated type defined in phigs.h
 with the following values:
 .nf
 .ta .5i
@@ -91,9 +91,8 @@ typedef enum {
 .sp .2
 } Pop_mode;
 .fi
-.bp
 .IP \fIecho_switch\fP
-The echo state.  Pecho_switch is an enumerated type defined in phigs.h
+The echo state. Pecho_switch is an enumerated type defined in phigs.h
 with the following values:
 .nf
 .ta .5i
@@ -112,28 +111,25 @@ by \fIinit_string\fP to point to the initial string stored in \fIstore\fR.
 The prompt/echo type desired.
 See the \fIAvailable Devices\fP Section of \s-2INITIALIZE STRING\s+2
 for a description of the available types.
-.IP \fIecho_vol\fP
-A pointer to a Plimit3 structure defining the
-\fIx\fP, \fIy\fP, and \fIz\fP
-components of the echo volume, in Device Coordinates.
-Plimit3 is defined in phigs.h as follows:
+.IP \fIecho_area\fP
+A pointer to a variable of type Plimit that contains the echo area of
+the device. Plimit is defined in phigs.h as follows:
 .sp .4
-.ta .5i +1i  +1i
 .nf
+.ta .5i  +1i  +1i   
+.sp .2
 typedef struct {
 .sp .2
-	Pfloat	x_min;	/* minimum x coordinate value */
-	Pfloat	x_max;	/* maximum x coordinate value */
-	Pfloat	y_min;	/* minimum y coordinate value */
-	Pfloat	y_max;	/* maximum y coordinate value */
-	Pfloat	z_min;	/* minimum z coordinate value */
-	Pfloat	z_max;	/* maximum z coordinate value */
+	Pfloat	x_min;	/* x min */
+	Pfloat	x_max;	/* x max */
+	Pfloat	y_min;	/* y min */
+	Pfloat	y_max;	/* y max */
 .sp .2
-} Plimit3;
+} Plimit;
 .fi
 .IP \fIstring_data\fP
 Pointer to a pointer that points to the string state within \fIstore\fR.
-Pstring_data3 is defined in phigs.h as follows:
+Pstring_data is defined in phigs.h as follows:
 .sp .4
 .nf
 .ta .5i +.5i +.5i +.5i
@@ -147,24 +143,24 @@ typedef struct {
 		} pet_r1;
 	} pets;
 .sp .2
-} Pstring_data3;
+} Pstring_data;
 .fi
 .SS Execution
 \*f returns the current state of the
 specified string device, which is stored in the workstation
 state list of the workstation associated with the device.  The
 current state includes the operating mode, echo switch, initial string,
-prompt/echo type, echo volume, buffer length, edit position,  and data record.
+prompt/echo type, echo area, buffer length, edit position,  and data record.
 See \s-2SET STRING MODE\s+2 for a description of the operating mode and the
 echo switch, and how to set these values.
-See \s-2INITIALIZE STRING 3\s+2 for a description of the initial string,
-prompt/echo type, echo volume, and data record contents, and how to set these
+See \s-2INITIALIZE STRING\s+2 for a description of the initial string,
+prompt/echo type, echo area, and data record contents, and how to set these
 values.
 .LP
 In the event of an error, the \fIerror indicator\fP 
 indicates the error number of the error detected, and no other output data
 is returned.  If no error is detected, the \fIerror indicator\fP 
-is set to zero, and the inquired information will be available in the output 
+is set to zero, and the inquired information will be available in the output
 parameters.  Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not
 invoked when an error is detected by this function.
 .SH ERRORS
@@ -178,13 +174,16 @@ nor of category \s-2OUTIN\s+2
 .IP 250
 Ignoring function, the specified device is not available
 on the specified workstation
+.IP 2200
+\s-2C\s+2 :
+Buffer overflow in input or inquiry function
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
 .SM "SET STRING MODE (3P)"
 .SM "INITIALIZE STRING (3P)"
-.SM "INQUIRE STRING DEVICE STATE (3P)"
+.SM "INQUIRE STRING DEVICE STATE 3 (3P)"
 .SM "CREATE STORE (3P)"
 .SM "DELETE STORE (3P)"
 .fi

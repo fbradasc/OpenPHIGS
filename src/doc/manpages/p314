@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p314,v 5.2 94/04/17 20:58:05 rws Exp $
+.\" $XConsortium: p313,v 5.2 94/04/17 20:58:04 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,56 +22,112 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET EDIT MODE" 3P "29 February 1991"
+.TH "SET EDGEWIDTH SCALE FACTOR" 3P "29 February 1991"
 .SH NAME
-SET EDIT MODE \- set the edit mode controlling how new structure elements are added to the open structure
-.IX "Editing" "SET EDIT MODE"
-.IX "Replace Mode" "SET EDIT MODE"
-.IX "Insert Mode" "SET EDIT MODE"
+SET EDGEWIDTH SCALE FACTOR \- create structure element to set the current edgewidth scale factor attribute
+.IX "Aspect Source Flags" "SET EDGEWIDTH SCALE FACTOR"
+.IX "Attributes, Edge Attributes" "SET EDGEWIDTH SCALE FACTOR"
+.IX "Edge Attributes" "SET EDGEWIDTH SCALE FACTOR"
+.IX "Wide Lines" "SET EDGEWIDTH SCALE FACTOR"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_edit_mode ( mode )
-Pedit_mode	mode;	\fIedit mode\fP
+pset_edgewidth ( scale )
+Pfloat	scale;	\fIedgewidth scale factor\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, *, *, *)
+(PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-The \s-2SET EDIT MODE\s+2 subroutine sets the edit mode controlling how \s-2PHIGS\s+2 subroutines that create new structure elements will add the new element to the open structure.
-The mode may be Insert or Replace.
+\s-2SET EDGEWIDTH SCALE FACTOR\s+2 creates a structure element
+containing a value for the current edgewidth scale factor attribute.
+When the current edgewidth scale factor Aspect Source Flag (\s-2ASF\s+2)
+is set to
+\s-2INDIVIDUAL\s+2,
+this attribute defines the current edgewidth applied
+to the output primitives:
+.RS
+.ta 0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i +0.2i
 .LP
-Insert is the default.
+\(bu
+.SM "FILL AREA SET"
+.LP
+\(bu
+.SM "FILL AREA SET 3"
+.LP
+\(bu
+.SM "FILL AREA SET 3 WITH DATA"
+.LP
+\(bu
+.SM "GENERALIZED DRAWING PRIMITIVE \fI(Fill Area Primitives)\fP"
+.LP
+\(bu
+.SM "GENERALIZED DRAWING PRIMITIVE 3 \fI(Fill Area Primitives)\fP"
+.LP
+\(bu
+.SM "NON-UNIFORM B-SPLINE SURFACE"
+.LP
+\(bu
+.SM "SET OF FILL AREA SET 3 WITH DATA"
+.LP
+\(bu
+.SM "QUADRILATERAL MESH 3 WITH DATA"
+.LP
+\(bu
+.SM "TRIANGLE STRIP 3 WITH DATA"
+.ta
+.RE
+.LP
 .SS C Input Parameter
-.IP \fImode\fP
-An enumerated variable specifying the edit mode to be used to add new elements to the open structure.
-Valid values (defined in phigs.h) are:
-.sp
-.ta .3i
-.nf
-	PEDIT_INSERT
-	PEDIT_REPLACE
-.fi
+.IP \fIscale\fP
+A real value specifying the edgewidth scale factor.
 .SS Execution
-The \s-2SET EDIT MODE\s+2 subroutine sets the edit mode in the 
-traversal state list to Insert or Replace. The value in this entry 
-controls how \s-2PHIGS\s+2 subroutines that create new structure elements 
-add the new element to the currently open structure.
+If the current edit mode is \s-2INSERT\s+2 when \s-2SET EDGEWIDTH SCALE
+FACTOR\s+2 is
+called, a \s-2SET EDGEWIDTH SCALE FACTOR\s+2
+element is inserted into the currently open
+structure after the element pointed to by the current element pointer.  If
+the edit mode is \s-2REPLACE\s+2, the new element
+replaces the element pointed to by the element pointer.  In either case, the
+element pointer is updated to point to the new element.
 .LP
-While the edit mode is Insert, new structure elements are inserted into the open structure after the element pointed to by the current element pointer.
+When the \s-2SET EDGEWIDTH SCALE FACTOR\s+2 element is traversed, the
+current edgewidth scale factor entry in the 
+traversal state list is set to edgewidth scale factor.  
 .LP
-While the edit mode is Replace, new structure elements replace the element in the open structure pointed to by the current element pointer.
+When the edge flag is set to \s-2ON\s+2
+and the current edgewidth scale factor \s-2ASF\s+2 is set to
+\s-2INDIVIDUAL\s+2, the edges of the fill area output primitives that 
+follow in the structure network are drawn with the edgewidth specified.
+.LP
+If the edge flag is \s-2OFF\s+2, these primitives are drawn without edges
+and only the interior fill is displayed.  When the edge flag is
+\s-2ON\s+2 and the
+edgewidth scale factor \s-2ASF\s+2 is set to \s-2BUNDLED\s+2, 
+the edgewidth scale factor is taken from the
+workstation's representation indicated by the current edge index.  
+In this case, the edgewidth value set with \s-2SET EDGEWIDTH SCALE FACTOR\s+2
+has no effect.  
+.LP
+The width of the edge drawn is determined by applying the current edgewidth
+scale factor to the nominal edgewidth,
+and this result is then mapped to the nearest edgewidth
+supported on the workstation.  
+.\"The GX4000
+.\"nominal edge width is 1 pixel in Device Coordinate (DC) units and the
+.\"supported edgewidths vary by 1 pixel (DC) units.
 .SH ERRORS
-.IP 002
-Ignoring function, function requires state (PHOP, *, *, *)
+.IP 005
+Ignoring function, function requires state (\s-2PHOP, *, STOP, *\s+2)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INQUIRE EDIT MODE (3P)"
-.SM "DELETE ELEMENT (3P)"
+.SM "SET EDGE FLAG (3P)"
+.SM "SET INDIVIDUAL ASF (3P)"
+.SM "SET EDGE REPRESENTATION (3P)"
 .fi

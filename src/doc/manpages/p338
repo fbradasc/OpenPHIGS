@@ -1,5 +1,5 @@
 .\"##
-.\" $XConsortium: p338,v 5.2 94/04/17 20:58:22 rws Exp $
+.\" $XConsortium: p337,v 5.2 94/04/17 20:58:21 rws Exp $
 .\"##
 .\"## 
 .\"## Copyright (c) 1990, 1991 by Sun Microsystems, Inc. 
@@ -22,96 +22,103 @@
 .\"## USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\"## OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\"## PERFORMANCE OF THIS SOFTWARE.
-.TH "SET LINETYPE" 3P "29 February 1991"
+.ds f \s-2SET LIGHT SOURCE STATE\s+2
+.TH "SET LIGHT SOURCE STATE" 3P+ "29 February 1991"
 .SH NAME
-SET LINETYPE \- create structure element to set the current linetype attribute
-.IX "Aspect Source Flags" "SET LINETYPE"
-.IX "Line Attributes" "SET LINETYPE"
-.IX "Attributes, Line Attributes" "SET LINETYPE"
-.IX "Textured Lines" "SET LINETYPE"
-.IX "Patterned Lines" "SET LINETYPE"
+SET LIGHT SOURCE STATE \- create structure element to enable and 
+disable light sources  
+.IX "Lighting" "SET LIGHT SOURCE STATE"
+.\".IX "PHIGS Extension Functions" "SET LIGHT SOURCE STATE"
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pset_linetype ( linetype )
-Pint	linetype;	\fIlinetype\fP
+pset_light_src_state ( activation, deactivation )
+Pint_list	*activation;	\fIactivation list\fP
+Pint_list	*deactivation;	\fIdeactivation list\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
 (PHOP, *, STOP, *)
 .SH DESCRIPTION
 .SS Purpose
-\s-2SET LINETYPE\s+2 creates a structure element
-containing a value for the current linetype attribute.  
-When the current linetype \s-2ASF\s+2 (Aspect Source Flag) 
-is set to \s-2INDIVIDUAL\s+2, the attribute defines the linetype 
-to be applied to the following output primitives:  
-.RS
-.LP
-\(bu
-.SM POLYLINE
-.LP
-\(bu
-.SM "POLYLINE 3"
-.LP
-\(bu
-.SM "POLYLINE SET 3 WITH DATA"
-.LP
-\(bu
-.SM "NON-UNIFORM B-SPLINE CURVE"
-.RE
-.LP
-If the current edit mode is \s-2INSERT\s+2, then 
-a \s-2SET LINETYPE\s+2 element is inserted into the currently open
-structure after the element pointed to by the current element pointer.  If
-the edit mode is \s-2REPLACE\s+2, then the new \s-2SET LINETYPE\s+2 element
-replaces the element pointed to by the element pointer.  In either case, the
-element pointer is updated to point to the new element.  
-.SS C Input Parameter
-.IP \fIlinetype\fP
-An integer value specifying a \fIlinetype\fP;  
-the following line types are defined:
+\s-2SET LIGHT SOURCE STATE\s+2 creates an element in the
+currently open structure enabling and disabling specified light
+source representations on the table of defined light sources
+stored on the workstation state list. The current light source
+state determines the number and type of light sources used to
+shade the primitives that follow in the structure network.
+.SS C Input Parameters
+.IP \fIactivation\fR
+This is a list of light sources to be activated. This structure 
+specifies both an integer value indicating the number of light source
+representations to be activated and a pointer to a list specifying
+the index numbers of the light source representations to be activated. 
+Pint_list is defined as:
 .nf
-.ta .5i +.5i +1.5i +1i
+.ta .5i +\w'Pint	'u +\w'num_ints;	'u
+.sp .4
+typedef struct {
 .sp .2
-	1	PLINE_SOLID	\fISolid\fP
-	2	PLINE_DASH	\fIDashed\fP
-	3	PLINE_DOT	\fIDotted\fP
-	4	PLINE_DOT_DASH	\fIDot-dashed\fP
+	Pint	num_ints;	/* number of light sources to activate */
+	Pint	*ints;	/* list of light sources to activate */
 .sp .2
+} Pint_list;
 .fi
-Support for \fIlinetypes\fP is workstation dependent.
+.sp
+.IP \fIdeactivation\fR
+This is a list of light sources to be deactivated. This structure 
+specifies both an integer value indicating the number of light source
+representations to be deactivated and a pointer to a list specifying
+the index numbers of the light source representations to be deactivated. 
+Pint_list is defined as:
+.nf
+.ta .5i +\w'Pint	'u +\w'num_ints;	'u
+.sp .4
+typedef struct {
+.sp .2
+	Pint	num_ints;	/* number of light sources to activate */
+	Pint	*ints;	/* list of light sources to activate */
+.sp .2
+} Pint_list;
+.IP
+.fi
 .SS Execution
-When the \s-2SET LINETYPE\s+2 element is traversed, the current linetype
-entry in the \s-2PHIGS\s+2 traversal state list is set to \fIlinetype\fP.  
-When the current linetype ASF is set to
-\s-2INDIVIDUAL\s+2, line output primitives which follow in
-the structure network will be drawn with the \fIlinetype\fP specified.  
+Depending on the edit mode, a \s-2SET LIGHT SOURCE STATE\s+2
+element is inserted into the open structure after the element
+pointer or replaces the element pointed at by the element pointer.
+The element pointer is then updated to point to this 
+\s-2SET LIGHT SOURCE STATE\s+2 element.
 .LP
-When the current linetype ASF is set to \s-2BUNDLED\s+2,
-the effective linetype is
-the linetype attribute in the polyline representation selected by
-the current polyline index.  
-In this case, the \fIlinetype\fP set with \s-2SET LINETYPE\s+2 has no effect.  
+When the \s-2SET LIGHT SOURCE STATE\s+2 element is traversed, the
+light source representations listed in the activation list are added to the 
+current light source state entry in the 
+traversal state list, and the representations listed in the deactivation
+list are deleted. The light source representations are
+defined with the \s-2SET LIGHT SOURCE REPRESENTATION\s+2 subroutine.
 .LP
-If the \fIlinetype\fP specified is not available on the workstation,
-linetype 1 (\fISolid\fP) will be used.
+The current light source state list defines the ambient, diffuse,
+and specular light sources that may be used when applying lighting
+and shading to area-defining or polyline primitives. The types of 
+light sources used are defined by the
+\s-2SET INTERIOR SHADING METHOD\s+2 and \s-2SET POLYLINE SHADING METHOD\s+2
+subroutines.
+.RE
 .SH ERRORS
 .IP 005
-Ignoring function, function requires state 
-(\s-2PHOP\s+2, \s-2*\s+2, \s-2STOP\s+2, \s-2*\s+2)
+Ignoring function, function requires state (\s-2PHOP,*,STOP,*\s+2)
+.IP 133
+Ignoring function, one of the entries in the activation list or
+deactivation list is less than one (1)
+.IP 135
+Ignoring function, the same entry exists in both the activation
+list and the deactivation list
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "SET INDIVIDUAL ASF (3P)"
-.SM "SET POLYLINE REPRESENTATION (3P)"
-.SM "INQUIRE POLYLINE REPRESENTATION (3P)"
-.SM "POLYLINE (3P)"
-.SM "POLYLINE 3 (3P)"
-.SM "POLYLINE SET 3 WITH DATA (3P+)"
-.SM "NON-UNIFORM B-SPLINE CURVE (3P+)"
+.SM "SET LIGHT SOURCE REPRESENTATION (3P+)"
+.SM "INQUIRE LIGHT SOURCE FACILITIES (3P+)"
 .fi

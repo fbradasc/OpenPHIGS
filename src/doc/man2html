@@ -490,7 +490,8 @@ sub make_xref {
         if ($lf > 0) {
             qq|$pre<B><A HREF="$file.html">$str</A></B>|;
         } else {
-            qq|<!--$pre<B><A HREF="NOT_FOUND.html">$str</A></B>-->|;
+#            qq|<!--$pre<B><A HREF="NOT_FOUND.html">$str</A></B>-->|;
+            qq|$pre<B><A HREF="NOT_FOUND.html">$str</A></B>|;
         }
 #	my($href) = (eval $CgiUrl);
 #	qq|$pre<B><A HREF="$href">$str</A></B>|;

@@ -83,5 +83,5 @@ Ignoring function, specified workstation is of category \s-2MI\s+2
 .ta 0.5i
 .SM "SET HLHSR MODE (3P)"
 .SM "SET HLHSR IDENTIFIER (3P)"
-.SM "INQUIRE HLHSR FACILITIES (3P)"
+.SM "INQUIRE HLHSR MODE FACILITIES (3P)"
 .fi

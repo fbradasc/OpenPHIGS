@@ -1,5 +1,5 @@
 .\"
-.\" $XConsortium: p178,v 5.4 94/04/17 20:56:29 hersh Exp $
+.\" $XConsortium: p177,v 5.5 94/04/17 20:56:29 hersh Exp $
 .\"
 .\" 
 .\" Copyright (c) 1990, 1991 by Sun Microsystems, Inc. and the X Consortium.
@@ -22,253 +22,87 @@
 .\" USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
 .\" OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 .\" PERFORMANCE OF THIS SOFTWARE.
-.ds f \s-2INQUIRE PICK DEVICE STATE\s+2
-.TH "INQUIRE PICK DEVICE STATE" 3P "16 August 1991"
+.TH "INQUIRE PHIGS FACILITIES" 3P "26 July 1991"
 .SH NAME
-INQUIRE PICK DEVICE STATE \- inquire state of a pick device
-.IX "Pick Input Devices" "INQUIRE PICK DEVICE STATE"
-.IX "Detectability" "INQUIRE PICK DEVICE STATE"
+INQUIRE PHIGS FACILITIES\- inquire the current list of \s-2PHIGS\s+2 facilities defined in the \s-2PHIGS\s+2 description table
 .SH SYNOPSIS
 .SS C Syntax
 .ft B
 .ta 1.25i 3i
 .nf
 void
-pinq_pick_st ( ws, dev, type, store, err, op_mode, echo_switch, filter, init_status,
-	init_pick, prompt_echo, echo_area, path_data, pick_order )
-Pint	ws;	\fIworkstation identifier\fP
-Pint	dev;	\fIpick device number\fP
-Pinq_type	type;	\fItype of returned value\fP
-Pstore	store;	\fIhandle to store object\fP
-Pint	*err;	\fIOUT error indicator\fP
-Pop_mode	*op_mode;	\fIOUT operating mode\fP
-Pecho_switch	*echo_switch;	\fIOUT echo switch\fP
-Pfilter	**filter;	\fIOUT pick filter\fP
-Pin_status	*init_status;	\fIOUT initial pick status\fP
-Ppick_path	**init_pick;	\fIOUT initial pick path\fP
-Pint	*prompt_echo;	\fIOUT prompt/echo type\fP
-Plimit	*echo_area;	\fIOUT echo area\fP
-Ppick_data	**pick_data;	\fIOUT data record\fP
-Ppath_order	*path_order;	\fIOUT path order\fP
+pinq_phigs_facs ( length, start, error_ind, open_ws, open_ar, num_names, char_sets, length_list, norm_filt, inv_filt )
+Pint	length;	\fIlength of application list\fP
+Pint	start;	\fIstarting position\fP
+Pint	*error_ind;	\fIOUT error indicator\fP
+Pint	*open_ws;	\fIOUT max. num. simultaneously open ws\fP
+Pint	*open_ar;	\fIOUT max. num. simultaneously open archive files\fP
+Pint	*num_names;	\fIOUT number of available names for name sets\fP      
+Pint_list	*char_sets;	\fIOUT list of character sets\fP
+Pint	*length_list;	\fIOUT length of list in PHIGS\fP
+Pint	*norm_filt;	\fIOUT maximum length of norm filter list for ISS\fP
+Pint	*inv_filt;	\fIOUT maximum length of inverted filter list for ISS\fP
 .fi
 .ft R
 .SS Required PHIGS Operating States
-(PHOP, WSOP, *, *)
+(PHOP, *, *, *)
 .SH DESCRIPTION
 .SS Purpose
-Use \*f to retrieve the current state
-of the specified pick device.
+Use \s-2INQUIRE PHIGS FACILITIES\s+2 to obtain a list of the available
+\s-2PHIGS\s+2 facilities from the \s-2PHIGS\s+2 description table.
 .SS C Input Parameters
-Applications using the \s-2C\s+2 binding must create a buffer to be used by this
-function as memory space for storing data associated with the device state.
-This buffer is passed as the \fIstore\fP argument.  
-.LP
-The store buffer is a data area managed by \s-2PHIGS\s+2. While the application 
-is responsible for creating the inital buffer through a call to \s-2\CREATE STORE\s+2, 
-\s-2PHIGS\s+2 manages this area such that there is sufficient memory for the 
-specific inquiry. The pick device data record within the store buffer is accessed 
-by the pointer pointed to by pick_data.
-.IP \fIws\fP
-Workstation identifier. An integer specifying the workstation with which
-the specified pick device is associated.
-.IP \fIdev\fP
-The device number of the pick device.
-See the \fIAvailable Devices\fP section of \s-2INITIALIZE PICK\s+2
-for a description of the available devices.
-.IP \fItype\fP
-An enumerated value specifying whether the values to be returned are 
-those originally specified by the application (\s-2PINQ_SET\s+2), or
-those resulting after \s-2PHIGS\s+2 mapped them to ones available on the
-workstation (\s-2PINQ_REALIZED\s+2).  A Pinq_type structure is defined as:
-.nf
-.ta .5i +\w'PINQ_REALIZED     'u
-.sp .4
-typedef enum {
-.sp .2
-	PINQ_SET,
-	PINQ_REALIZED
-.sp .2
-} Pinq_type;
-.fi
-.IP \fIstore\fP
-The memory buffer \s-2PHIGS\s+2 is to use for storing the information
-returned.  
-This buffer must exist prior to calling this function (see
-\s-2CREATE STORE (3P)\s+2).
+.IP \fIlength\fP
+The number of list elements for which the application has allocated memory
+in the output parameter \fIchar_sets\fR\(->\fIints\fP.
+0 may be specified, in order to have \fIlength_list\fP
+return the total number of elements in the list of character sets.
+.IP \fIstart\fP
+The starting position in the list at which the inquiry is to begin.
 .SS C Output Parameters
-.IP \fIerr\fP
-The error indicator.  See the \fIExecution\fP section below for a
-description of its use.  See the \fIErrors\fP section below for the
-possible values it may return.
-.IP \fIop_mode\fP
-The operating mode. Pop_mode is an enumerated type with the following values:
-.sp .2
-.ta .5i
-.nf
-	POP_REQ
-	POP_SAMPLE
-	POP_EVENT
-.fi
-.IP \fIecho_switch\fP
-The echo state. Pecho_switch is an enumerated type with the following values:
-.sp .2
-.ta .5i
-.nf
-	PSWITCH_ECHO
-	PSWITCH_NO_ECHO
-.fi
-.IP \fIfilter\fP
-A pointer to a pointer to the location to store the device's
-detectability filter.
-Pfilter is defined in phigs.h as follows:
-.nf
-.ta .5i +1i +1.25i
-.sp .4
-typedef struct {
-.sp .2
-	Pint_list	incl_set;	/* inclusion set */
-	Pint_list	excl_set;	/* exclusion set */
-} Pfilter;
-.IP
+.IP \fIerror_ind\fP
+A pointer to the location to store the error number of any error
+detected by this function.
+.IP \fIopen_ws\fP
+A pointer to an integer that returns the
+\fImaximum number of simultaneously open workstations\fP supported.
+.IP \fIopen_ar\fP
+A pointer to an integer that returns the
+\fImaximum number of simultaneously open archive files\fP supported.
+.IP \fInum_names\fP
+A pointer to an integer that returns the number of available names for name sets.
+.IP \fIchar_sets\fP
+A pointer to a data structure that returns a portion
+of the list of available character sets, starting with
+the \fIstart\fP number item.
 Pint_list is defined in phigs.h as follows:
 .nf
-.ta .5i +1i +1.25i
-.sp .4
+.ta .5i +\w'Pint	'u +\w'num_ints;		'u
+.sp .3
 typedef struct {
 .sp .2
-	Pint	num_ints;	/* number of Pints in list */
-	Pint	*ints;	/* list of integers        */
+	Pint	 num_ints;	/* number of Pints in list */
+	Pint	*ints;	/* list of integers */
 .sp .2
 } Pint_list;
 .fi
 .IP
-The \fInum_ints\fR component specifies the number of elements in the list.
-The \fIints\fR component is a pointer to a list \fInum_ints\fR long.
-.IP \fIinit_status\fP
-A pointer to the initial pick status.
-Pin_status is an enumerated type with the following values: 
-.sp .4 
-.nf 
-.ta .5i 
-typedef enum { 
-.sp .2 
-	PIN_STATUS_NONE, 
-	PIN_STATUS_OK, 
-	PIN_STATUS_NO_IN 
-.sp .2 
-} Pin_status; 
-.fi
-.IP \fIinit_pick\fP
-A pointer to the initial pick path.
-Ppick_path is defined in phigs.h as follows:
-.sp .4
-.nf
-.ta .5i +1i +1i
-typedef struct {
-.sp .2
-	Pint	depth;	/* pick path_list depth */
-	Ppick_path_elem	*path_list;	/* pick path */
-.sp .2
-} Ppick_path;
-.fi
-Ppick_path_elem is defined in phigs.h as follows:
-.sp .4
-.nf
-.ta .5i +1i +1i
-typedef struct {
-.sp .2
-	Pint	struct_id;	/* structure identifier */
-	Pint	pick_id;	/* hierarchical pick identifier */
-	Pint	elem_pos;	/* element sequence number */
-.sp .2
-} Ppick_path_elem;
-.fi
-.IP \fIprompt_echo\fP
-The prompt/echo type desired.
-See the \fIAvailable Devices\fP Section of \s-2INITIALIZE PICK\s+2
-for a description of the available types.
-.IP \fIecho_area\fP
-A pointer to a variable of type Plimit that contains the echo area of
-the device. Plimit is defined in phigs.h as follows:
-.sp .4
-.nf
-.ta .5i  +1i  +1i   
-.sp .2
-typedef struct {
-.sp .2
-	Pfloat	x_min;	/* x min */
-	Pfloat	x_max;	/* x max */
-	Pfloat	y_min;	/* y min */
-	Pfloat	y_max;	/* y max */
-.sp .2
-} Plimit;
-.fi
-.IP \fIpick_data\fP
-Pointer to a pointer that points to the pick device state within store.
-Ppick_data is defined in phigs.h as follows:
-.nf
-.ta .5i +.5i +.5i
-.sp .2
-typedef struct {
-.sp .2
-      union {
-	struct {
-		Pint	unused;
-	} pet_r1;
-      } pets;
-.sp .2
-} Ppick_data;
-.sp .2
-.fi
-.IP \fIpath_order\fP
-Pointer to the path order. Ppath_order is an enumerated type with the following values:
-.nf
-.ta .5i
-typedef enum {
-.sp .2
-	PORDER_TOP_FIRST,
-	PORDER_BOTTOM_FIRST
-.sp .2
-} Ppath_order;
-.fi
-.SS Execution
-\*f returns the current state of the
-specified pick device, which is stored in the workstation
-state list of the workstation associated with the device.  The
-current state includes the operating mode, echo switch, initial pick,
-prompt/echo type, echo area, pick path order, data record, and detectability filter.
-See \s-2SET PICK MODE\s+2 for a description of the operating mode and the
-echo switch, and how to set these values.
-See \s-2INITIALIZE PICK\s+2 for a description of the initial pick,
-prompt/echo type, echo area, pick path order, and data record contents,
-and how to set these values.
-See \s-2SET PICK FILTER\s+2 for a description of the pick filter and how to
-set it.
-.LP
-In the event of an error, the \fIerror indicator\fP 
-indicates the error number of the error detected, and no other output data
-is returned.  If no error is detected, the \fIerror indicator\fP 
-is set to zero, and the inquired information will be available in the output
-parameters.  Since this is an inquiry function, \s-2ERROR HANDLING\s+2 is not
-invoked when an error is detected by this function.
+Prior to calling this function, the \fIints\fR field of the Pint_list
+structure must contain a pointer to an application supplied buffer.
+This buffer must be at least as large as the \fIlength\fR parameter.
+.IP \fIlength_list\fP
+A pointer to an integer that returns the length of the list in \s-2PHIGS\s+2.
+.IP \fInorm_filt\fP
+A pointer to an integer that returns the
+maximum length of the norm filter list for Incremental Spatial Search.
+.IP \fIinv_filt\fP
+A pointer to an integer that returns the
+maximum length of the inverted filter list for Incremental Spatial Search.
 .SH ERRORS
-.IP 003
-Ignoring function, function requires state (\s-2PHOP, WSOP, *, *\s+2)
-.IP 054
-Ignoring function, the specified workstation is not open
-.IP 060
-Ignoring function, specified workstation is not of category \s-2OUTIN\s+2
-.IP 250
-Ignoring function, the specified device is not available
-on the specified workstation
+.IP 002
+Ignoring function, function requires state (\s-2PHOP\s+2, *, *, *)
 .SH SEE ALSO
 .nf
 .IP
 .ta 0.5i
-.SM "INITIALIZE PICK (3P)"
-.SM "SET PICK MODE (3P)"
-.SM "SET PICK FILTER (3P)"
-.SM "INQUIRE PICK DEVICE STATE 3 (3P)"
-.SM "CREATE STORE (3P)"
-.SM "DELETE STORE (3P)"
+.SM "PHIGS DESCRIPTION TABLE (7P)"
 .fi

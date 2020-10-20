@@ -27,7 +27,8 @@ HAND_FIXED_FOR_TABLES = \
 	manpages/p232 \
 	manpages/p408 \
 	manpages/p409 \
-	manpages/p410
+	manpages/p410 \
+	manpages/p411 \
 
 MANPAGE_NAMES = \
 	manpages/p001 \
