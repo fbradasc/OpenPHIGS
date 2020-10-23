@@ -213,7 +213,7 @@ Ignoring function, parameter range is inconsistent with knots
 .nf
 .IP
 .ta 0.5i
-.\" .SM "ADD TRIMMING CURVE (3P+)"
+.SM "ADD TRIMMING CURVE (3P+)"
 .SM "SET CURVE APPROXIMATION CRITERIA (3P+)"
 .SM "INQUIRE CURVE AND SURFACE FACILITIES (3P+)"
 .SM "SET POLYLINE REPRESENTATION PLUS (3P+)"
